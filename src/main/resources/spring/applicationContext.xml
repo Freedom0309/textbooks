@@ -66,7 +66,8 @@
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
         <!--网页文件存放位置-->
-        <property name="prefix" value="/WEB-INF/views/" />
+       <property name="prefix" value="/WEB-INF/views/" />
+       <!-- <property name="prefix" value="/" />-->
         <!--相当于url后缀加上.jsp-->
         <property name="suffix" value=".html" />
     </bean>
@@ -125,5 +126,8 @@
     </mvc:interceptors>
     <!-- 定义无Controller的path<->view直接映射 -->
     <!-- <mvc:view-controller path="/" view-name="redirect:/" /> -->
+
+
+
 
 </beans>
