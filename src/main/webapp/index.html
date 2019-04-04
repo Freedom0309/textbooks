@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>教材管理系统</title>
-    <link rel="stylesheet" href="../layui/css/layui.css">
+    <link rel="stylesheet" href="./layui/css/layui.css">
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
@@ -35,7 +35,7 @@
                     <dd><a href="">安全设置</a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item"><a href="">溜了溜了</a></li>
+            <li class="layui-nav-item"><a href="">登陆</a></li>
         </ul>
     </div>
 
@@ -69,6 +69,18 @@
     <div class="layui-body">
         <!-- 内容主体区域 -->
         <div style="padding: 15px;">111111111111111111111111111111</div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">标签区域</label>
+            <label class="layui-form-label">密码框</label>
+            <div class="layui-input-block">
+                原始表单元素区域
+            </div>
+        </div>
+
+        <div style="padding: 15px;">111111111111111111111111111111</div>
+
+        <button class="layui-btn">一个标准的按钮</button>
+
     </div>
 
     <div class="layui-footer">
@@ -76,13 +88,62 @@
         © layui.com - 底部固定区域
     </div>
 </div>
-<script src="../layui/layui.js"></script>
+
+
+<script src="layui/layui.js"></script>
 <script>
     //JavaScript代码区域
-    layui.use('element', function(){
-        var element = layui.element;
+    layui.config({
+        base: 'layui/lay/modulemy/' //你存放新模块的目录，注意，不是layui的模块目录
+    }).extend({
+        text : 'text',
+        index:'index',
+        login:'login'
+    });
+
+    layui.use(['jquery','layer','index'],function(){
+        var $ = layui.$;
+        var layer = layui.layer;
+     //  $("input[type='button']").click( function(){
+        $(".layui-btn").click( function(){
+        //   button.addEventListener(function () {
+            var mod1 = layui.index;
+            mod1.bye();
+            layer.msg("ssscxzcxz");
+            layer.open({
+                title: '在线调试'
+                ,content: '可x以xz填写任意的layer代码'
+            });
+        });
+
+        //});
+
 
     });
+
+    layui.use(['element','form'], function(){  //导航的Hover效果、Tab选项卡等同理（它们需依赖 element 模块）
+        var element = layui.element;
+        var form = layui.form;
+
+        //但是，如果你的HTML是动态生成的，自动渲染就会失效
+        //因此你需要在相应的地方，执行下述方法来手动渲染，跟这类似的还有 element.init();
+        form.render();
+        form.on('submit(formDemo)', function(data){
+            layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+    });
+   // Layui会对select、checkbox、radio等原始元素隐藏，从而进行美化修饰处理。但这需要依赖于form组件，所以你必须加载 form
+
+    layui.use(['text', 'index','login'], function(){
+        var mymod = layui.text;
+        var mod1 = layui.index;
+        var mod2 = layui.login;
+       // mod1.hello(); //弹出 Hello World!
+       // mod1.bye();
+    });
+
+
 </script>
 </body>
 </html>
