@@ -6,7 +6,7 @@ import lombok.Data;
 public class Textbooks {
     private String id;
     private String name;
-    private double price;
+    private String price;
 
     public Textbooks() {
     }
@@ -27,11 +27,11 @@ public class Textbooks {
         this.name = name;
     }
 
-    public double getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 }
