@@ -49,7 +49,14 @@
 
 
         <!-- 列出要生成代码的所有表，这里配置的是不生成Example文件 -->
-        <table tableName="t_sys_unit" domainObjectName="Unit"
+    <!--    <table tableName="t_sys_unit" domainObjectName="Unit"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <property name="useActualColumnNames" value="false" />
+        </table>-->
+
+        <table tableName="t_app_books" domainObjectName="Book"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">

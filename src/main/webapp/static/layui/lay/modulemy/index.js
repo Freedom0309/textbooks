@@ -16,5 +16,5 @@ layui.define(['layer', 'form'], function(exports){
 
     };
 
-    exports('index', obj); //注意，这里是模块输出的核心，模块名必须和use时的模块名一致
+    exports('index1', obj); //注意，这里是模块输出的核心，模块名必须和use时的模块名一致
 });
