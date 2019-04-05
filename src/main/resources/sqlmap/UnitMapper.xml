@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.textbooks.dao.UnitMapper" >
+  <resultMap id="BaseResultMap" type="com.textbooks.entity.Unit" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="parentid" property="parentid" jdbcType="VARCHAR" />
+    <result column="path" property="path" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="aliasname" property="aliasname" jdbcType="VARCHAR" />
+    <result column="unitcode" property="unitcode" jdbcType="VARCHAR" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="website" property="website" jdbcType="VARCHAR" />
+    <result column="location" property="location" jdbcType="INTEGER" />
+    <result column="haschildren" property="haschildren" jdbcType="TINYINT" />
+    <result column="delflag" property="delflag" jdbcType="TINYINT" />
+    <result column="sysopby" property="sysopby" jdbcType="VARCHAR" />
+    <result column="syscreatetime" property="syscreatetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, parentid, path, name, aliasname, unitcode, note, address, telephone, email, website, 
+    location, haschildren, delflag, sysopby, syscreatetime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_unit
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_sys_unit
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.textbooks.entity.Unit" >
+    insert into t_sys_unit (id, parentid, path, 
+      name, aliasname, unitcode, 
+      note, address, telephone, 
+      email, website, location, 
+      haschildren, delflag, sysopby, 
+      syscreatetime)
+    values (#{id,jdbcType=VARCHAR}, #{parentid,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{aliasname,jdbcType=VARCHAR}, #{unitcode,jdbcType=VARCHAR}, 
+      #{note,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{website,jdbcType=VARCHAR}, #{location,jdbcType=INTEGER}, 
+      #{haschildren,jdbcType=TINYINT}, #{delflag,jdbcType=TINYINT}, #{sysopby,jdbcType=VARCHAR}, 
+      #{syscreatetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.textbooks.entity.Unit" >
+    insert into t_sys_unit
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="parentid != null" >
+        parentid,
+      </if>
+      <if test="path != null" >
+        path,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="aliasname != null" >
+        aliasname,
+      </if>
+      <if test="unitcode != null" >
+        unitcode,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="telephone != null" >
+        telephone,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="website != null" >
+        website,
+      </if>
+      <if test="location != null" >
+        location,
+      </if>
+      <if test="haschildren != null" >
+        haschildren,
+      </if>
+      <if test="delflag != null" >
+        delflag,
+      </if>
+      <if test="sysopby != null" >
+        sysopby,
+      </if>
+      <if test="syscreatetime != null" >
+        syscreatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null" >
+        #{parentid,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null" >
+        #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="aliasname != null" >
+        #{aliasname,jdbcType=VARCHAR},
+      </if>
+      <if test="unitcode != null" >
+        #{unitcode,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null" >
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="website != null" >
+        #{website,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null" >
+        #{location,jdbcType=INTEGER},
+      </if>
+      <if test="haschildren != null" >
+        #{haschildren,jdbcType=TINYINT},
+      </if>
+      <if test="delflag != null" >
+        #{delflag,jdbcType=TINYINT},
+      </if>
+      <if test="sysopby != null" >
+        #{sysopby,jdbcType=VARCHAR},
+      </if>
+      <if test="syscreatetime != null" >
+        #{syscreatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.textbooks.entity.Unit" >
+    update t_sys_unit
+    <set >
+      <if test="parentid != null" >
+        parentid = #{parentid,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null" >
+        path = #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="aliasname != null" >
+        aliasname = #{aliasname,jdbcType=VARCHAR},
+      </if>
+      <if test="unitcode != null" >
+        unitcode = #{unitcode,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null" >
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="website != null" >
+        website = #{website,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null" >
+        location = #{location,jdbcType=INTEGER},
+      </if>
+      <if test="haschildren != null" >
+        haschildren = #{haschildren,jdbcType=TINYINT},
+      </if>
+      <if test="delflag != null" >
+        delflag = #{delflag,jdbcType=TINYINT},
+      </if>
+      <if test="sysopby != null" >
+        sysopby = #{sysopby,jdbcType=VARCHAR},
+      </if>
+      <if test="syscreatetime != null" >
+        syscreatetime = #{syscreatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.textbooks.entity.Unit" >
+    update t_sys_unit
+    set parentid = #{parentid,jdbcType=VARCHAR},
+      path = #{path,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      aliasname = #{aliasname,jdbcType=VARCHAR},
+      unitcode = #{unitcode,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      website = #{website,jdbcType=VARCHAR},
+      location = #{location,jdbcType=INTEGER},
+      haschildren = #{haschildren,jdbcType=TINYINT},
+      delflag = #{delflag,jdbcType=TINYINT},
+      sysopby = #{sysopby,jdbcType=VARCHAR},
+      syscreatetime = #{syscreatetime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
