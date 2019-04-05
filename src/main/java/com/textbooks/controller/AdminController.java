@@ -61,6 +61,21 @@ public class AdminController {
 
     }
 
+    @RequestMapping("/console1")
+    @ResponseBody
+    public ModelAndView console1Index(){
+        ModelAndView modelAndView = new ModelAndView();
+        System.out.println("asa");
+        System.out.println("qqq");
+
+        /*     modelAndView.addAttribute("user", user);*/
+        modelAndView.setViewName("admin/console1");
+        modelAndView.addObject("");
+
+        return modelAndView;
+
+    }
+
 
     @RequestMapping("/booklst")
     @ResponseBody

@@ -41,7 +41,7 @@
                     <span>layuiAdmin</span>
                 </div>
 
-                <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
+                <ul class="layui-nav layui-nav-tree" lay-shrink="all"  lay-filter="system-side-menu">
                     <li data-name="home" class="layui-nav-item">
                         <a href="javascript:;" lay-tips="主页" lay-direction="2">
                             <i class="layui-icon layui-icon-home"></i>
@@ -82,8 +82,8 @@
             </div>
     </div>
    <!-- body上-->
-        <div class="layadmin-pagetabs" id="LAY_app_tabs">
-            <div class="layui-tab" lay-allowClose="true">
+        <div class="layadmin-pagetabs" >
+            <div class="layui-tab" lay-allowClose="true" lay-filter="filter" >
                 <ul class="layui-tab-title">
                     <li class="layui-this"><i class="layui-icon layui-icon-home"></i>  </li>
                     <li>网站设置</li>
@@ -107,7 +107,7 @@
             </div>
         </div>
         <!-- body -->
-        <div class="layui-body" id="LAY_app_body">
+        <div class="layui-body" >
            <div class="layadmin-tabsbody-item layui-show">
                 <iframe src="console.html" frameborder="0" class="layadmin-iframe"></iframe>
             </div>
@@ -123,7 +123,16 @@
  layui.use(['element','jquery'],function () {
      var element = layui.element;
      var $ = layui.$;
+     element.on('tab(filter)', function(data){
+         console.log(this); //当前Tab标题所在的原始DOM元素
+         console.log(data.index); //得到当前Tab的所在下标
+         console.log(data.elem); //得到当前的Tab大容器
+     });
 
+     element.on('nav(system-side-menu)', function(data){
+         console.log(this); //当前Tab标题所在的原始DOM元素
+         console.log(data.index); //得到当前Tab的所在下标
+     });
 
  });
 
