@@ -1,12 +1,17 @@
 package com.textbooks.controller;
 
+import com.textbooks.entity.Book;
+import com.textbooks.service.IBookService;
 import com.textbooks.service.impl.BookService;
 import com.textbooks.service.impl.TextbooksService;
+import com.textbooks.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/admin")
@@ -24,7 +29,7 @@ public class AdminController {
         ModelAndView modelAndView = new ModelAndView();
         System.out.println("asa");
         System.out.println("qqq");
-
+        //page=1&limit=10
         /*     modelAndView.addAttribute("user", user);*/
         modelAndView.setViewName("admin/index");
         return modelAndView;
@@ -37,7 +42,6 @@ public class AdminController {
         ModelAndView modelAndView = new ModelAndView();
         System.out.println("asa");
         System.out.println("qqq");
-
         /*     modelAndView.addAttribute("user", user);*/
         modelAndView.setViewName("admin/book");
         modelAndView.addObject("");
@@ -76,11 +80,23 @@ public class AdminController {
     }
     @RequestMapping("/booklst")
     @ResponseBody
-    public ModelAndView booklst(){
+    public ModelAndView booklst(HttpServletRequest request){
+       String page = request.getParameter("page");
+        String limit = request.getParameter("limit");
+        int index=1;
+        if( page!=null) {
+            index=Integer.parseInt(page);
+        }
+        int size = Integer.parseInt(limit);
+        IBookService bookService=new BookService();
+        PageUtil<Book> pageUtil=bookService.find(index,size);
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("");
+        //modelAndView.addObject(pageUtil);
+        modelAndView.addObject("pageUtil",pageUtil);
+        System.out.println("booooooooooooooooooooooook");
         return modelAndView;
     }
+
 
     @ResponseBody
     @RequestMapping("/homepage")
@@ -89,4 +105,7 @@ public class AdminController {
         modelAndView.addObject("admin/hompage1");
         return modelAndView;
     }
+
+
+
 }

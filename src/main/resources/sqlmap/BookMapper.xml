@@ -136,4 +136,18 @@
       exd2 = #{exd2,jdbcType=VARCHAR}
     where Id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <select id="find"  resultType="Book" parameterType="java.lang.String">
+		select * from t_app_books limit #{0},#{1}
+	</select>
+  <select id="findById" resultType="Book" parameterType="java.lang.String">
+		select * from t_app_books where  id=#{Id}
+	</select>
+  <update id="update" parameterType="Book">
+		update t_app_books set name=#{name},ghs=#{ghs},price=#{price},discount=#{discount},num=#{num},status=#{status},exd1=#{exd1},exd2=#{exd2}  where id=#{id}
+	</update>
+  <select id="findCount" parameterType="int" resultType="int">
+		select count(*) from t_app_books
+	</select>
+
 </mapper>

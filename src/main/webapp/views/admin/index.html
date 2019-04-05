@@ -112,33 +112,23 @@
 <script src="../static/layui/layui.js"></script>
 <script type="text/javascript" src="../static/js/jquery.js"></script>
 <script>
-  $(function () {
-   /*   $('#console').attr('lay-href');
-      alert($('#console').attr('lay-href'));*/
-
-
-  });
-
  layui.use(['element','jquery','layer'],function () {
      var element = layui.element;
      var $ = layui.$;
      var layer = layui.layer;
      element.on('tab(filter)', function(data){
-         console.log(this); //当前Tab标题所在的原始DOM元素
-         console.log(data.index); //得到当前Tab的所在下标
-         console.log(data.elem); //得到当前的Tab大容器
+        // console.log(this); //当前Tab标题所在的原始DOM元素
+        // console.log(data.index); //得到当前Tab的所在下标
+        // console.log(data.elem); //得到当前的Tab大容器
      });
-
-
-
      element.on('nav(system-side-menu)', function(data){
        console.log(this.id);
         if(this.id) {
            // layer.alert($('#' + this.id).attr('lay-href'));
             var href = $('#' + this.id).attr('lay-href');
             var text = data.text();
-            console.log(data.text());
-            console.log(href);
+          //  console.log(data.text());
+           // console.log(href);
             element.tabDelete('filter', href);
             element.tabAdd('filter', {
                 title: text
@@ -147,10 +137,8 @@
             });
             element.tabChange('filter',href);
             element.render('nav');
-
         }
          element.init();
-
      });
 
      var items = ["位运算"];
