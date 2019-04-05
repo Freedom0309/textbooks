@@ -50,8 +50,7 @@ public class AdminController {
     @ResponseBody
     public ModelAndView consoleIndex(){
         ModelAndView modelAndView = new ModelAndView();
-        System.out.println("asa");
-        System.out.println("qqq");
+        System.out.println("console1111");
 
         /*     modelAndView.addAttribute("user", user);*/
         modelAndView.setViewName("admin/console");
@@ -65,8 +64,8 @@ public class AdminController {
     @ResponseBody
     public ModelAndView console1Index(){
         ModelAndView modelAndView = new ModelAndView();
-        System.out.println("asa");
-        System.out.println("qqq");
+        System.out.println("console1");
+        System.out.println("console1");
 
         /*     modelAndView.addAttribute("user", user);*/
         modelAndView.setViewName("admin/console1");

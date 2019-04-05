@@ -10,12 +10,12 @@
     <link rel="stylesheet" href="../static/layui/css/admin.css" media="all">
 </head>
 <body class="layui-layout-body" layadmin-themealias="default">
-<div id="LAY_app">
+<div >
     <div class="layui-layout layui-layout-admin">
     <!--头部 -->
-        <div class="layui-header">
+        <div class="layui-header" >
             <!-- 头部区域 -->
-            <ul class="layui-nav layui-layout-right">
+            <ul class="layui-nav layui-layout-right" style="padding: 7px 30px 0px 0px;">
                 <li class="layui-nav-item ">
                     <a href="">控制台<span class="layui-badge">9</span></a>
                 </li>
@@ -49,10 +49,10 @@
                             <span class="layui-nav-more"></span></a>
                         <dl class="layui-nav-child">
                             <dd data-name="console" class="">
-                                <a id="console" lay-href="admin/console.html">控制台</a>
+                                <a id="console" lay-href="console.html">控制台</a>
                             </dd>
                             <dd data-name="console" class="">
-                                <a id="console1" lay-href="admin/console1.html">主页一</a>
+                                <a id="console1" lay-href="console1.html">主页一</a>
                             </dd>
                             <dd data-name="console" class="">
                                 <a lay-href="home/homepage2.html">主页二</a>
@@ -82,40 +82,47 @@
             </div>
     </div>
    <!-- body上-->
-        <div class="layadmin-pagetabs" >
+        <div class="layadmin-pagetabs" style="padding:0 0px 0 2px;">
             <div class="layui-tab" lay-allowClose="true" lay-filter="filter" >
                 <ul class="layui-tab-title" id="bui">
                     <li class="layui-this"><i class="layui-icon layui-icon-home" ></i> </li>
 
                 </ul>
-                <div class="layui-tab-content" id="divc">
-                    <div class="layui-tab-item layui-show" lay-id="admin/console.html" lay-attr="home/console.html"></div>
-            </div>
+               <div  id="divc" class="layui-tab-content" onload="settabheight()"  style="padding:0 0px 0 0px;">
+                    <div class="layui-tab-item layui-show" lay-id="http://www.baidu.com" lay-attr="console.html">
+                        <iframe src='http://www.baidu.com' frameborder="0" height="100%" width="100%" scrolling="yes" style="position: absolute"></iframe>
+                    </div>
+               </div>
         </div>
         <!-- body -->
-        <div class="layui-body" >
+      <!--  <div class="layui-body" >
            <div class="layadmin-tabsbody-item layui-show">
-                <!--<iframe src="console.html" frameborder="0" class="layadmin-iframe"></iframe>-->
+                <iframe src="console.html" frameborder="0" class="layadmin-iframe"></iframe>
+            </div>
+    <div lay-filter="body" class="layui-body"><div class="layadmin-tabsbody-item layui-show"></div></div>
+
+        </div>-->
+            <div class="layui-footer">
+                <!-- 底部固定区域 -->
+                © layui.com - 底部固定区域
             </div>
         </div>
     </div>
 </div>
-</div>
-
-
 <script src="../static/layui/layui.js"></script>
 <script type="text/javascript" src="../static/js/jquery.js"></script>
 <script>
- /* $(function () {
-      $('#console').attr('lay-href');
-      alert($('#console').attr('lay-href'));
-  });*/
+  $(function () {
+   /*   $('#console').attr('lay-href');
+      alert($('#console').attr('lay-href'));*/
 
- layui.use(['element','jquery','layer','laytpl'],function () {
+
+  });
+
+ layui.use(['element','jquery','layer'],function () {
      var element = layui.element;
      var $ = layui.$;
      var layer = layui.layer;
-     var laytpl= layer.laytpl;
      element.on('tab(filter)', function(data){
          console.log(this); //当前Tab标题所在的原始DOM元素
          console.log(data.index); //得到当前Tab的所在下标
@@ -132,25 +139,39 @@
             var text = data.text();
             console.log(data.text());
             console.log(href);
-            var ul = $('#bui').filter(function(){
-                if($(this).find('li').hasClass('layui-this')){
-                    $(this).find('li').removeClass("layui-this");
-                }
+            element.tabDelete('filter', href);
+            element.tabAdd('filter', {
+                title: text
+                ,content: '<iframe src='+href+' frameborder="0" height="100%" width="100%" scrolling="yes" style="position: absolute" ></iframe>' //支持传入html
+                ,id: href
             });
-            var lihtml = '<li  class="layui-this"  id='+href+'>'+text+'</li>';
-            $('#bui').append(lihtml);
-            var divhtml = '<div id='+href+' class="layui-tab-item layui-show" lay-id='+href+' lay-attr='+href+'></div>';
-            $('#divc').append(divhtml);
+            element.tabChange('filter',href);
+            element.render('nav');
 
-            element.tabChange('filter','+href+');
         }
-
-
+         element.init();
 
      });
 
+     var items = ["位运算"];
+     FrameWH();
+     for(var i = 0;i<items.length;i++){
+         console.log(items[i]);
+     }
 
-     element.init()
+     function FrameWH() {
+         var h = $(window).height()-90;
+         var w = $(window).height()-250;
+         $("iframe").css("height",h+"px");
+         $("iframe").css("weight",w+"px");
+     }
+
+     $(window).resize(function () {
+         FrameWH();
+     });
+
+
+
  });
 
 
