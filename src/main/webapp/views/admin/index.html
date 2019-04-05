@@ -41,7 +41,7 @@
                     <span>layuiAdmin</span>
                 </div>
 
-                <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
+                <ul class="layui-nav layui-nav-tree" lay-shrink="all"  lay-filter="system-side-menu">
                     <li data-name="home" class="layui-nav-item">
                         <a href="javascript:;" lay-tips="主页" lay-direction="2">
                             <i class="layui-icon layui-icon-home"></i>
@@ -49,10 +49,10 @@
                             <span class="layui-nav-more"></span></a>
                         <dl class="layui-nav-child">
                             <dd data-name="console" class="">
-                                <a lay-href="home/console.html">控制台</a>
+                                <a id="console" lay-href="admin/console.html">控制台</a>
                             </dd>
                             <dd data-name="console" class="">
-                                <a lay-href="home/homepage1.html">主页一</a>
+                                <a id="console1" lay-href="admin/console1.html">主页一</a>
                             </dd>
                             <dd data-name="console" class="">
                                 <a lay-href="home/homepage2.html">主页二</a>
@@ -82,49 +82,75 @@
             </div>
     </div>
    <!-- body上-->
-        <div class="layadmin-pagetabs" id="LAY_app_tabs">
-            <div class="layui-tab" lay-allowClose="true">
-                <ul class="layui-tab-title">
-                    <li class="layui-this"><i class="layui-icon layui-icon-home"></i>  </li>
-                    <li>网站设置</li>
-                    <li>用户基本管理</li>
-                    <li>权限分配</li>
-                    <li>全部历史商品管理文字长一点试试</li>
-                    <li>订单管理</li>
+        <div class="layadmin-pagetabs" >
+            <div class="layui-tab" lay-allowClose="true" lay-filter="filter" >
+                <ul class="layui-tab-title" id="bui">
+                    <li class="layui-this"><i class="layui-icon layui-icon-home" ></i> </li>
 
                 </ul>
-                <div class="layui-tab-content">
-                    <div class="layui-tab-item layui-show" lay-id="home/console.html" lay-attr="home/console.html">撒大苏打撒</div>
-                    <div class="layui-tab-item">1</div>
-                    <div class="layui-tab-item">2</div>
-                    <div class="layui-tab-item">3</div>
-                    <div class="layui-tab-item">4</div>
-                    <div class="layui-tab-item">5</div>
-                    <div class="layui-tab-item">6</div>
-                    <div class="layui-tab-item">
-
-                </div>
+                <div class="layui-tab-content" id="divc">
+                    <div class="layui-tab-item layui-show" lay-id="admin/console.html" lay-attr="home/console.html"></div>
             </div>
         </div>
         <!-- body -->
-        <div class="layui-body" id="LAY_app_body">
+        <div class="layui-body" >
            <div class="layadmin-tabsbody-item layui-show">
-                <iframe src="console.html" frameborder="0" class="layadmin-iframe"></iframe>
+                <!--<iframe src="console.html" frameborder="0" class="layadmin-iframe"></iframe>-->
             </div>
         </div>
     </div>
 </div>
-
+</div>
 
 
 <script src="../static/layui/layui.js"></script>
+<script type="text/javascript" src="../static/js/jquery.js"></script>
 <script>
+ /* $(function () {
+      $('#console').attr('lay-href');
+      alert($('#console').attr('lay-href'));
+  });*/
 
- layui.use(['element','jquery'],function () {
+ layui.use(['element','jquery','layer','laytpl'],function () {
      var element = layui.element;
      var $ = layui.$;
+     var layer = layui.layer;
+     var laytpl= layer.laytpl;
+     element.on('tab(filter)', function(data){
+         console.log(this); //当前Tab标题所在的原始DOM元素
+         console.log(data.index); //得到当前Tab的所在下标
+         console.log(data.elem); //得到当前的Tab大容器
+     });
 
 
+
+     element.on('nav(system-side-menu)', function(data){
+       console.log(this.id);
+        if(this.id) {
+           // layer.alert($('#' + this.id).attr('lay-href'));
+            var href = $('#' + this.id).attr('lay-href');
+            var text = data.text();
+            console.log(data.text());
+            console.log(href);
+            var ul = $('#bui').filter(function(){
+                if($(this).find('li').hasClass('layui-this')){
+                    $(this).find('li').removeClass("layui-this");
+                }
+            });
+            var lihtml = '<li  class="layui-this"  id='+href+'>'+text+'</li>';
+            $('#bui').append(lihtml);
+            var divhtml = '<div id='+href+' class="layui-tab-item layui-show" lay-id='+href+' lay-attr='+href+'></div>';
+            $('#divc').append(divhtml);
+
+            element.tabChange('filter','+href+');
+        }
+
+
+
+     });
+
+
+     element.init()
  });
 
 
