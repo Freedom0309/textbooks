@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>教材管理系统</title>
-    <link rel="stylesheet" href="static/layui/css/layui.css">
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
@@ -12,9 +12,9 @@
         <div class="layui-logo">教材管理系统</div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left">
-            <li class="layui-nav-item"><a href="">控制台</a></li>
-            <li class="layui-nav-item"><a href="">商品管理</a></li>
-            <li class="layui-nav-item"><a href="">用户</a></li>
+            <li class="layui-nav-item"><a href="">控制台<span class="layui-badge">9</span></a></li>
+            <li class="layui-nav-item"><a href="">商品管理<span class="layui-badge-dot"></span></a></li>
+            <li class="layui-nav-item"><a href="">用户<span class="layui-badge"></span></a></li>
             <li class="layui-nav-item">
                 <a href="javascript:;">其它系统</a>
                 <dl class="layui-nav-child">
@@ -27,7 +27,7 @@
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;">
-                    <img src="static/images/logo.png" class="layui-nav-img">
+                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
                     张艺
                 </a>
                 <dl class="layui-nav-child">
@@ -35,107 +35,102 @@
                     <dd><a href="">安全设置</a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item"><a href="">登陆</a></li>
+            <li class="layui-nav-item"><a href="">溜了溜了</a></li>
         </ul>
     </div>
 
-    <div class="layui-side layui-bg-black">
+    <!--左侧-->
+    <div class="layui-side layui-side-menu layui-bg-black">
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+            <ul class="layui-nav layui-nav-tree"  lay-filter="home">
                 <li class="layui-nav-item layui-nav-itemed">
                     <a class="" href="javascript:;">所有商品</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">语文</a></dd>
-                        <dd><a href="javascript:;">列表二</a></dd>
-                        <dd><a href="javascript:;">列表三</a></dd>
-                        <dd><a href="">超链接</a></dd>
+                        <dd data-name="console"  class="">
+                            <a class="site-tab-active" data-id="console" data-title="控制台" data-url="/admin/console" >控制台</a>
+                        </dd>
+                        <dd data-name="mainPage"  class="">
+                            <a class="site-tab-active" data-id="mainPage" data-title="主页一" data-url="/admin/homepage">主页一</a>
+                        </dd>
+                        <dd data-name="console" >
+                            <a class="site-tab-active" lay-href="/admin/homepage.html">主页二</a>
+                        </dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;">解决方案</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">列表一</a></dd>
-                        <dd><a href="javascript:;">列表二</a></dd>
-                        <dd><a href="">超链接</a></dd>
-                    </dl>
-                </li>
-                <li class="layui-nav-item"><a href="">云市场</a></li>
-                <li class="layui-nav-item"><a href="">发布商品</a></li>
             </ul>
         </div>
     </div>
 
-    <div class="layui-body">
-        <!-- 内容主体区域 -->
+    <!--<div class="layui-body">
+        &lt;!&ndash; 内容主体区域 &ndash;&gt;
         <div style="padding: 15px;">111111111111111111111111111111</div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">标签区域</label>
-            <label class="layui-form-label">密码框</label>
-            <div class="layui-input-block">
-                原始表单元素区域
+    </div>-->
+
+    <div class="layui-body" >
+        <div class="layui-tab tab" lay-filter="demo">
+            <ul class="layui-tab-title">
+                <li class="layui-this"  lay-allowClose="false" ><i class="layui-icon layui-icon-home"></i>
+
+            </ul>
+            <ul class="rightmenu" style="position: absolute;display: none;font-size: 12px;font-family: 'Microsoft Yahei';">
+                <li data-type="closethis">关闭当前</li>
+                <li data-type="closeall">关闭所有</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <iframe src="/admin/console" frameborder="0" class="layadmin-iframe" style="width:100%;height:99%;"></iframe>
+                </div>
+
             </div>
         </div>
-
-        <div style="padding: 15px;">111111111111111111111111111111</div>
-
-        <button class="layui-btn">一个标准的按钮</button>
-
     </div>
+
 
     <div class="layui-footer">
         <!-- 底部固定区域 -->
         © layui.com - 底部固定区域
     </div>
 </div>
-
-
-<!--<script src="./layui/layui.js"></script>-->
-<script src="static/layui/layui.js"></script>
+<script src="../static/layui/layui.js"></script>
+//JavaScript代码区域
 <script>
-    //JavaScript代码区域
-    layui.config({
-        base: 'layui/lay/modulemy/' //你存放新模块的目录，注意，不是layui的模块目录
-    }).extend({
-        text : 'text',
-        index:'index',
-        login:'login'
-    });
-    layui.use(['jquery','layer','index'],function(){
-        var $ = layui.$;
-        var layer = layui.layer;
-        //  $("input[type='button']").click( function(){
-        $(".layui-btn").click( function(){
-            //   button.addEventListener(function () {
-            var mod1 = layui.index;
-            mod1.bye();
-            layer.msg("ssscxzcxz");
-            layer.open({
-                title: '在线调试'
-                ,content: '可x以xz填写任意的layer代码'
-            });
+
+    layui.use(['element','jquery'], function(){
+        var element = layui.element,$=layui.jquery;
+        //当点击有site-tab-active属性的标签时，即左侧菜单栏（可以是无限菜单栏）中内容 ，触发点击事件
+        $('.site-tab-active').on('click', function() {
+            var dataid = $(this);
+            //这时会判断右侧.layui-tab-title属性下的有lay-id属性的li的数目，即已经打开的tab项数目
+            if ($(".layui-tab-title li[lay-id]").length <= 0) {
+                //如果比零小，则直接打开新的tab项
+                element.tabAdd('demo',{
+                    title:dataid.attr("data-title"),
+                    content:'<iframe data-frameid="'+dataid.attr("data-id")+'" scrolling="auto" frameborder="0" src="'+dataid.attr("data-url")+'" style="width:100%;height:99%;"></iframe>',
+                    id:dataid.attr("data-id")
+                })
+            } else {
+                //否则判断该tab项是否以及存在
+                var isData = false; //初始化一个标志，为false说明未打开该tab项 为true则说明已有
+                $.each($(".layui-tab-title li[lay-id]"), function () {
+                    //如果点击左侧菜单栏所传入的id 在右侧tab项中的lay-id属性可以找到，则说明该tab项已经打开
+                    if ($(this).attr("lay-id") == dataid.attr("data-id")) {
+                        isData = true;
+                    }
+                })
+                if (isData == false) {
+                    //标志为false 新增一个tab项
+                    element.tabAdd('demo',{
+                        title:dataid.attr("data-title"),
+                        content:'<iframe data-frameid="'+dataid.attr("data-id")+'" scrolling="auto" frameborder="0" src="'+dataid.attr("data-url")+'" style="width:100%;height:99%;"></iframe>',
+                        id:dataid.attr("data-id")
+                    })
+                }
+            }
+            //最后不管是否新增tab，最后都转到要打开的选项页面上
+            element.tabChange('demo',dataid.attr('data-id'))
         });
-        //});
-    });
-    layui.use(['element','form'], function(){  //导航的Hover效果、Tab选项卡等同理（它们需依赖 element 模块）
-        var element = layui.element;
-        var form = layui.form;
-        //但是，如果你的HTML是动态生成的，自动渲染就会失效
-        //因此你需要在相应的地方，执行下述方法来手动渲染，跟这类似的还有 element.init();
-        form.render();
-        form.on('submit(formDemo)', function(data){
-            layer.msg(JSON.stringify(data.field));
-            return false;
-        });
-    });
-    // Layui会对select、checkbox、radio等原始元素隐藏，从而进行美化修饰处理。但这需要依赖于form组件，所以你必须加载 form
-    layui.use(['text', 'index','login'], function(){
-        var mymod = layui.text;
-        var mod1 = layui.index;
-        var mod2 = layui.login;
-        // mod1.hello(); //弹出 Hello World!
-        // mod1.bye();
-    });
+    })
 </script>
 </body>
 </html>

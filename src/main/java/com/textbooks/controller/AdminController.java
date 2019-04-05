@@ -74,25 +74,19 @@ public class AdminController {
         return modelAndView;
 
     }
-
-
     @RequestMapping("/booklst")
     @ResponseBody
     public ModelAndView booklst(){
         ModelAndView modelAndView = new ModelAndView();
-        System.out.println("asa");
-        System.out.println("qqq");
-
-        /*     modelAndView.addAttribute("user", user);*/
-      //  modelAndView.setViewName("admin/console");
-
-
-
-
         modelAndView.addObject("");
-
         return modelAndView;
-
     }
 
+    @ResponseBody
+    @RequestMapping("/homepage")
+    public ModelAndView homepage(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("admin/hompage1");
+        return modelAndView;
+    }
 }
