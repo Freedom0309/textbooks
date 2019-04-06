@@ -11,13 +11,14 @@
 </head>
 <body>
 
-<table class="layui-hide" id="test" lay-filter="test"></table>
+<table class="layui-hide" lay-even lay-skin="line" id="test" lay-filter="test"></table>
 
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
         <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
         <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+        <button class="layui-btn layui-btn-sm" lay-event="new">新增</button>
     </div>
 </script>
 
@@ -37,8 +38,13 @@
         table.render({
             elem: '#test'
             ,url:'/unit/findAllUnit'
-            ,toolbar: '#toolbarDemo'
+            ,toolbar: true
+                //'#toolbarDemo'
             ,title: '部门表'
+            ,request: {
+                pageName: 'curr' //页码的参数名称，默认：page
+                ,limitName: 'nums' //每页数据量的参数名，默认：limit
+            }
             ,cols: [[
                 {type: 'checkbox', fixed: 'left'}
                 ,{field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true}
@@ -52,8 +58,8 @@
                 ,{field:'num', title:'数量', width:80, sort: true}
                 ,{field:'status', title:'状态', width:120}
                ,{field:'logins', title:'登入次数', width:100, sort: true}
-                ,{field:'joinTime', title:'加入时间', width:120}
-                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}*/
+                ,{field:'joinTime', title:'加入时间', width:120}*/
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
             ]]
             ,page: true
         });

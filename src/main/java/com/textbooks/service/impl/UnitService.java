@@ -49,4 +49,10 @@ public class UnitService implements IUnitService {
     public Collection<Unit> getAll() {
         return unitMapper.getAll();
     }
+
+    //获取部门数量
+    @Override
+    public Integer getCount() {
+        return unitMapper.getCount();
+    }
 }

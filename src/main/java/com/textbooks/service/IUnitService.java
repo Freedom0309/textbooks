@@ -19,4 +19,6 @@ public interface IUnitService {
     int updateByPrimaryKey(Unit record);
 
     Collection<Unit> getAll();
+
+    Integer getCount();
 }

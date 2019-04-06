@@ -22,4 +22,7 @@ public interface UnitMapper {
 
     @Select("select id, name, address from t_sys_unit")
     Collection<Unit> getAll();
+
+    @Select("select count(1) from t_sys_unit")
+    Integer getCount();
 }
