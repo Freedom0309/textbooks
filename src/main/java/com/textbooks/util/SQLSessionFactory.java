@@ -19,7 +19,8 @@ public class SQLSessionFactory {
     static {
         try {
             //形成输入流
-            reader = Resources.getResourceAsReader("../spring/applicationContext.xml");
+            reader = Resources.getResourceAsReader("spring/applicationContext.xml");
+            System.out.println("reader"+reader);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -40,6 +41,10 @@ public class SQLSessionFactory {
     public static SqlSession getSession() {
         //返回一个数据操作连接对象
         return getSqlSessionFactory().openSession();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(SQLSessionFactory.getSession());
     }
 
 }

@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -58,7 +61,6 @@ public class AdminController {
 
         /*     modelAndView.addAttribute("user", user);*/
         modelAndView.setViewName("admin/console");
-        modelAndView.addObject("");
 
         return modelAndView;
 
@@ -80,7 +82,7 @@ public class AdminController {
     }
     @RequestMapping("/booklst")
     @ResponseBody
-    public ModelAndView booklst(HttpServletRequest request){
+    public List<HashMap<String, Object>> booklst(HttpServletRequest request){
        String page = request.getParameter("page");
         String limit = request.getParameter("limit");
         int index=1;
@@ -90,11 +92,16 @@ public class AdminController {
         int size = Integer.parseInt(limit);
         IBookService bookService=new BookService();
         PageUtil<Book> pageUtil=bookService.find(index,size);
-        ModelAndView modelAndView = new ModelAndView();
+        List<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();
         //modelAndView.addObject(pageUtil);
-        modelAndView.addObject("pageUtil",pageUtil);
-        System.out.println("booooooooooooooooooooooook");
-        return modelAndView;
+        System.out.println(pageUtil);
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("code","0");
+        map.put("msg","success");
+        map.put("count",pageUtil.getCount());
+        map.put("data",pageUtil.getList());
+        data.add(map);
+        return data;
     }
 
 
