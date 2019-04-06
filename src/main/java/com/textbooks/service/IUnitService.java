@@ -2,6 +2,8 @@ package com.textbooks.service;
 
 import com.textbooks.entity.Unit;
 
+import java.util.Collection;
+
 //服务层调用DAO  写服务
 public interface IUnitService {
     int deleteByPrimaryKey(String id);
@@ -15,4 +17,6 @@ public interface IUnitService {
     int updateByPrimaryKeySelective(Unit record);
 
     int updateByPrimaryKey(Unit record);
+
+    Collection<Unit> getAll();
 }

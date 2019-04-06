@@ -1,7 +1,10 @@
 package com.textbooks.dao;
 
 import com.textbooks.entity.Unit;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
+
+import java.util.Collection;
 
 @Repository
 public interface UnitMapper {
@@ -16,4 +19,7 @@ public interface UnitMapper {
     int updateByPrimaryKeySelective(Unit record);
 
     int updateByPrimaryKey(Unit record);
+
+    @Select("select * from t_sys_unit")
+    Collection<Unit> getAll();
 }

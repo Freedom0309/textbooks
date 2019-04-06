@@ -19,7 +19,7 @@ public class SQLSessionFactory {
     static {
         try {
             //形成输入流
-            reader = Resources.getResourceAsReader("spring/applicationContext.xml");
+            reader = Resources.getResourceAsReader("classpath:applicationContext.xml");
             System.out.println("reader"+reader);
         } catch (IOException e) {
             System.out.println(e.getMessage());

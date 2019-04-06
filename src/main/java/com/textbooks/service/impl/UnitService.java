@@ -6,6 +6,8 @@ import com.textbooks.service.IUnitService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Collection;
+
 @Service("unitService")
 public class UnitService implements IUnitService {
 
@@ -41,5 +43,10 @@ public class UnitService implements IUnitService {
     @Override
     public int updateByPrimaryKey(Unit record) {
         return unitMapper.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public Collection<Unit> getAll() {
+        return unitMapper.getAll();
     }
 }

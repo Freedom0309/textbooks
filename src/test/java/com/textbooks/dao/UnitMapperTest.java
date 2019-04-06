@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.Date;
+
 public class UnitMapperTest {
 
     private ApplicationContext applicationContext;
@@ -33,7 +35,7 @@ public class UnitMapperTest {
     @Test
     public void insert() {
         Unit unit = new Unit();
-        unit.setId("2");
+        unit.setId(String.valueOf(new Date().getTime() / 1000));
         unit.setName("ruibao");
         int result = mapper.insertSelective(unit);
         System.out.println(result);
