@@ -2,12 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.leelay.ssm</groupId>
-  <artifactId>ssm</artifactId>
+  <groupId>com.textbooks</groupId>
+  <artifactId>textbooksManagement</artifactId>
   <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>ssm Maven Webapp</name>
-  <url>http://maven.apache.org</url>
 
   <properties>
     <!--javaee版本-->
@@ -37,8 +35,6 @@
     <taglibs-standard.version>1.2.5</taglibs-standard.version>
     <!--lombok插件-->
     <lombok.version>1.16.20</lombok.version>
-    <!--oracle数据库连接驱动-->
-    <ojdbc.version>7</ojdbc.version>
   </properties>
 
   <dependencies>
@@ -177,6 +173,12 @@
         <groupId>mysql</groupId>
         <artifactId>mysql-connector-java</artifactId>
         <version>5.1.29</version>
+    </dependency>
+    <!--druid连接池-->
+    <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>druid</artifactId>
+        <version>1.0.14</version>
     </dependency>
     <!-- ================================================= apache ================================================== -->
     <dependency>

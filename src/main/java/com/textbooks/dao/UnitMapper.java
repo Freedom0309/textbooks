@@ -1,7 +1,9 @@
 package com.textbooks.dao;
 
 import com.textbooks.entity.Unit;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface UnitMapper {
     int deleteByPrimaryKey(String id);
 

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
-@Service("TextbooksService")
+@Service("textbooksService")
 public class TextbooksService implements ITextbooksService {
 
     @Resource

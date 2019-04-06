@@ -1,69 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
-  <display-name>textbook</display-name>
-  <!-- 配置编码方式-->
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+
+  <!--配置Spring初始化的监听器-->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <!--配置全局的初始化参数,指定配置文件-->
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:applicationContext.xml</param-value>
+  </context-param>
+
+
+  <!--配置前端控制器-->
+  <servlet>
+    <servlet-name>DispatcherServlet</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <!--设置初始化参数-->
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:springmvc-config.xml</param-value>
+    </init-param>
+    <!-- 元素标记容器是否应该在web应用程序启动的时候就加载这个servlet，(实例化并调用其init()方法)。-->
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <!--所有符合这种格式的资源的请求都由指定的servlet处理  '/'会匹配到/springmvc这样的路径型url，不会匹配到模式为*.jsp这样的后缀型url。-->
+  <servlet-mapping>
+    <servlet-name>DispatcherServlet</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+
+
+  <!--在web.xml中配置过滤器。这里要谨记一条原则：在web.xml中，监听器>过滤器>servlet。
+  也就是说web.xml中监听器配置在过滤器之前，过滤器配置在servlet之前，否则会出错。-->
+  <!--编码过滤器-->
   <filter>
-    <filter-name>encodingFilter</filter-name>
+    <filter-name>CharacterEncodingFilter</filter-name>
     <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <!--配置初始化参数,指定字符集-->
     <init-param>
       <param-name>encoding</param-name>
       <param-value>UTF-8</param-value>
     </init-param>
-    <init-param>
-      <param-name>forceEncoding</param-name>
-      <param-value>true</param-value>
-    </init-param>
   </filter>
+  <!--编码过滤器映射  '/*'会匹配所有的url：路径型的和后缀型的url(包括/springmvc，.jsp，.js和*.html等)。-->
   <filter-mapping>
-    <filter-name>encodingFilter</filter-name>
+    <filter-name>CharacterEncodingFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
-
-  <!-- 配置springmvc的前端控制器 指向spring-mvc.xml 程序在启动的时候就加载springmvc 可以接受所有请求 load-on-startup：表示启动容器时初始化该Servlet； -->
-  <servlet>
-    <servlet-name>springServlet</servlet-name>
-    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-    <!-- 可以自定义servlet.xml配置文件的位置和名称， 默认为WEB-INF目录下，名称为[<servlet-name>]-servlet.xml，如spring-servlet.xml -->
-    <init-param>
-      <param-name>contextConfigLocation</param-name>
-      <param-value> classpath:spring/applicationContext.xml</param-value>
-    </init-param>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-  <!-- 将前端URL请求和后台处理方法controller建立对应关系-->
-  <servlet-mapping>
-    <servlet-name>springServlet</servlet-name>
-    <url-pattern>/</url-pattern>
-  </servlet-mapping>
-
-  <!-- Spring配置 -->
-  <listener>
-    <listener-class>
-      org.springframework.web.context.ContextLoaderListener
-    </listener-class>
-  </listener>
-  <!-- 取消对某一类文件的拦截-->
-  <servlet-mapping>
-    <servlet-name>default</servlet-name>
-    <url-pattern>*.md</url-pattern>
-  </servlet-mapping>
-
-  <context-param>
-    <param-name>contextConfigLocation</param-name>
-    <param-value> classpath:spring/applicationContext.xml</param-value>
-  </context-param>
-  <!-- 欢迎页面-->
-  <welcome-file-list>
-    <welcome-file>/index.html</welcome-file>
-  </welcome-file-list>
-  <!--404错误展示页面，可自行配置-->
-  <!--<error-page>-->
-  <!--<error-code>404</error-code>-->
-  <!--<location>/WEB-INF/views/404.jsp</location>-->
-  <!--</error-page>-->
-  <!--设置session失效时间为30分钟 -->
-  <session-config>
-    <session-timeout>600</session-timeout>
-  </session-config>
 </web-app>

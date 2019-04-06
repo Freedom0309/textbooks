@@ -6,7 +6,7 @@ import com.textbooks.service.IUnitService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-@Service("UnitService")
+@Service("unitService")
 public class UnitService implements IUnitService {
 
     @Resource

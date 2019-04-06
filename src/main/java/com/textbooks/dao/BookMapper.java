@@ -1,9 +1,11 @@
 package com.textbooks.dao;
 
 import com.textbooks.entity.Book;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface BookMapper {
     int deleteByPrimaryKey(String id);
 

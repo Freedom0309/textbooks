@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 
-@Service("BookService")
+@Service("bookService")
 public class BookService implements IBookService {
 
     @Resource

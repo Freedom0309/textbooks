@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--开启组件包扫描-->
+    <context:component-scan base-package="com.textbooks.controller">
+        <!--配置只扫描  @Controller注解   include包含的意思 (也可以配置全局扫描,但是最好用什么就扫描什么)-->
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!--注册视图解析器-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!--前缀-->
+        <property name="prefix" value="/WEB-INF/views/"></property>
+        <!--后缀-->
+        <property name="suffix" value=".html"></property>
+    </bean>
+
+    <!--配置注解驱动支持-->
+    <mvc:annotation-driven></mvc:annotation-driven>
+    <!-- 设置静态资源不过滤 -->
+    <!--<mvc:resources location="/css/" mapping="/css/**"/>  &lt;!&ndash; 样式 &ndash;&gt;
+    <mvc:resources location="/images/" mapping="/images/**"/>  &lt;!&ndash; 图片 &ndash;&gt;
+    <mvc:resources location="/js/" mapping="/js/**"/>  &lt;!&ndash; javascript &ndash;&gt;-->
+    <mvc:resources  location="/static/" mapping="/static/**"/>
+
+</beans>

@@ -1,30 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:beans="http://www.springframework.org/schema/beans"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-         http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
-         http://www.springframework.org/schema/context
-         http://www.springframework.org/schema/context/spring-context-4.3.xsd
-         http://www.springframework.org/schema/mvc
-         http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd"  >
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
 
     <!-- ①：对com.textbooks包中的所有类进行扫描，以完成Bean创建和自动依赖注入的功能 -->
-    <context:component-scan base-package="com.textbooks"/>
+    <context:component-scan base-package="com.textbooks.controller, com.textbooks.dao, com.textbooks.service"/>
     <!--静态页面交由默认web servlet处理-->
     <mvc:annotation-driven />
     <mvc:default-servlet-handler/>
     <!-- 静态资源访问 -->
     <!--如果webapp下你新建了文件夹，想访问里面的静态资源，那么就要在这配置一下-->
-    <!--<mvc:resources location="/images/" mapping="/images/**"/>
-    <mvc:resources location="/css/" mapping="/css/**"/>
-    &lt;!&ndash;<mvc:resources location="/styles/" mapping="/styles/**"/>&ndash;&gt;
-    <mvc:resources location="/js/" mapping="/js/**"/>-->
+
     <mvc:resources  location="/static/" mapping="/static/**"/>
-    <!-- Configures the @Controller programming model
-    <mvc:annotation-driven />-->
+
     <!-- ②：启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="true">
@@ -75,14 +70,17 @@
     <!--===============================自动生成sqlSessionFactory========================-->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"></property>
-        <property name="configLocation" value="classpath:mybatis-config.xml"></property>
-        <property name="mapperLocations" value="classpath:sqlmap/*.xml"></property>
+        <!--<property name="configLocation" value="classpath:mybatis-config.xml"></property>-->
+        <property name="mapperLocations" value="classpath:sqlmap/BookMapper.xml"></property>
         <property name="typeAliasesPackage" value="com.textbooks.entity"></property>
     </bean>
     <!--===============================映射dao接口======================================-->
+    <!-- 在spring容器中配置mapper的扫描器产生的动态代理对象在spring的容器中自动注册，bean的id就是mapper类名（首字母小写）-->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+        <!-- 指定扫描包的路径，就是mapper接口的路径，多个包中间以 半角逗号隔开   -->
         <property name="basePackage" value="com.textbooks.dao"></property>
+        <!-- 配置sqlSessionFactoryBeanName -->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
     </bean>
 
     <!-- 配置dbcp数据库连接池 -->
@@ -94,7 +92,6 @@
                 <value>classpath:jdbc.properties</value>
             </list>
         </property>
-
     </bean>
 
     <!-- 数据库连接池 -->

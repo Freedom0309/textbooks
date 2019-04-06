@@ -20,7 +20,7 @@
     <result column="syscreatetime" property="syscreatetime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, parentid, path, name, aliasname, unitcode, note, address, telephone, email, website, 
+    id, parentid, path, name, aliasname, unitcode, note, address, telephone, email, website,
     location, haschildren, delflag, sysopby, syscreatetime
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >

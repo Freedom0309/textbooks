@@ -99,10 +99,10 @@ public class AdminController {
 
 
     @ResponseBody
-    @RequestMapping("/homepage")
+    @RequestMapping("/unitPage")
     public ModelAndView homepage(){
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("admin/hompage1");
+        modelAndView.setViewName("admin/unitPage");
         return modelAndView;
     }
 
