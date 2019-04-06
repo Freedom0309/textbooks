@@ -80,24 +80,25 @@ public class AdminController {
         return modelAndView;
 
     }
+
     @RequestMapping("/findbookAll")
     @ResponseBody
-    public HashMap<String, Object> booklst(HttpServletRequest request){
+    public HashMap<String, Object> findbookAll(HttpServletRequest request){
        String page = request.getParameter("page");
         String limit = request.getParameter("limit");
         int index=1;
         if( page!=null) {
             index=Integer.parseInt(page);
         }
-        int size = Integer.parseInt(limit);
+        //int size = Integer.parseInt(limit);
         /*PageUtil<Book> pageUtil=bookService.find(index,size);*/
      /*   //modelAndView.addObject(pageUtil);
         System.out.println(pageUtil);*/
         HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("code",0);
-        map.put("msg","");
-        map.put("count",bookService.getcount());
         map.put("data",bookService.getAll());
+        map.put("count",bookService.getcount());
+        map.put("msg","success");
+        map.put("code",0);
         System.out.println(bookService.getAll());
         return map;
     }

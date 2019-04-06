@@ -88,7 +88,7 @@
                     <li class="layui-this"><i class="layui-icon layui-icon-home" ></i> </li>
 
                 </ul>
-               <div  id="divc" class="layui-tab-content" onload="settabheight()"  style="padding:0 0px 0 0px;">
+               <div  id="divc" class="layui-tab-content"   style="padding:0 0px 0 0px;">
                     <div class="layui-tab-item layui-show" lay-id="http://www.baidu.com" lay-attr="console.html">
                         <iframe src='http://www.baidu.com' frameborder="0" height="100%" width="100%" scrolling="yes" style="position: absolute"></iframe>
                     </div>
@@ -124,22 +124,21 @@
      element.on('nav(system-side-menu)', function(data){
        console.log(this.id);
         if(this.id) {
-           // layer.alert($('#' + this.id).attr('lay-href'));
             var href = $('#' + this.id).attr('lay-href');
             var text = data.text();
-          //  console.log(data.text());
-           // console.log(href);
             element.tabDelete('filter', href);
             element.tabAdd('filter', {
                 title: text
-                ,content: '<iframe src='+href+' frameborder="0" height="100%" width="100%" scrolling="yes" style="position: absolute" ></iframe>' //支持传入html
+                ,content: '<iframe id='+href+' src='+href+' frameborder="0" height="100%" width="100%" scrolling="yes" style="position: absolute" ></iframe>' //支持传入html
                 ,id: href
             });
             element.tabChange('filter',href);
             element.render('nav');
         }
+
          element.init();
      });
+
 
      var items = ["位运算"];
      FrameWH();
@@ -148,8 +147,8 @@
      }
 
      function FrameWH() {
-         var h = $(window).height()-90;
-         var w = $(window).height()-250;
+         var h = $(window).height();
+         var w = $(window).height();
          $("iframe").css("height",h+"px");
          $("iframe").css("weight",w+"px");
      }
