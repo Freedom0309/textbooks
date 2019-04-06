@@ -6,10 +6,9 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link rel="stylesheet" href="../static/layui/css/admincss.css" media="all">
-    <link rel="stylesheet" href="../static/layui/css/admin.css" media="all">
+    <link rel="stylesheet" href="../static/layui/css/layui.css" media="all">
 </head>
-<body class="layui-layout-body" layadmin-themealias="default">
+<body class="layui-layout-body" lay-themealias="default">
 <div >
     <div class="layui-layout layui-layout-admin">
     <!--头部 -->
@@ -89,7 +88,7 @@
 
                 </ul>
                <div  id="divc" class="layui-tab-content"   style="padding:0 0px 0 0px;">
-                    <div class="layui-tab-item layui-show" lay-id="http://www.baidu.com" lay-attr="console.html">
+                    <div class="layui-tab-item layui-show" lay-id="" lay-attr="console.html">
                         <iframe src='http://www.baidu.com' frameborder="0" height="100%" width="100%" scrolling="yes" style="position: absolute"></iframe>
                     </div>
                </div>
@@ -129,13 +128,17 @@
             element.tabDelete('filter', href);
             element.tabAdd('filter', {
                 title: text
-                ,content: '<iframe id='+href+' src='+href+' frameborder="0" height="100%" width="100%" scrolling="yes" style="position: absolute" ></iframe>' //支持传入html
+                ,content: '<iframe id='+href+' src='+href+' frameborder="0" height="100%" width="100%" scrolling="yes" style="position: absolute;" box-sizing = border-box ></iframe>' //支持传入html
                 ,id: href
             });
+
             element.tabChange('filter',href);
             element.render('nav');
         }
-
+       /*  element.on('tab(filter)', function(data){
+             var src=$(".layui-tab-item layui-show").find("iframe").attr("src");
+             $(".layui-tab-item.layui-show").find("iframe").attr("src",src);
+         });*/
          element.init();
      });
 
@@ -148,9 +151,9 @@
 
      function FrameWH() {
          var h = $(window).height();
-         var w = $(window).height();
+        // var w = $(window).height()-250;
          $("iframe").css("height",h+"px");
-         $("iframe").css("weight",w+"px");
+        // $("iframe").css("weight",w+"px");
      }
 
      $(window).resize(function () {
