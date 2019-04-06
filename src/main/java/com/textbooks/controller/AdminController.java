@@ -53,14 +53,14 @@ public class AdminController {
 
     }
 
-    @RequestMapping("/console")
+    @RequestMapping("/booklst")
     @ResponseBody
     public ModelAndView consoleIndex(){
         ModelAndView modelAndView = new ModelAndView();
         System.out.println("console1111");
 
         /*     modelAndView.addAttribute("user", user);*/
-        modelAndView.setViewName("admin/console");
+        modelAndView.setViewName("admin/booklst");
 
         return modelAndView;
 
@@ -80,9 +80,9 @@ public class AdminController {
         return modelAndView;
 
     }
-    @RequestMapping("/booklst")
+    @RequestMapping("/findbookAll")
     @ResponseBody
-    public List<HashMap<String, Object>> booklst(HttpServletRequest request){
+    public HashMap<String, Object> booklst(HttpServletRequest request){
        String page = request.getParameter("page");
         String limit = request.getParameter("limit");
         int index=1;
@@ -90,18 +90,16 @@ public class AdminController {
             index=Integer.parseInt(page);
         }
         int size = Integer.parseInt(limit);
-        IBookService bookService=new BookService();
-        PageUtil<Book> pageUtil=bookService.find(index,size);
-        List<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();
-        //modelAndView.addObject(pageUtil);
-        System.out.println(pageUtil);
+        /*PageUtil<Book> pageUtil=bookService.find(index,size);*/
+     /*   //modelAndView.addObject(pageUtil);
+        System.out.println(pageUtil);*/
         HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("code","0");
-        map.put("msg","success");
-        map.put("count",pageUtil.getCount());
-        map.put("data",pageUtil.getList());
-        data.add(map);
-        return data;
+        map.put("code",0);
+        map.put("msg","");
+        map.put("count",bookService.getcount());
+        map.put("data",bookService.getAll());
+        System.out.println(bookService.getAll());
+        return map;
     }
 
 

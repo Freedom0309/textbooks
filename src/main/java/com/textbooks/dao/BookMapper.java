@@ -1,8 +1,10 @@
 package com.textbooks.dao;
 
 import com.textbooks.entity.Book;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -19,11 +21,9 @@ public interface BookMapper {
 
     int updateByPrimaryKey(Book record);
 
-    List<Book> selectAll(int page,int limit);
+    @Select("select * from t_app_books")
+    Collection<Book> getAll();
 
-    public List<Book> find(int num,int size);
-    public Book findById(int id);
-    public int update(Book book);
-    public int findCount();
-
+    @Select("select count(*) from t_app_books")
+    int getcount();
 }

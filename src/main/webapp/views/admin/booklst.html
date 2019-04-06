@@ -27,7 +27,7 @@
 </script>
 
 
-<script src="../static/layui/layui.js" charset="utf-8"></script>
+<script src="../../static/layui/layui.js" charset="utf-8"></script>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 
 <script>
@@ -36,24 +36,26 @@
 
         table.render({
             elem: '#test'
-            ,url:'booklst.html'
+            ,url:'/admin/findbookAll'
             ,toolbar: '#toolbarDemo'
-            ,title: '用户数据表'
+            ,title: '教材表'
             ,cols: [[
                 {type: 'checkbox', fixed: 'left'}
                 ,{field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true}
                 ,{field:'name', title:'教材名称', width:120, edit: 'text'}
-               /* ,{field:'email', title:'邮箱', width:150, edit: 'text', templet: function(res){
-                        return '<em>'+ res.email +'</em>'
-                    }}*/
+                /* ,{field:'email', title:'邮箱', width:150, edit: 'text', templet: function(res){
+                         return '<em>'+ res.email +'</em>'
+                     }}*/
                 ,{field:'ghs', title:'供货商', width:80, edit: 'text', sort: true}
                 ,{field:'price', title:'价格', width:100}
                 ,{field:'discount', title:'折扣'}
                 ,{field:'num', title:'数量', width:80, sort: true}
                 ,{field:'status', title:'状态', width:120}
-              /*  ,{field:'logins', title:'登入次数', width:100, sort: true}
-                ,{field:'joinTime', title:'加入时间', width:120}
-                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}*/
+                ,{field:'exd1', title:'扩展1', width:120}
+                ,{field:'exd2', title:'扩展2', width:120}
+                /*  ,{field:'logins', title:'登入次数', width:100, sort: true}
+                  ,{field:'joinTime', title:'加入时间', width:120}
+                  ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}*/
             ]]
             ,page: true
         });
