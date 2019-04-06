@@ -109,7 +109,7 @@ public class AdminController {
     @RequestMapping("/unitPage")
     public ModelAndView homepage(){
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("admin/unitPage");
+        modelAndView.setViewName("unit/unitList");
         return modelAndView;
     }
 

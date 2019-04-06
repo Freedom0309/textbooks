@@ -20,6 +20,6 @@ public interface UnitMapper {
 
     int updateByPrimaryKey(Unit record);
 
-    @Select("select * from t_sys_unit")
+    @Select("select id, name, address from t_sys_unit")
     Collection<Unit> getAll();
 }
