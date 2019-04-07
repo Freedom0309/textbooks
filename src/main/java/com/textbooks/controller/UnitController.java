@@ -38,4 +38,8 @@ public class UnitController {
         return map;
     }
 
+    @RequestMapping("delete")
+    public void deleteUnit(String id){
+        unitService.deleteByPrimaryKey(id);
+    }
 }

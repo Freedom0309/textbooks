@@ -10,7 +10,9 @@
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
 </head>
 <body>
+<div style="border: solid 1px; width: 50px; height: 100%;">
 
+</div>
 <table class="layui-hide" lay-even lay-skin="line" id="test" lay-filter="test"></table>
 
 <script type="text/html" id="toolbarDemo">
@@ -32,8 +34,8 @@
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 
 <script>
-    layui.use('table', function(){
-        var table = layui.table;
+    layui.use(['table', 'jquery'], function(){
+        var table = layui.table, $=layui.jquery;;
 
         table.render({
             elem: '#test'
@@ -48,7 +50,7 @@
             ,cols: [[
                 {type: 'checkbox', fixed: 'left'}
                 ,{field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true}
-                ,{field:'name', title:'教材名称', width:120, edit: 'text'}
+                ,{field:'name', title:'部门名称', width:120, edit: 'text'}
                /* ,{field:'email', title:'邮箱', width:150, edit: 'text', templet: function(res){
                         return '<em>'+ res.email +'</em>'
                     }}*/
@@ -62,6 +64,7 @@
                 ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
             ]]
             ,page: true
+            //,height: 'full-20'
         });
 
         //头工具栏事件
@@ -90,14 +93,23 @@
                 layer.confirm('真的删除行么', function(index){
                     obj.del();
                     layer.close(index);
+                    $.ajax({
+                        url: '/unit/delete',
+                        data:{
+                            id: obj.data.id
+                        },
+                        success: function(d){
+                            $('#test').trigger("reload");
+                        }
+                    });
                 });
             } else if(obj.event === 'edit'){
                 layer.prompt({
                     formType: 2
-                    ,value: data.email
+                    ,value: data.address
                 }, function(value, index){
                     obj.update({
-                        email: value
+                        address: value
                     });
                     layer.close(index);
                 });
