@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+
+    <style type="text/css">
+        .layui-table-cell{
+            height:100px;
+            line-height: 100px;
+        }
+    </style>
+</head>
+<body>
+
+<hr>
+<!--工具栏 -->
+<div class="demoTable">
+    <label class="layui-form-label">搜索</label>
+    <div class="layui-inline">
+        <input class="layui-input" name="keyword" id="demoReload" autocomplete="off">
+    </div>
+    <button class="layui-btn" data-type="reload">搜索</button>
+    <button class="layui-btn layui-btn-danger" data-type="delSelect">删除</button>
+    <button class="layui-btn layui-btn-warm" data-type="download" >导出</button>
+    <button class="layui-btn layui-btn-normal" data-type="upload">导入</button>
+    <input type="file" name="file" id="file">
+</div>
+<hr>
+
+<table id="demo"  lay-filter="test"></table>
+<!--新增 -->
+<div class="layui-row" id="popSearchRoleTest" style="display:none;">
+    <div class="layui-col-md11">
+        <form class="layui-form" action=""  style="margin: 10px">
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">教材名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">供货商</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="ghs" required lay-verify="required" placeholder="请输入供货商" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">根据数据字典配置</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">价格</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="price" required lay-verify="required" placeholder="请输入价格" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">折扣</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="discount" required lay-verify="required" placeholder="请输入折扣" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">数量</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="num" required lay-verify="required" placeholder="请输入数量" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+           <!-- <div class="layui-form-item">
+                <label class="layui-form-label">剩余数量</label>
+                <div class="layui-input-inline">
+                    <input type="text" hidden="hidden" name="count" required lay-verify="required" placeholder="请输入价格" autocomplete="off" class="layui-input">
+                </div>
+            </div>-->
+            <div class="layui-form-item">
+                <label class="layui-form-label">图片1</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="image1" required lay-verify="required" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">图片1</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">图片2</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="image2" required lay-verify="required"  autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">图片2</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">图片3</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="image3" required lay-verify="required"  autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">图片3</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">适用专业</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="major" required lay-verify="required"  autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">专业</div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+<!--<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+        <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+        <button class="layui-btn layui-btn-sm" lay-event="add">增加</button>
+    </div>
+</script>-->
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-mini" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-primary layui-btn-mini" lay-event="borrowBook">借书</a>
+    <a class="layui-btn layui-btn-primary layui-btn-mini" lay-event="returnBook">还书</a>
+</script>
+
+
+
+<script src="../static/layui/layui.js" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+
+<script>
+    layui.use(['table','element','jquery','layer','form'], function(){
+        var table = layui.table;
+        var layer = layui.layer;
+        var $ = layui.jquery;
+        var form = layui.form;
+        table.render({
+            elem: '#demo'
+            ,url:'/book/findbookAll'
+           ,parseData:function(res){
+                console.log(res);
+                return{
+                    "code": res.code, //解析接口状态
+                    "msg": res.msg, //解析提示文本
+                    "count": res.count, //解析数据长度
+                    "data": res.data //解析数据列表
+                }
+            }
+           ,toolbar: '#toolbarDemo'
+            ,title: '教材表'
+            ,cols: [[
+                {type: 'checkbox', fixed: 'left'}
+                ,{field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true}
+                ,{field:'name', title:'教材名称', width:120, edit: 'text'}
+                /* ,{field:'email', title:'邮箱', width:150, edit: 'text', templet: function(res){
+                         return '<em>'+ res.email +'</em>'
+                     }}*/
+                ,{field:'ghs', title:'供货商', width:80, edit: 'text', sort: true}
+                ,{field:'price', title:'价格', width:100}
+                ,{field:'discount', title:'折扣',width:80}
+                ,{field:'num', title:'数量', width:80, sort: true}
+                ,{field:'count', title:'剩余数量', width:80, sort: true}
+                ,{field:'status', title:'状态', width:120}
+                ,{field:'image', title:'图片1', width:120}
+                ,{field:'image2', title:'图片2', width:120}
+                ,{field:'image3', title:'图片3', width:120}
+                ,{field:'major', title:'专业', width:120}
+                /*  ,{field:'logins', title:'登入次数', width:100, sort: true}
+                  ,{field:'joinTime', title:'加入时间', width:120}*/
+                  ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+            ]]
+            ,page: true
+        });
+
+        //头工具栏事件
+        table.on('toolbar(test)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+
+            switch(obj.event){
+                case 'getCheckData':
+                    var data = checkStatus.data;
+                    layer.alert(JSON.stringify(data));
+                    break;
+                case 'getCheckLength':
+                    var data = checkStatus.data;
+                    layer.msg('选中了：'+ data.length + ' 个');
+                    break;
+                case 'isAll':
+                    layer.msg(checkStatus.isAll ? '全选': '未全选');
+                    break;
+                case 'add':
+                    layer.open({
+                        type:1,
+                        skin:'layui-layer-molv',
+                        title:'新建教材信息',
+                        area: ['80%','80%'],
+                        content:$("#popSearchRoleTest").html()
+                    });
+                    layui.form.render();
+                    break;
+            };
+        });
+
+        //监听行工具事件
+        table.on('tool(test)', function(obj){
+            var data = obj.data;
+            //console.log(obj)
+            if(obj.event === 'del'){
+                layer.confirm('真的删除行么', function(index){
+                    obj.del();
+                    layer.close(index);
+                });
+            } else if(obj.event === 'edit'){
+                layer.prompt({
+                    formType: 2
+                    ,value: data.email
+                }, function(value, index){
+                    obj.update({
+                        email: value
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+    });
+
+
+    layui.use('form', function(){
+        var form = layui.form;
+        form.render(); //更新全部
+        form.render('select'); //刷新select选择框渲染
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+
+    });
+
+
+   layui.use(['laytpl','jquery'],function () {
+        var laytpl = layui.laytpl;
+        var $ = layui.$;
+
+   })
+</script>
+
+</body>
+</html>

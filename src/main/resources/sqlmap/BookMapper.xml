@@ -8,31 +8,21 @@
     <result column="price" property="price" jdbcType="VARCHAR" />
     <result column="discount" property="discount" jdbcType="VARCHAR" />
     <result column="num" property="num" jdbcType="VARCHAR" />
+    <result column="count" property="count" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
-    <result column="exd1" property="exd1" jdbcType="VARCHAR" />
-    <result column="exd2" property="exd2" jdbcType="VARCHAR" />
+    <result column="image1" property="image1" jdbcType="VARCHAR" />
+    <result column="major" property="major" jdbcType="VARCHAR" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    Id, name, ghs, price, discount, num, status, exd1, exd2
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from t_app_books
-    where Id = #{id,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from t_app_books
-    where Id = #{id,jdbcType=VARCHAR}
+  <delete id="deleteByids" parameterType="List">
+    <!-- delete from emp where empno in(7789,7790) -->
+    <!-- forEach : 用来循环 collection : 用来指定循环的数据的类型 可以填的值有：array,list,map item
+        : 循环中为每个循环的数据指定一个别名 index : 循环中循环的下标 open : 开始 close : 结束 separator : 数组中元素之间的分隔符 -->
+    delete from t_app_books where id in
+    <foreach collection="array" item="arr" index="no" open="("
+             separator="," close=")">
+      #{arr}
+    </foreach>
   </delete>
-  <insert id="insert" parameterType="com.textbooks.entity.Book" >
-    insert into t_app_books (Id, name, ghs, 
-      price, discount, num, 
-      status, exd1, exd2)
-    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{ghs,jdbcType=VARCHAR}, 
-      #{price,jdbcType=VARCHAR}, #{discount,jdbcType=VARCHAR}, #{num,jdbcType=VARCHAR}, 
-      #{status,jdbcType=VARCHAR}, #{exd1,jdbcType=VARCHAR}, #{exd2,jdbcType=VARCHAR})
-  </insert>
   <insert id="insertSelective" parameterType="com.textbooks.entity.Book" >
     insert into t_app_books
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -57,11 +47,14 @@
       <if test="status != null" >
         status,
       </if>
-      <if test="exd1 != null" >
-        exd1,
+      <if test="image1 != null" >
+        image1,
       </if>
-      <if test="exd2 != null" >
-        exd2,
+      <if test="major != null" >
+        major,
+      </if>
+      <if test="count != null" >
+        count,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -86,68 +79,18 @@
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
       </if>
-      <if test="exd1 != null" >
-        #{exd1,jdbcType=VARCHAR},
+      <if test="image1 != null" >
+        #{image1,jdbcType=VARCHAR},
       </if>
-      <if test="exd2 != null" >
-        #{exd2,jdbcType=VARCHAR},
+      <if test="major != null" >
+      #{major,jdbcType=VARCHAR},
+        </if>
+      <if test="count != null" >
+        #{count,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.textbooks.entity.Book" >
-    update t_app_books
-    <set >
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="ghs != null" >
-        ghs = #{ghs,jdbcType=VARCHAR},
-      </if>
-      <if test="price != null" >
-        price = #{price,jdbcType=VARCHAR},
-      </if>
-      <if test="discount != null" >
-        discount = #{discount,jdbcType=VARCHAR},
-      </if>
-      <if test="num != null" >
-        num = #{num,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null" >
-        status = #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="exd1 != null" >
-        exd1 = #{exd1,jdbcType=VARCHAR},
-      </if>
-      <if test="exd2 != null" >
-        exd2 = #{exd2,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where Id = #{id,jdbcType=VARCHAR}
+  <update id="updateByfieds" parameterType="map" statementType="STATEMENT">
+        <![CDATA[update t_app_books set ${field} = ${value} where id=${id}]]>
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.textbooks.entity.Book" >
-    update t_app_books
-    set name = #{name,jdbcType=VARCHAR},
-      ghs = #{ghs,jdbcType=VARCHAR},
-      price = #{price,jdbcType=VARCHAR},
-      discount = #{discount,jdbcType=VARCHAR},
-      num = #{num,jdbcType=VARCHAR},
-      status = #{status,jdbcType=VARCHAR},
-      exd1 = #{exd1,jdbcType=VARCHAR},
-      exd2 = #{exd2,jdbcType=VARCHAR}
-    where Id = #{id,jdbcType=VARCHAR}
-  </update>
-
-  <select id="find"  resultType="Book" parameterType="java.lang.String">
-		select * from t_app_books limit #{0},#{1}
-	</select>
-  <select id="findById" resultType="Book" parameterType="java.lang.String">
-		select * from t_app_books where  id=#{Id}
-	</select>
-  <update id="update" parameterType="Book">
-		update t_app_books set name=#{name},ghs=#{ghs},price=#{price},discount=#{discount},num=#{num},status=#{status},exd1=#{exd1},exd2=#{exd2}  where id=#{id}
-	</update>
-  <select id="findCount" parameterType="int" resultType="int">
-		select count(*) from t_app_books
-	</select>
-
 </mapper>

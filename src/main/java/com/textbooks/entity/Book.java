@@ -1,7 +1,10 @@
 package com.textbooks.entity;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
+@Data
 public class Book implements Serializable {
     private String id;
 
@@ -15,11 +18,13 @@ public class Book implements Serializable {
 
     private String num;
 
+    private String count;
+
     private String status;
 
-    private String exd1;
+    private String image1;
 
-    private String exd2;
+    private String major;
 
     private static final long serialVersionUID = 1L;
 
@@ -79,19 +84,27 @@ public class Book implements Serializable {
         this.status = status == null ? null : status.trim();
     }
 
-    public String getExd1() {
-        return exd1;
+    public String getCount() {
+        return count;
     }
 
-    public void setExd1(String exd1) {
-        this.exd1 = exd1 == null ? null : exd1.trim();
+    public void setCount(String count) {
+        this.count = count;
     }
 
-    public String getExd2() {
-        return exd2;
+    public String getImage1() {
+        return image1;
     }
 
-    public void setExd2(String exd2) {
-        this.exd2 = exd2 == null ? null : exd2.trim();
+    public void setImage1(String image1) {
+        this.image1 = image1;
+    }
+
+    public String getMajor() {
+        return major;
+    }
+
+    public void setMajor(String major) {
+        this.major = major;
     }
 }

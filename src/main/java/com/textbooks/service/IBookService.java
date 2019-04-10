@@ -1,23 +1,24 @@
 package com.textbooks.service;
 
 import com.textbooks.entity.Book;
+import com.textbooks.entity.Unit;
+
 import java.util.Collection;
+import java.util.HashMap;
 
 
 public interface IBookService {
-    int deleteByPrimaryKey(String id);
-
-    int insert(Book record);
-
-    int insertSelective(Book record);
 
     Book selectByPrimaryKey(String id);
 
-    int updateByPrimaryKeySelective(Book record);
-
-    int updateByPrimaryKey(Book record);
+    int deleteByids(String[] arr);
 
     Collection<Book> getAll();
 
     int getcount();
+
+    int insertSelective(Book record);
+
+    int updateByfieds(HashMap<String, Object> map);
+
 }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Collection;
-
+import java.util.HashMap;
 
 
 @Service("bookService")
@@ -17,33 +17,13 @@ public class BookService implements IBookService {
     public BookMapper bookMapper;
 
     @Override
-    public int deleteByPrimaryKey(String id) {
-        return bookMapper.deleteByPrimaryKey(id);
-    }
-
-    @Override
-    public int insert(Book record) {
-        return bookMapper.insert(record);
-    }
-
-    @Override
-    public int insertSelective(Book record) {
-        return bookMapper.insertSelective(record);
-    }
-
-    @Override
     public Book selectByPrimaryKey(String id) {
         return bookMapper.selectByPrimaryKey(id);
     }
 
     @Override
-    public int updateByPrimaryKeySelective(Book record) {
-        return bookMapper.updateByPrimaryKeySelective(record);
-    }
-
-    @Override
-    public int updateByPrimaryKey(Book record) {
-        return bookMapper.updateByPrimaryKeySelective(record);
+    public int deleteByids(String[] arr) {
+        return bookMapper.deleteByids(arr);
     }
 
     @Override
@@ -52,6 +32,16 @@ public class BookService implements IBookService {
     @Override
     public int getcount() {
         return bookMapper.getcount();
+    }
+
+    @Override
+    public int insertSelective(Book book) {
+        return bookMapper.insertSelective(book);
+    }
+
+    @Override
+    public int updateByfieds(HashMap<String, Object> map) {
+        return bookMapper.updateByfieds(map);
     }
 
 }

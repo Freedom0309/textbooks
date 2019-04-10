@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.textbooks.dao.DictionaryMapper" >
+  <resultMap id="BaseResultMap" type="com.textbooks.entity.Dictionary" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="dkey" property="dkey" jdbcType="VARCHAR" />
+    <result column="dvalue" property="dvalue" jdbcType="VARCHAR" />
+    <result column="dtext" property="dtext" jdbcType="VARCHAR" />
+    <result column="ordernum" property="ordernum" jdbcType="INTEGER" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="pvalue" property="pvalue" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, dkey, dvalue, dtext, ordernum, memo, pvalue
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_dictionary
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_sys_dictionary
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.textbooks.entity.Dictionary" >
+    insert into t_sys_dictionary (id, dkey, dvalue, 
+      dtext, ordernum, memo, 
+      pvalue)
+    values (#{id,jdbcType=VARCHAR}, #{dkey,jdbcType=VARCHAR}, #{dvalue,jdbcType=VARCHAR}, 
+      #{dtext,jdbcType=VARCHAR}, #{ordernum,jdbcType=INTEGER}, #{memo,jdbcType=VARCHAR}, 
+      #{pvalue,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.textbooks.entity.Dictionary" >
+    insert into t_sys_dictionary
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="dkey != null" >
+        dkey,
+      </if>
+      <if test="dvalue != null" >
+        dvalue,
+      </if>
+      <if test="dtext != null" >
+        dtext,
+      </if>
+      <if test="ordernum != null" >
+        ordernum,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="pvalue != null" >
+        pvalue,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="dkey != null" >
+        #{dkey,jdbcType=VARCHAR},
+      </if>
+      <if test="dvalue != null" >
+        #{dvalue,jdbcType=VARCHAR},
+      </if>
+      <if test="dtext != null" >
+        #{dtext,jdbcType=VARCHAR},
+      </if>
+      <if test="ordernum != null" >
+        #{ordernum,jdbcType=INTEGER},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="pvalue != null" >
+        #{pvalue,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.textbooks.entity.Dictionary" >
+    update t_sys_dictionary
+    <set >
+      <if test="dkey != null" >
+        dkey = #{dkey,jdbcType=VARCHAR},
+      </if>
+      <if test="dvalue != null" >
+        dvalue = #{dvalue,jdbcType=VARCHAR},
+      </if>
+      <if test="dtext != null" >
+        dtext = #{dtext,jdbcType=VARCHAR},
+      </if>
+      <if test="ordernum != null" >
+        ordernum = #{ordernum,jdbcType=INTEGER},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="pvalue != null" >
+        pvalue = #{pvalue,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.textbooks.entity.Dictionary" >
+    update t_sys_dictionary
+    set dkey = #{dkey,jdbcType=VARCHAR},
+      dvalue = #{dvalue,jdbcType=VARCHAR},
+      dtext = #{dtext,jdbcType=VARCHAR},
+      ordernum = #{ordernum,jdbcType=INTEGER},
+      memo = #{memo,jdbcType=VARCHAR},
+      pvalue = #{pvalue,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

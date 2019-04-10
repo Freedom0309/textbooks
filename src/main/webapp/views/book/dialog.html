@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dialog.html</title>
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+</head>
+<body>
+<fieldset class="layui-elem-field layui-field-title ">
+    <legend>
+        <li id="icon"
+            class="layui-icon layui-icon-face-smile layui-anim layui-anim-rotate "
+            style="font-size: 30px; color: #1E9FFF;"
+            data-anim="layui-anim-rotate"></li> <span style="font-size: 8px">班级分配信息</span>
+    </legend>
+    <br>
+    <div class="layui-field-box" style="width: 97%">
+        <form class="layui-form" action="">
+            <div class="layui-form-item">
+                <label class="layui-form-label">id :</label>
+                <div class="layui-input-block">
+                    <input type="text" name="id" id="stuname" disabled="disabled"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">教材名 :</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" id="name" disabled="disabled"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户名/学号  :</label>
+                <div class="layui-input-block">
+                    <input type="text" name="username" id="username" lay-verify="title"
+                           autocomplete="off" placeholder="请输入学号或用户名" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux"></div>
+            </div>
+            <br>
+            <br>
+        </form>
+    </div>
+</fieldset>
+<script src="../static/js/jquery.js"></script>
+<script src="../static/layui/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['layer', 'table','element','form','laydate'], function(){
+
+        var form = layui.form,
+            layer = layui.layer,
+            layedit = layui.layedit,
+            laydate = layui.laydate;
+        //日期控件
+        var dag=window.parent;
+        laydate.render({
+            elem: '#issueDate'
+        });
+        form.render();
+    });
+    //监听身份证信息
+    $(function(){
+        $("#username").blur(function(){
+            var value=$(this).val();
+            $.ajax({
+                async:true,  //异步加载
+                data:{"userName":value,"memthodname":"findStuName"}, //参数
+                type:"get",
+                url:"servlet/BookController",
+                dataType:"text",
+                success:function(data){
+                    var toObj = JSON.parse(data);
+                    if(toObj.data.length <= 0){
+                        layer.msg("没有该学号的学生", {icon: 5});
+                    }
+                    //转化成JSON字符串
+                    $("#stuname").val(toObj.data);
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
