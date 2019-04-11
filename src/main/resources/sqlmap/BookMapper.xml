@@ -47,8 +47,8 @@
       <if test="status != null" >
         status,
       </if>
-      <if test="image1 != null" >
-        image1,
+      <if test="image != null" >
+        image,
       </if>
       <if test="major != null" >
         major,
@@ -79,8 +79,8 @@
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
       </if>
-      <if test="image1 != null" >
-        #{image1,jdbcType=VARCHAR},
+      <if test="image != null" >
+        #{image,jdbcType=VARCHAR},
       </if>
       <if test="major != null" >
       #{major,jdbcType=VARCHAR},

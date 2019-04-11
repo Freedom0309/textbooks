@@ -22,7 +22,7 @@ public class Book implements Serializable {
 
     private String status;
 
-    private String image1;
+    private String image;
 
     private String major;
 
@@ -92,12 +92,12 @@ public class Book implements Serializable {
         this.count = count;
     }
 
-    public String getImage1() {
-        return image1;
+    public String getImage() {
+        return image;
     }
 
-    public void setImage1(String image1) {
-        this.image1 = image1;
+    public void setImage(String image1) {
+        this.image = image1;
     }
 
     public String getMajor() {

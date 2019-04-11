@@ -20,8 +20,8 @@
     <!--apache-->
     <apahe-poi.version>3.17</apahe-poi.version>
     <commons-dbcp2.version>2.2.0</commons-dbcp2.version>
-    <commons-fileupload.version>1.3.3</commons-fileupload.version>
-    <commons-io.version>2.6</commons-io.version>
+    <commons-fileupload.version>1.3.2</commons-fileupload.version>
+    <commons-io.version>1.2.1</commons-io.version>
     <commons-lang3.version>3.7</commons-lang3.version>
     <commons-pool2.version>2.5.0</commons-pool2.version>
     <!--json解析器-->
@@ -186,7 +186,7 @@
       <artifactId>commons-dbcp2</artifactId>
       <version>${commons-dbcp2.version}</version>
     </dependency>
-   <!-- <dependency>
+   <!--<dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-fileupload</artifactId>
       <version>${commons-fileupload.version}</version>
@@ -195,7 +195,20 @@
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-io</artifactId>
       <version>${commons-io.version}</version>
-    </dependency>-->
+    </dependency>
+-->
+    <dependency>
+      <groupId>commons-fileupload</groupId>
+      <artifactId>commons-fileupload</artifactId>
+      <version>1.3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.4</version>
+    </dependency>
+
+
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
@@ -211,6 +224,12 @@
       <artifactId>poi-ooxml</artifactId>
       <version>${apahe-poi.version}</version>
     </dependency>
+    <!-- ================================================= gson ================================================== -->
+ <!--   <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.3.1</version>
+    </dependency>-->
 
   </dependencies>
 

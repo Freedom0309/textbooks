@@ -54,10 +54,16 @@
         </div>
     </div>
     <div class="layui-form-item">
-        <button type="button" class="layui-btn" id="test1" >
-            <i class="layui-icon">&#xe67c;</i>上传图片
-        </button>
-        <input type="file" name="file" id="file">
+        <div class="layui-upload">
+            <button type="button" class="layui-btn" id="test1">上传图片</button>
+            <div class="layui-upload-list">
+                <img class="layui-upload-img" id="demo1">
+                <p id="demoText"></p>
+            </div>
+        </div>
+        <div class="layui-input-block">
+            <input type="hidden" id="img_url" name="image" value="" class="layui-input"/>
+        </div>
     </div>
     <!--<div class="layui-form-item">
         <label class="layui-form-label">复选框</label>
@@ -75,24 +81,24 @@
     </div>
 
 </form>
+
+</div>
 <script src="../static/js/jquery.js"></script>
 <script src="../static/layui/layui.js" charset="utf-8"></script>
 <script>
     //Demo
-    layui.use(['form','jquery','table'], function(){
+    layui.use(["form","jquery","table","upload","layer"], function(){
         var form = layui.form;
         var $ = layui.$;
         var table = layui.table;
+        var upload = layui.upload;
+        var layer = layui.layer;
        // laydate = layui.laydate;
         //执行一个laydate实例
       /*  laydate.render({
             elem: '#client_time' //指定元素
         });*/
       //初始化
-
-
-
-
 
         //下拉框
         form.on('select(filter)', function(data){
@@ -104,7 +110,7 @@
         //监听提交
        /* form.on('submit(formDemo)', function(data){*/
          $('#submit').click(function(){
-            layer.msg(JSON.stringify($('#form1').serialize()));
+          //  layer.msg(JSON.stringify($('#form1').serialize()));
             $.ajax({
                 url: "/book/insertBook",
                 type: "post",
@@ -123,6 +129,47 @@
             });
           //  return false;
         });
+        //文件上传
+    /*    var uploadInst = upload.render({
+            elem: '#test1' //绑定元素
+            ,url: '/book/uploadFile' //上传接口
+            ,done: function(res){
+                //上传完毕回调
+            }
+            ,error: function(){
+                //请求异常回调
+            }
+        });*/
+
+        var uploadInst = upload.render({
+            elem: '#test1'
+            ,url: '/upload/uploadImg'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#demo1').attr('src', result); //图片链接（base64）
+
+                });
+            }
+            ,done: function(res){
+                //如果上传失败
+                if(res.code > 0){
+                    return layer.msg('上传失败');
+                }
+                //上传成功
+                console.log(res)
+                $('#img_url').attr('value',res.data.src);
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
+        });
+
 
         form.render();
     });
