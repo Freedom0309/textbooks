@@ -54,7 +54,8 @@
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 
 <script>
-    layui.use(["form","laypage","layer","table","element","upload",'jquery'], function(){ var table = layui.table;
+    layui.use(["form","laypage","layer","table","element","upload",'jquery'], function(){
+        var table = layui.table;
         var form=layui.form;
         var laypage=layui.laypage;
         var layer=layui.layer;
@@ -66,6 +67,7 @@
             elem: '#LAY_table_user',
             url: '/book/findbookAll',
             done: function(res, curr, count) { //表格数据加载完后的事件
+                //$(".layui-table-box").find("[data-field='id']").css("display","none");
                 //调用示例
                 layer.photos({//点击图片弹出
                     photos: '.layer-photos-demo',
@@ -74,15 +76,15 @@
             },
             cols: [[
                 {type: 'checkbox', fixed: true}
-                ,{field:'id', title:'ID', width:100, sort: true, fixed: true }
+                ,{field:'id', title:'ID', width:100, sort: true, fixed: true,hide:true}
                 ,{field:'name', title:'教材名称', width:100, sort: true,edit:true}
                 /* ,{field:'email', title:'邮箱', width:150, edit: 'text', templet: function(res){
                          return '<em>'+ res.email +'</em>'
                      }}*/
-                ,{field:'ghs', title:'供货商', width:100, sort: true,edit:true }
-                ,{field:'price', title:'价格', width:100}
+                ,{field:'ghs', title:'出版社', width:100, sort: true,edit:true }
+                ,{field:'price', title:'价格', width:100,edit:true}
                 ,{field:'discount', title:'折扣',width:100}
-                ,{field:'num', title:'数量', width:100, sort: true}
+                ,{field:'num', title:'数量', width:100, sort: true,edit:true}
                 ,{field:'count', title:'剩余数量', width:100, sort: true}
                 ,{field:'status', title:'状态', width:100}
                 ,{field:'major', title:'专业', width:100}

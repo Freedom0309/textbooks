@@ -1,12 +1,14 @@
 package com.textbooks.dao;
 
 import com.textbooks.entity.Book;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 
 @Repository
@@ -26,4 +28,5 @@ public interface BookMapper {
 
     int updateByfieds(HashMap<String, Object> map);
 
+    List<Book> getBookByPage(@Param("start") Integer start, @Param("size") Integer size);
 }

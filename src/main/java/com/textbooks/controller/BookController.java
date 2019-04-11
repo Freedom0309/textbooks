@@ -24,11 +24,6 @@ public class BookController {
     @Autowired
     private IBookService bookService;
 
-    @Autowired
-    private IDictionaryServie dictionaryServie;
-
-    @Autowired
-    private TextbooksService textbooksService;
 
     /*  public String getBooksInfo(@PathVariable String id, HttpServletRequest request){
   //        Book book = iBookService.get
@@ -49,18 +44,16 @@ public class BookController {
     @RequestMapping("/findbookAll")
     @ResponseBody
     public HashMap<String, Object> findbookAll(HttpServletRequest request) {
+        //
         String page = request.getParameter("page");
         String limit = request.getParameter("limit");
+       // String key =  request.getParameter("key");
         int index = 1;
         if (page != null) {
             index = Integer.parseInt(page);
         }
-        //int size = Integer.parseInt(limit);
-        /*PageUtil<Book> pageUtil=bookService.find(index,size);*/
-         /*   //modelAndView.addObject(pageUtil);
-            System.out.println(pageUtil);*/
         HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("data", bookService.getAll());
+        map.put("data", bookService.getBookByPage(index,Integer.parseInt(limit)));
         map.put("count", bookService.getcount());
         map.put("msg", "success");
         map.put("code", 0);
@@ -72,9 +65,6 @@ public class BookController {
     @ResponseBody
     public ModelAndView newbook() {
         ModelAndView modelAndView = new ModelAndView();
-        System.out.println("console1111");
-        List<Dictionary> dict = dictionaryServie.selectByDkey("app.ghs");
-        modelAndView.addObject("ghs", "dict");
         modelAndView.setViewName("book/new");
         return modelAndView;
 

@@ -5,6 +5,7 @@ import com.textbooks.entity.Unit;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 
 public interface IBookService {
@@ -20,5 +21,8 @@ public interface IBookService {
     int insertSelective(Book record);
 
     int updateByfieds(HashMap<String, Object> map);
+
+    List<Book> getBookByPage(Integer page, Integer size);
+
 
 }

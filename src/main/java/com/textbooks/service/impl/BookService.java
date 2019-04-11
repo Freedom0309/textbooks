@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 
 @Service("bookService")
@@ -42,6 +43,19 @@ public class BookService implements IBookService {
     @Override
     public int updateByfieds(HashMap<String, Object> map) {
         return bookMapper.updateByfieds(map);
+    }
+
+    @Override
+    public List<Book> getBookByPage(Integer page, Integer size) {
+        if(page == null || page <= 0){
+            page = 1;
+        }
+        if (size == null || size <= 0){
+            size = 10;
+        }
+        Integer start = (page - 1) * size;
+        return  bookMapper.getBookByPage(start,size);
+
     }
 
 }

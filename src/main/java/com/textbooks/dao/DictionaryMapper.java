@@ -18,7 +18,7 @@ public interface DictionaryMapper {
 
     int updateByPrimaryKey(Dictionary record);
 
-    @Select("Select * from t_sys_dictionary where dkey=#{dkey}")
+    @Select("Select * from t_sys_dictionary where dkey=#{dkey} order by ordernum")
     List<Dictionary> selectByDkey(String dkey);
 
 }
