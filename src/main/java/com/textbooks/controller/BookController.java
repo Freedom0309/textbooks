@@ -1,21 +1,14 @@
 package com.textbooks.controller;
 
 import com.textbooks.entity.Book;
-import com.textbooks.entity.Dictionary;
 import com.textbooks.service.IBookService;
-import com.textbooks.service.IDictionaryServie;
-import com.textbooks.service.impl.TextbooksService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -48,9 +41,9 @@ public class BookController {
         String page = request.getParameter("page");
         String limit = request.getParameter("limit");
        // String key =  request.getParameter("key");
-        int index = 1;
+        int index = 0;
         if (page != null) {
-            index = Integer.parseInt(page);
+            index = Integer.parseInt(page)-1;
         }
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("data", bookService.getBookByPage(index,Integer.parseInt(limit)));
@@ -82,14 +75,14 @@ public class BookController {
         return map;
 
     }
-
-    @RequestMapping("/dialog")
+    //分配
+    @RequestMapping("/borrowBook")
     @ResponseBody
-    public ModelAndView bookdialog() {
+    public ModelAndView borrowBook() {
         ModelAndView modelAndView = new ModelAndView();
         System.out.println("console1111");
         modelAndView.addObject("user", "sdsad");
-        modelAndView.setViewName("book/dialog");
+        modelAndView.setViewName("book/borrowBook");
         return modelAndView;
 
     }
@@ -103,7 +96,6 @@ public class BookController {
         map.put("field", request.getParameter("field"));
         map.put("value", "'" + request.getParameter("value") + "'");
         int i = bookService.updateByfieds(map);
-
         HashMap<String, Object> ro = new HashMap<String, Object>();
         ro.put("data", i);
         ro.put("msg", "success");

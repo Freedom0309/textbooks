@@ -18,7 +18,7 @@
     </div>
     <div class="layui-form-item" >
         <label class="layui-form-label">选择出版社</label>
-        <div class="layui-input-block" id="cbs">
+        <div class="layui-input-block">
             <select name="ghs" lay-verify="required" lay-search lay-filter="filter" id="view">
                 <option value=""></option>
             </select>
@@ -30,24 +30,24 @@
             <input type="text" name="price" required   placeholder="请输入金额" autocomplete="off" class="layui-input">
         </div>
     </div>
-    <div class="layui-form-item">
+  <!--  <div class="layui-form-item">
         <label class="layui-form-label">折扣价</label>
         <div class="layui-input-block">
             <input type="text" name="discount" required   placeholder="请输入金额" autocomplete="off" class="layui-input">
         </div>
-    </div>
+    </div>-->
     <div class="layui-form-item">
         <label class="layui-form-label">数量</label>
         <div class="layui-input-block">
             <input type="text" name="num" required   placeholder="请输入金额" autocomplete="off" class="layui-input">
         </div>
     </div>
-    <div class="layui-form-item">
+   <!-- <div class="layui-form-item">
         <label class="layui-form-label">是否通用教材</label>
         <div class="layui-input-block" >
             <input type="checkbox" name="major" lay-skin="switch" lay-filter="filter">
         </div>
-    </div>
+    </div>-->
     <div class="layui-form-item">
         <label class="layui-form-label">教材图片</label>
         <div class="layui-upload-drag" id="test1" style="margin-left: 10px">
@@ -179,9 +179,9 @@
             }
         });
 
-
+        //下拉列表
         $.ajax({
-            url: "/dictionary/ajax_get_ghs",
+            url: "/dictionary/ajax_get_dic",
             type: "post",
             data:{"dkey":"app.ghs"},
             dataType: "json",

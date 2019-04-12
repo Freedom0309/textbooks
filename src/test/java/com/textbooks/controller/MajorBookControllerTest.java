@@ -1,6 +1,9 @@
 package com.textbooks.controller;
+
+
 import com.textbooks.dao.DictionaryMapper;
-import com.textbooks.entity.Dictionary;
+import com.textbooks.dao.MajorBookMapper;
+import com.textbooks.entity.MajorBook;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,15 +11,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DictionaryControllerTest {
+class MajorBookControllerTest {
     private ApplicationContext applicationContext;
 
     @Autowired
-    private DictionaryMapper dictionaryMapper;
+    private MajorBookMapper majorBookMapper;
 
     @BeforeEach
     void setUp() {
@@ -26,22 +30,21 @@ class DictionaryControllerTest {
         for (String name: names) {
             System.out.println(name);
         }
-        dictionaryMapper = applicationContext.getBean(DictionaryMapper.class);
+        majorBookMapper = applicationContext.getBean(MajorBookMapper.class);
     }
 
     @AfterEach
     void tearDown() {
     }
-
     @Test
-    public void selectByDey(){
-        List<Dictionary> lst = dictionaryMapper.selectByDkey("app.college");
-        System.out.println(lst);
-
+    public void getCountMajorBook(){
+       int i =  majorBookMapper.getCountMajorBook("76fd6bf2abc1496dbe135f92831d8b4b");
+        System.out.println(i);
     }
     @Test
-    public void selectByLinkage(){
-        List<Dictionary> lst = dictionaryMapper.selectByLinkage("app.major","2");
+    public void  getMajorBookByPage(){
+        List<HashMap<String, Object>> lst = majorBookMapper.getMajorBookByPage(0,2,"76fd6bf2abc1496dbe135f92831d8b4b");
         System.out.println(lst);
     }
+
 }

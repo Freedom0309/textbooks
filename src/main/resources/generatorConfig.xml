@@ -62,7 +62,14 @@
                selectByExampleQueryId="false">
             <property name="useActualColumnNames" value="false" />
         </table>-->
-        <table tableName="t_sys_dictionary" domainObjectName="Dictionary"
+       <!-- <table tableName="t_sys_dictionary" domainObjectName="Dictionary"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <property name="useActualColumnNames" value="false" />
+        </table>-->
+
+        <table tableName="t_app_majorbook" domainObjectName="MajorBook"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
