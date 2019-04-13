@@ -45,7 +45,7 @@
 
 </script>-->
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-mini" lay-event="edit">修改金额</a>
+    <a class="layui-btn layui-btn-mini" lay-event="edit">修改数量</a>
     <a class="layui-btn layui-btn-primary layui-btn-mini" lay-event="borrowBook">教材分配</a>
     <a class="layui-btn layui-btn-primary layui-btn-mini" lay-event="majorBooklst">分配信息</a>
 </script>
@@ -83,9 +83,9 @@
                          return '<em>'+ res.email +'</em>'
                      }}*/
                 ,{field:'ghs', title:'出版社', width:150, sort: true,edit:true }
-                ,{field:'price', title:'价格', width:100}
+                ,{field:'price', title:'价格', width:100,edit:true}
                 /*,{field:'discount', title:'折扣',width:100}*/
-                ,{field:'num', title:'数量', width:100, sort: true,edit:true}
+                ,{field:'num', title:'数量', width:100, sort: true}
                 ,{field:'count', title:'剩余数量', width:100, sort: true}
                 ,{field:'status', title:'状态', width:100}
                 /*,{field:'major', title:'专业', width:100}*/
@@ -356,8 +356,8 @@
             } else if(obj.event === 'edit'){
                 layer.prompt({
                     formType: 2
-                    ,title: '修改 ['+ data.name +'] 的价格'
-                    ,value: data.price
+                    ,title: '修改 ['+ data.name +'] 的数量'
+                    ,value: data.num
                 }, function(value, index){
                     console.log(value);
                     console.log(index);
@@ -370,7 +370,7 @@
             $.ajax({
                 url: "/book/edit",
                 type: "POST",
-                data: {"id": data.id, "field": "price", "value": value},
+                data: {"id": data.id, "field": "num", "value": value},
                 dataType: "json",
                 success: function (data) {
 
@@ -379,7 +379,7 @@
                         layer.close(index);
                         //同步更新表格和缓存对应的值
                         obj.update({
-                            price: value
+                            num: value
                         });
                         layer.msg("修改成功", {icon: 6});
                     } else {
