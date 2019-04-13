@@ -42,4 +42,9 @@ public class UnitController {
     public void deleteUnit(String id){
         unitService.deleteByPrimaryKey(id);
     }
+
+    @RequestMapping("/insert")
+    public void insertSelective(Unit unit){
+        unitService.insertSelective(unit);
+    }
 }

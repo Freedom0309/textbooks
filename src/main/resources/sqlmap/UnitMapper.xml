@@ -21,7 +21,7 @@
   </resultMap>
   <sql id="Base_Column_List" >
     id, parentid, path, name, aliasname, unitcode, note, address, telephone, email, website,
-    location, haschildren, delflag, sysopby, syscreatetime
+    location, haschildren, delflag
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -38,14 +38,12 @@
       name, aliasname, unitcode, 
       note, address, telephone, 
       email, website, location, 
-      haschildren, delflag, sysopby, 
-      syscreatetime)
+      haschildren, delflag)
     values (#{id,jdbcType=VARCHAR}, #{parentid,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{aliasname,jdbcType=VARCHAR}, #{unitcode,jdbcType=VARCHAR}, 
       #{note,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{website,jdbcType=VARCHAR}, #{location,jdbcType=INTEGER}, 
-      #{haschildren,jdbcType=TINYINT}, #{delflag,jdbcType=TINYINT}, #{sysopby,jdbcType=VARCHAR}, 
-      #{syscreatetime,jdbcType=TIMESTAMP})
+      #{haschildren,jdbcType=TINYINT}, #{delflag,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.textbooks.entity.Unit" >
     insert into t_sys_unit
@@ -215,9 +213,7 @@
       website = #{website,jdbcType=VARCHAR},
       location = #{location,jdbcType=INTEGER},
       haschildren = #{haschildren,jdbcType=TINYINT},
-      delflag = #{delflag,jdbcType=TINYINT},
-      sysopby = #{sysopby,jdbcType=VARCHAR},
-      syscreatetime = #{syscreatetime,jdbcType=TIMESTAMP}
+      delflag = #{delflag,jdbcType=TINYINT}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>
