@@ -1,7 +1,6 @@
 package com.textbooks.controller;
 
 import com.textbooks.dao.BookMapper;
-import com.textbooks.dao.UnitMapper;
 import com.textbooks.entity.Book;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,6 +54,12 @@ class BookControllerTest {
         map.put("field","ghs");
         map.put("value",""+"\'zhangy\'");
        int i = bookMapper.updateByfieds(map);
+        System.out.println(i);
+    }
+
+    @Test
+    public void updateCount(){
+        int i = bookMapper.updateCount("23dd785baa4a4e069f960e8a3bb168b3",233);
         System.out.println(i);
     }
 

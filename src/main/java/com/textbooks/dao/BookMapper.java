@@ -27,6 +27,9 @@ public interface BookMapper {
     int insertSelective(Book book);
 
     int updateByfieds(HashMap<String, Object> map);
+    //更新剩余数量
+    @Update("update t_app_books set count = #{count} where id=#{id}")
+    int updateCount(@Param("id") String id,@Param("count") Integer count);
 
     List<Book> getBookByPage(@Param("start") Integer start, @Param("size") Integer size);
 }

@@ -42,6 +42,9 @@ public class BookService implements IBookService {
 
     @Override
     public int updateByfieds(HashMap<String, Object> map) {
+        /*if("num".equals(map.get("field"))){
+            bookMapper.updateCount(map.get("id").toString(),Integer.parseInt(map.get("value").toString()));
+        }*/
         return bookMapper.updateByfieds(map);
     }
 
