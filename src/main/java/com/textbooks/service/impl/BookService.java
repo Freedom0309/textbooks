@@ -51,7 +51,7 @@ public class BookService implements IBookService {
     @Override
     public List<Book> getBookByPage(Integer page, Integer size) {
         if(page == null || page <= 0){
-            page = 0;
+            page = 1;
         }
         if (size == null || size <= 0){
             size = 10;
