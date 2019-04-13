@@ -59,8 +59,12 @@ class BookControllerTest {
 
     @Test
     public void updateCount(){
-        int i = bookMapper.updateCount("23dd785baa4a4e069f960e8a3bb168b3",233);
-        System.out.println(i);
+       /* int i = bookMapper.updateCount("23dd785baa4a4e069f960e8a3bb168b3",233);
+        System.out.println(i);*/
+
+
+        System.out.println(bookMapper.getBookByPage(0,10));
+
     }
 
 }

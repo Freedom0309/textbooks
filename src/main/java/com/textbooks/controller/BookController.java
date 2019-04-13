@@ -40,12 +40,13 @@ public class BookController {
         //
         String page = request.getParameter("page");
         String limit = request.getParameter("limit");
-       // String key =  request.getParameter("key");
+        String key =  request.getParameter("key");
         int index = 0;
         if (page != null) {
             index = Integer.parseInt(page)-1;
         }
         HashMap<String, Object> map = new HashMap<String, Object>();
+
         map.put("data", bookService.getBookByPage(index,Integer.parseInt(limit)));
         map.put("count", bookService.getcount());
         map.put("msg", "success");
