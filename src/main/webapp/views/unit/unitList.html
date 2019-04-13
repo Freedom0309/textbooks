@@ -37,11 +37,11 @@
     layui.use(['table', 'jquery'], function(){
         var table = layui.table, $=layui.jquery;;
 
+
         table.render({
             elem: '#test'
             ,url:'/unit/findAllUnit'
-            ,toolbar: true
-                //'#toolbarDemo'
+            ,toolbar: '#toolbarDemo'
             ,title: '部门表'
             ,request: {
                 pageName: 'curr' //页码的参数名称，默认：page
@@ -81,6 +81,9 @@
                     break;
                 case 'isAll':
                     layer.msg(checkStatus.isAll ? '全选': '未全选');
+                    break;
+                case 'new':
+
                     break;
             };
         });

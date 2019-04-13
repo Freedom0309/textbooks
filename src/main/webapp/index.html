@@ -176,8 +176,6 @@
             active.tabChange(dataid.attr("data-id"));
         });
 
-
-
         var active = {
             //在这里给active绑定几项事件，后面可通过active调用这些事件
             tabAdd: function (url, id, name) {
@@ -235,7 +233,8 @@
                 var popupmenu = $(".rightmenu");
                 popupmenu.find("li").attr("data-id",id);
                 l = ($(document).width() - e.clientX) < popupmenu.width() ? (e.clientX - popupmenu.width()) : e.clientX;
-                t = ($(document).height() - e.clientY) < popupmenu.height() ? (e.clientY - popupmenu.height()) : e.clientY; popupmenu.css({ left: l, top: t }).show();
+                t = ($(document).height() - e.clientY) < popupmenu.height() ? (e.clientY - popupmenu.height()) : e.clientY;
+                popupmenu.css({ left: l, top: t }).show();
                 //alert("右键菜单")
                 return false;
             });
