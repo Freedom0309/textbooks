@@ -63,13 +63,9 @@ public class MajorBookController {
         JSONObject jsonObject = JSONObject.parseObject(data);
         System.out.println(jsonObject.getString("bookid"));
         String bookid = jsonObject.getString("bookid");
-        int index = 0;
-        if (page != null) {
-            index = Integer.parseInt(page)-1;
-        }
         HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("data", majorBookService.getMajorBookByPage(index,Integer.parseInt(limit),bookid));
-        System.out.println( majorBookService.getMajorBookByPage(index,Integer.parseInt(limit),bookid));
+        map.put("data", majorBookService.getMajorBookByPage(Integer.parseInt(page),Integer.parseInt(limit),bookid));
+        System.out.println( majorBookService.getMajorBookByPage(Integer.parseInt(page),Integer.parseInt(limit),bookid));
         map.put("count", majorBookService.getCountMajorBook(bookid));
         map.put("msg", "success");
         map.put("code", 0);

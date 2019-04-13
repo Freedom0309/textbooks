@@ -29,7 +29,6 @@ public class BookController {
         System.out.println("console1111");
         /*     modelAndView.addAttribute("user", user);*/
         modelAndView.setViewName("book/booklist");
-        modelAndView.addObject("user", "adsa");
         return modelAndView;
 
     }

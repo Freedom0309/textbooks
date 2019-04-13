@@ -97,13 +97,5 @@
   <!-- 分页使用SQL  SQL中传入的第一个参数为开始的行数，第二个参数为数据条数。-->
   <select id="getBookByPage"  resultType="com.textbooks.entity.Book" >
         select * from t_app_books limit #{start},#{size}
-  <!--  select * from  t_app_books where 1=1
-    <choose>
-      <when test="key !=null and key != ''">
-        and CONCAT(IFNULL(`name`,''),IFNULL(`ghs`,'')) LIKE '%+'#{key}'+%'
-      </when>
-    </choose>
-    limit #{start},#{size}
--->
   </select>
 </mapper>
