@@ -6,7 +6,7 @@
 layui.config({
     base: 'static/layui/lay/extend/'
 }).extend({
-    dltable:'dltable'
+   // dltable:'dltable'
 }).define(['laytpl', 'laypage','dltable', 'layer', 'form'], function(exports){
     "use strict";
     var $ = layui.jquery;
