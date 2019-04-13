@@ -4,7 +4,7 @@
  @Author：lrd
  */
 layui.config({
-    base: 'static/layui/extend/'
+    base: 'static/layui/lay/extend/'
 }).extend({
     dltable:'dltable'
 }).define(['laytpl', 'laypage','dltable', 'layer', 'form'], function(exports){
