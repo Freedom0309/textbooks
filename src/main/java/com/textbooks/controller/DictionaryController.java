@@ -6,6 +6,7 @@ import com.textbooks.service.IDictionaryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,19 @@ import java.util.List;
 public class DictionaryController {
     @Resource
     public IDictionaryService dictionaryServie;
+
+    @RequestMapping("/index")
+    @ResponseBody
+    public ModelAndView consoleIndex() {
+        ModelAndView modelAndView = new ModelAndView();
+        System.out.println("console1111");
+        /*     modelAndView.addAttribute("user", user);*/
+        modelAndView.setViewName("dic/index");
+        return modelAndView;
+
+    }
+
+
 
     @RequestMapping("/ajax_get_dic")
     @ResponseBody
