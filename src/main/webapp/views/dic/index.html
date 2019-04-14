@@ -25,10 +25,10 @@
             id:tableId
             ,elem: '#'+tableId
             ,idField:'id'
-            ,url:'/static/data/data2.json'
+            ,url:'/dictionary/data'
             ,cellMinWidth: 100
             ,treeId:'id'//树形id字段名称
-            ,treeUpId:'pId'//树形父id字段名称
+            ,treeUpId:'pid'//树形父id字段名称
             ,treeShowName:'name'//以树形式显示的字段
             ,cols: [[
                 {width:100,title: '操作', align:'center'/*toolbar: '#barDemo'*/
@@ -41,7 +41,7 @@
                 }
                 ,{field:'name', edit:'text',width:300, title: '水果名称'}
                 ,{field:'id',width:100, title: 'id'}
-                ,{field:'pId', title: 'pid'}
+                ,{field:'pid', title: 'pid'}
             ]]
             ,page:false
         });

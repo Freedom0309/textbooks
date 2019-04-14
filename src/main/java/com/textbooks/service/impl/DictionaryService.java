@@ -5,6 +5,7 @@ import com.textbooks.service.IDictionaryService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 
 @Service("dictionaryServie")
@@ -20,5 +21,10 @@ public class DictionaryService implements IDictionaryService {
     @Override
     public List<Dictionary> selectByLinkage(String dkey, String pvalue) {
         return dictionaryMapper.selectByLinkage(dkey,pvalue);
+    }
+
+    @Override
+    public List<HashMap<String, Object>> selectData() {
+        return dictionaryMapper.selectData();
     }
 }

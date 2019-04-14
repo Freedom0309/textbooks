@@ -4,6 +4,7 @@ import com.textbooks.entity.Dictionary;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface DictionaryMapper {
@@ -25,4 +26,7 @@ public interface DictionaryMapper {
     @Select("Select * from t_sys_dictionary where dkey=#{dkey} and pvalue =#{pvalue} order by ordernum")
     List<Dictionary> selectByLinkage(@Param("dkey")String dkey,@Param("pvalue")String pvalue);
 
+    //数据字典
+    @Select("SELECT id,pvalue pid ,dvalue name FROM t_sys_dictionary")
+    List<HashMap<String, Object>> selectData();
 }

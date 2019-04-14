@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,5 +44,11 @@ class DictionaryControllerTest {
     public void selectByLinkage(){
         List<Dictionary> lst = dictionaryMapper.selectByLinkage("app.major","2");
         System.out.println(lst);
+    }
+    @Test
+    public void  selectData(){
+        List<HashMap<String, Object>> lst = dictionaryMapper.selectData();
+        System.out.println(lst);
+
     }
 }

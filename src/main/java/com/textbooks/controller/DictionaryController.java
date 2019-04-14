@@ -30,6 +30,18 @@ public class DictionaryController {
 
     }
 
+    @RequestMapping("/data")
+    @ResponseBody
+    public HashMap<String, Object> data(){
+
+        List<HashMap<String, Object>> dict = dictionaryServie.selectData();
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("data", dict);
+        map.put("count", dict.size());
+        map.put("msg", "success");
+        map.put("code", 0);
+        return map;
+    }
 
 
     @RequestMapping("/ajax_get_dic")
