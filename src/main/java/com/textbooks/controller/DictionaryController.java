@@ -40,6 +40,8 @@ public class DictionaryController {
         map.put("count", dict.size());
         map.put("msg", "success");
         map.put("code", 0);
+        map.put("is",true);
+        map.put("tip","操作成功！");
         return map;
     }
 
