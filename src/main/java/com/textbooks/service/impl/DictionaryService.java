@@ -27,4 +27,31 @@ public class DictionaryService implements IDictionaryService {
     public List<HashMap<String, Object>> selectData() {
         return dictionaryMapper.selectData();
     }
+
+    @Override
+    public int insert(Dictionary dic) {
+        return dictionaryMapper.insert(dic);
+    }
+
+    @Override
+    public int deleteByPrimaryKey(String id) {
+        List<HashMap<String, Object>> lstthr  = dictionaryMapper.selectThrpk(id);
+        if(lstthr.size() > 0 ) {
+            for (int j = 0 ; j<lstthr.size();j++) {
+                 dictionaryMapper.deleteByPrimaryKey(lstthr.get(j).get("id").toString());
+            }
+        }
+        List<HashMap<String, Object>> lstsec  = dictionaryMapper.selectSecpk(id);
+        if(lstsec.size() > 0 ) {
+            for (int j = 0 ; j<lstsec.size();j++) {
+                dictionaryMapper.deleteByPrimaryKey(lstsec.get(j).get("id").toString());
+            }
+        }
+
+        int i =  dictionaryMapper.deleteByPrimaryKey(id);
+
+        return i;
+    }
+
+
 }

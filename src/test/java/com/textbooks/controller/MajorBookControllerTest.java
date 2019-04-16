@@ -43,8 +43,13 @@ class MajorBookControllerTest {
     }
     @Test
     public void  getMajorBookByPage(){
-        List<HashMap<String, Object>> lst = majorBookMapper.getMajorBookByPage(0,2,"76fd6bf2abc1496dbe135f92831d8b4b");
-        System.out.println(lst);
+       /* List<HashMap<String, Object>> lst = majorBookMapper.getMajorBookByPage(0,2,"76fd6bf2abc1496dbe135f92831d8b4b");
+        System.out.println(lst);*/
+
+        MajorBook mb =   majorBookMapper.selectByPrimaryKey("67d4d7b42ec64455b165534585888e5b");
+        mb.setReviewbook("已领取");
+
+        System.out.println( majorBookMapper.updateByPrimaryKeySelective(mb));
     }
 
 }

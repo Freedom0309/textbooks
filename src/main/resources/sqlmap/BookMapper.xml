@@ -10,9 +10,53 @@
     <result column="num" property="num" jdbcType="VARCHAR" />
     <result column="count" property="count" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
-    <result column="image1" property="image1" jdbcType="VARCHAR" />
+    <result column="image" property="image" jdbcType="VARCHAR" />
     <result column="major" property="major" jdbcType="VARCHAR" />
   </resultMap>
+  <sql id="Base_Column_List" >
+    Id, name, ghs, price, discount,num,count,status,image,major
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from t_app_books
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.textbooks.entity.Book" >
+    update t_app_books
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="ghs != null" >
+        ghs = #{ghs,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=VARCHAR},
+      </if>
+      <if test="discount != null" >
+      discount = #{discount,jdbcType=VARCHAR},
+     </if>
+      <if test="num != null" >
+      num = #{num,jdbcType=VARCHAR},
+    </if>
+      <if test="count != null" >
+        count = #{count,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null" >
+        image = #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="major != null" >
+        major = #{major,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
   <delete id="deleteByids" parameterType="List">
     <!-- delete from emp where empno in(7789,7790) -->
     <!-- forEach : 用来循环 collection : 用来指定循环的数据的类型 可以填的值有：array,list,map item

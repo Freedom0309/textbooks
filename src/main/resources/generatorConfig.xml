@@ -69,12 +69,18 @@
             <property name="useActualColumnNames" value="false" />
         </table>-->
 
-        <table tableName="t_app_majorbook" domainObjectName="MajorBook"
+      <!--  <table tableName="t_app_majorbook" domainObjectName="MajorBook"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <property name="useActualColumnNames" value="false" />
+        </table>-->
+
+        <table tableName="t_app_notice" domainObjectName="Notice"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
             <property name="useActualColumnNames" value="false" />
         </table>
-
     </context>
 </generatorConfiguration>

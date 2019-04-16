@@ -19,6 +19,7 @@
     <result column="class" property="class" jdbcType="VARCHAR" />
     <result column="cclassnum" property="cclassnum" jdbcType="VARCHAR" />
     <result column="reviewbook" property="reviewbook" jdbcType="VARCHAR" />
+    <result column="place" property="place" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, bookid, majorid, classid, cclassnum, collegeid, place, reviewbook
@@ -139,13 +140,13 @@
   <!-- 分页使用SQL  SQL中传入的第一个参数为开始的行数，第二个参数为数据条数。-->
   <select id="getMajorBookByPage"  resultMap="getMajorBookMap" >
     SELECT
-        mb.id,b.`name`,diccol.dvalue as college ,dicmajor.dvalue as major ,dicclass.dvalue as class,mb.cclassnum,mb.reviewbook
+        mb.id,b.`name`,diccol.dvalue as college ,dicmajor.dvalue as major ,dicclass.dvalue as class,mb.cclassnum,mb.reviewbook,mb.place
     FROM
         `t_app_majorbook` mb
         LEFT JOIN t_app_books b ON mb.bookid = b.id
         left join t_sys_dictionary diccol on mb.collegeid = diccol.id
         left join t_sys_dictionary dicmajor on mb.majorid = dicmajor.id
-        left join t_sys_dictionary dicclass on mb.majorid = dicclass.id
+        left join t_sys_dictionary dicclass on mb.classid = dicclass.id
         where mb.bookid=#{bookid} limit #{start},#{size}
   </select>
 

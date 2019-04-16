@@ -18,7 +18,7 @@
 <script>
     var editObj=null,ptable=null,treeGrid=null,tableId='treeTable',layer=null;
     layui.use(['jquery','treeGrid','layer'], function(){
-        var $=layui.jquery;
+        var $ =layui.jquery;
         treeGrid = layui.treeGrid;//很重要
         layer=layui.layer;
         ptable=treeGrid.render({
@@ -31,7 +31,12 @@
             ,treeUpId:'pid'//树形父id字段名称
             ,treeShowName:'name'//以树形式显示的字段
             ,cols: [[
-                {width:100,title: '操作', align:'center'/*toolbar: '#barDemo'*/
+                {field:'dkey',width:300, title: '字典key'}
+                ,{field:'name', edit:'text',width:300, title: '字典value'}
+                ,{field:'ordernum', edit:'text',width:300, title: '排列序号'}
+                ,{field:'id',width:100, title: 'id'}
+                ,{field:'pid', width:100,title: '父ID'}
+                , {width:100,title: '操作', align:'center'/*toolbar: '#barDemo'*/
                     ,templet: function(d){
                         var html='';
                         var addBtn='<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="add">添加</a>';
@@ -39,43 +44,110 @@
                         return addBtn+delBtn;
                     }
                 }
-                ,{field:'name', edit:'text',width:300, title: '水果名称'}
-                ,{field:'id',width:100, title: 'id'}
-                ,{field:'pid', title: 'pid'}
             ]]
             ,page:false
         });
 
         treeGrid.on('tool('+tableId+')',function (obj) {
             if(obj.event === 'del'){//删除行
-                del(obj);
+                layer.open({
+                    type:0,
+                    title: '在线调试'
+                    ,btn: ['确定', '关闭']
+                    ,content: '你确定删除数据吗？如果存在下级节点则一并删除，此操作不能撤销！'
+                    ,yes: function(index, layero){
+                        $.ajax({
+                            url: "/dictionary/delDic",
+                            type: "post",
+                            data:obj.data,
+                            dataType: "json",
+                            success: function(data) {
+                                if (data.code == 0) {
+                                    window.location.reload();
+                                    layer.close(index);
+                                }
+                            }
+
+                        });
+                    }
+                    ,btn2: function(index, layero){
+                        layer.close(index);
+                    }
+                });
+
+                //del(obj);
             }else if(obj.event==="add"){//添加行
+                console.log(obj)
                 add(obj.data);
+
             }
         });
     });
 
-    function del(obj) {
+   /* function del(obj) {
         layer.confirm("你确定删除数据吗？如果存在下级节点则一并删除，此操作不能撤销！", {icon: 3, title:'提示'},
             function(index){//确定回调
-                obj.del();
-                layer.close(index);
+              //  obj.del();
+              //  layer.close(index);
+                $.ajax({
+                    url: "/dictionary/delDic",
+                    type: "post",
+                    data:obj,
+                    dataType: "json",
+                    success: function(data) {
+                        if (data.code == 0) {
+
+                            layer.close(index);
+                        }
+                    }
+
+                });
+
             },function (index) {//取消回调
                 layer.close(index);
             }
         );
-    }
-
+    }*/
+    
 
     var i=1000;
     //添加
-    function add(pObj) {
+  /*  function add(pObj) {
         var param={};
         param.name='水果'+Math.random();
         param.id=++i;
         param.pId=pObj?pObj.id:0;
         treeGrid.addRow(tableId,pObj?pObj.LAY_TABLE_INDEX+1:0,param);
+    }*/
+
+    function add(pObj) {
+       // var param={};
+       // param.name='水果'+Math.random();
+       // param.id=++i;
+        //param.pId=pObj?pObj.id:0;
+      //  treeGrid.addRow(tableId,pObj?pObj.LAY_TABLE_INDEX+1:0,param);
+        var body;
+        layer.open({
+            type: 2,
+            title: '' +
+                '<li id="icon" class="layui-icon layui-icon-release layui-anim layui-anim-scaleSpring" ' +
+                'style="font-size: 30px; color: #009688;" data-anim="layui-anim-scaleSpring"></li> 新建字典值 ',
+            shadeClose: true,
+            shade: false,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['470px', '500px'],//area: [window.screen.width / 2 + 'px', window.screen.height / 2 + 'px'], //宽高
+            content: "/dictionary/new",
+            success: function(layero, index) {
+                console.log(layero, index);
+                body = layer.getChildFrame('body', index);
+                body.find("input#pid").val(pObj ? pObj.id : 0);
+                body.find("input#name").val(pObj ? pObj.name : "");
+            }
+        });
+
+
     }
+
 
     function print() {
         console.log(treeGrid.cache[tableId]);

@@ -44,6 +44,7 @@
             <!--read-only   事务是否只读？-->
             <tx:method name="find*" read-only="true"/>
             <tx:method name="select*" read-only="true"/>
+            <tx:method name="get*" read-only="true"/>
             <tx:method name="save*" read-only="false" propagation="REQUIRED"/>
             <tx:method name="update*" read-only="false" propagation="REQUIRED"/>
             <tx:method name="delete*" read-only="false" propagation="REQUIRED"/>

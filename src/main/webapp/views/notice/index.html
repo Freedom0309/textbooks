@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../static/layui/css/layui.css" media="all">
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<body>
+
+<table class="layui-hide" id="test" lay-filter="dataTable"></table>
+
+<!--<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+        <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+    </div>
+</script>-->
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="getBook">领取</a>
+</script>
+
+<script src="../static/js/jquery.js"></script>
+<script src="../static/js/date.js" type="text/javascript" charset="utf-8"></script>
+<script src="../static/layui/layui.js" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script id="syscreatime" type="text/html">
+    {{#
+    var date = new Date();
+    date.setTime(d.syscreatime);
+    return date.Format("yyyy-MM-dd hh:mm:ss");
+    }}
+</script>
+
+
+<script>
+    layui.use(['table','jquery','layer'], function(){
+        var table = layui.table;
+        var $ = layui.$;
+        var layer = layui.layer;
+
+
+        table.render({
+            elem: '#test'
+            ,url:'/notice/list'
+            ,toolbar: '#toolbarDemo'
+            ,title: '用户数据表'
+            ,totalRow: true
+            ,done: function(res, curr, count) { //表格数据加载完后的事件
+                $(".layui-table-box").find("[data-field='id']").css("display","none");
+                $(".layui-table-box").find("[data-field='majorbookid']").css("display","none");
+
+            }
+            ,cols: [[
+                {type: 'checkbox', fixed: 'left'}
+                ,{field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true,hide:true}
+                ,{field:'majorbookid', title:'majorbookid', width:80, fixed: 'left', unresize: true, sort: true,hide:true}
+                ,{field:'theme', title:'主题', width:100 }
+                ,{field:'content', title:'信息', width:600, sort: true}
+                ,{field:'reviewbook', title:'领取状态', width:80, sort: true}
+                ,{field:'syscreatime', title:'创建时间', width:200, sort: true,templet:'#syscreatime'}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:120}
+            ]]
+            ,id: 'testReload'
+            ,page:  {
+                layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'], //自定义分页布局
+                //,curr: 5 //设定初始在第 5 页
+                groups: 1, //只显示 1 个连续页码
+                first: false, //不显示首页
+                last: false, //不显示尾页
+                limit:10,
+                limits:[1,2,3,4,5,6,7,8,9,10]
+            }
+        });
+        /* //表格刷新
+         table.reload('testReload');*/
+        //工具栏事件
+        table.on('toolbar(test)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch(obj.event){
+                case 'getCheckData':
+                    var data = checkStatus.data;
+                    layer.alert(JSON.stringify(data));
+                    break;
+                case 'getCheckLength':
+                    var data = checkStatus.data;
+                    layer.msg('选中了：'+ data.length + ' 个');
+                    break;
+                case 'isAll':
+                    layer.msg(checkStatus.isAll ? '全选': '未全选')
+                    break;
+            };
+        });
+
+        //行操作
+        table.on('tool(dataTable)', function(obj){
+            if(obj.event === 'getBook'){
+                $.ajax({
+                    url: "/majorBook/rbup",
+                    type: "post",
+                    data:obj.data,
+                    dataType: "json",
+                    success: function(res){
+                        if(res.code ==0){
+                            layer.msg("领取成功", {icon: 6});
+                            table.reload('testReload', {
+                                where: {
+                                    key: ""
+                                }
+                            });
+                        }else if(res.code ==2){
+                            layer.msg(res.msg+"",{icon: 5});
+                        }else{
+                            layer.msg("图书已被领取", {icon: 5});
+                        }
+                    }
+                });
+
+            };
+
+        });
+    });
+</script>
+
+</body>
+</html>

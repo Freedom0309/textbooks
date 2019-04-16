@@ -23,6 +23,11 @@ public class BookService implements IBookService {
     }
 
     @Override
+    public int updateByPrimaryKeySelective(Book book) {
+        return bookMapper.updateByPrimaryKeySelective(book);
+    }
+
+    @Override
     public int deleteByids(String[] arr) {
         return bookMapper.deleteByids(arr);
     }
@@ -59,6 +64,11 @@ public class BookService implements IBookService {
         Integer start = (page - 1) * size;
         return  bookMapper.getBookByPage(start,size);
 
+    }
+
+    @Override
+    public int updateCount(String id, String count) {
+        return bookMapper.updateCount(id,count);
     }
 
 }

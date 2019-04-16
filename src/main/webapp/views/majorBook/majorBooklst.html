@@ -35,7 +35,7 @@
            </div>
       </div>
   </fieldset>
-  <table class="layui-hide" id="test" lay-filter="test"></table>
+  <table class="layui-hide" id="test" lay-filter="dataTable"></table>
 
   <!--<script type="text/html" id="toolbarDemo">
       <div class="layui-btn-container">
@@ -46,7 +46,7 @@
   </script>-->
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit">发布公告</a>
+    <a class="layui-btn layui-btn-xs" lay-event="addnote">发布公告</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
@@ -79,10 +79,11 @@
                 ,{field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true,hide:true}
                 ,{field:'name', title:'教材', width:100,totalRowText: '合计' }
                 ,{field:'college', title:'学院', width:100, sort: true}
-                ,{field:'major', title:'专业', width:100, edit: 'text', sort: true}
+                ,{field:'major', title:'专业', width:100,  sort: true}
                 ,{field:'class', title:'班级', width:100, sort: true }
                 ,{field:'cclassnum', title:'数量',width:100,totalRow: true}
                 ,{field:'reviewbook', title:'领取状态', width:100}
+                ,{field:'place', title:'领取地点', width:100}
                 ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:340}
             ]]
             ,id: 'testReload'
@@ -115,6 +116,71 @@
                     break;
             };
         });
+
+        //行操作
+        table.on('tool(dataTable)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'addnote'){
+                $.ajax({
+                    url: "/notice/insertNot",
+                    type: "GET",
+                    //data:{"ids":ids,"memthodname":"DeleteBook" },
+                    data:obj.data,
+                    dataType: "json",
+                    success: function(data){
+                        if(data.data){
+                            layer.msg("发布成功", {icon: 6});
+                            table.reload('testReload', {
+                                where: {
+                                    key: ""
+                                }
+                            });
+                        }else{
+                            layer.msg("发布失败", {icon: 5});
+                        }
+                    }
+                });
+
+            };
+
+            if(obj.event === 'edit') {
+                layer.prompt({
+                    formType:3
+                    , title: '修改['+data.college+']['+data.major+']['+data.class+'][' + data.name + ']的数量'
+                    , value: data.cclassnum
+                }, function (value, index) {
+                    console.log(value);
+                    console.log(index);
+                    EidtUv(data, value, index, obj);
+
+
+                });
+            }
+
+        });
+
+        function  EidtUv(data,value,index,obj) {
+            $.ajax({
+                url: "/majorBook/edit",
+                type: "POST",
+                data: {"id": data.id, "value": value},
+                dataType: "json",
+                success: function (res) {
+                    if (res.code == 0) {
+                        //关闭弹框
+                        layer.close(index);
+                        //同步更新表格和缓存对应的值
+                        obj.update({
+                            cclassnum: value
+                        });
+                        layer.msg("修改成功", {icon: 6});
+                    } else {
+                        layer.msg("修改失败", {icon: 5});
+                    }
+                }
+
+            });
+       }
     });
 </script>
 

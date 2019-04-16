@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/dictionary")
@@ -21,7 +22,7 @@ public class DictionaryController {
 
     @RequestMapping("/index")
     @ResponseBody
-    public ModelAndView consoleIndex() {
+    public ModelAndView dictionaryIndex() {
         ModelAndView modelAndView = new ModelAndView();
         System.out.println("console1111");
         /*     modelAndView.addAttribute("user", user);*/
@@ -30,6 +31,57 @@ public class DictionaryController {
 
     }
 
+    @RequestMapping("/new")
+    @ResponseBody
+    public ModelAndView newIndex() {
+        ModelAndView modelAndView = new ModelAndView();
+        System.out.println("console1111");
+        /*     modelAndView.addAttribute("user", user);*/
+        modelAndView.setViewName("dic/new");
+        return modelAndView;
+
+    }
+
+    //insertDic 新增字典
+
+    @RequestMapping("/insertDic")
+    @ResponseBody
+    public HashMap<String, Object> insertDic(HttpServletRequest request){
+
+       // List<HashMap<String, Object>> dict = dictionaryServie.selectData();
+        Dictionary dic = new Dictionary();
+        dic.setId(UUID.randomUUID().toString().replace("-", ""));
+        dic.setDkey(request.getParameter("dkey"));
+        dic.setDvalue(request.getParameter("dvalue"));
+        dic.setDtext(request.getParameter("dvalue"));
+        dic.setMemo(request.getParameter("dvalue"));
+        dic.setPvalue(request.getParameter("pid"));
+        dic.setOrdernum(Integer.parseInt(request.getParameter("ordernum")));
+        int i  = dictionaryServie.insert(dic);
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("data", i);
+        map.put("msg", "success");
+        map.put("code", 0);
+        return map;
+    }
+    //删除
+    //insertDic 新增字典
+
+    @RequestMapping("/delDic")
+    @ResponseBody
+    public HashMap<String, Object> delDic(HttpServletRequest request){
+
+        int i = dictionaryServie.deleteByPrimaryKey(request.getParameter("id"));
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("data", i);
+        map.put("msg", "success");
+        map.put("code", 0);
+        return map;
+    }
+
+
+
+    //数据展示
     @RequestMapping("/data")
     @ResponseBody
     public HashMap<String, Object> data(){

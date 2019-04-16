@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>new.html</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+    <style>
+        .layui-form-item {margin:10px}
+    </style>
+</head>
+<body>
+<form class="layui-form layui-form-pane" action="" onsubmit="return false" id="form1" >
+   <div class="layui-hide" >
+     <!--   <div class="layui-form-item">-->
+        <label class="layui-form-label">父id：</label>
+        <div class="layui-input-block">
+            <input type="text" name="pid" id="pid"  autocomplete="off"  class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">父值：</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" id="name" disabled="disabled" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">key：</label>
+        <div class="layui-input-block">
+            <input type="text" name="dkey" id="dkey" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">dvalue：</label>
+        <div class="layui-input-block">
+            <input type="text" name="dvalue" id="dvalue" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">ordernum：</label>
+        <div class="layui-input-block">
+            <input type="text" name="ordernum" id="ordernum" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn"  lay-filter="formDemo" id="submit">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+
+</form>
+
+</div>
+
+
+<script src="../static/js/jquery.js"></script>
+<script src="../static/layui/layui.js" charset="utf-8"></script>
+<script>
+    //Demo
+    layui.use(["form","jquery","table","upload","layer","laytpl"], function(){
+        var form = layui.form;
+        var $ = layui.$;
+        var table = layui.table;
+        var upload = layui.upload;
+        var layer = layui.layer;
+        var laytpl=layui.laytpl;
+        // laydate = layui.laydate;
+        //执行一个laydate实例
+        /*  laydate.render({
+              elem: '#client_time' //指定元素
+          });*/
+        //初始化
+
+        //监听提交
+        /* form.on('submit(formDemo)', function(data){*/
+        $('#submit').click(function(){
+            //  layer.msg(JSON.stringify($('#form1').serialize()));
+            $.ajax({
+                url: "/dictionary/insertDic",
+                type: "post",
+                data:$('#form1').serialize(),
+                dataType: "json",
+                success: function(data){
+                    if(data.data){
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                        parent.layer.msg("新增成功", {icon: 6});
+                        parent.location.reload();
+                    }else{
+                        layer.msg("新增失败", {icon: 5});
+                    }
+                }
+            });
+            //  return false;
+        });
+
+
+        form.render();
+    });
+
+
+
+
+
+</script>
+</body>
+</html>

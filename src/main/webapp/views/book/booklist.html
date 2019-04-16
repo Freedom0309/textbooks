@@ -42,10 +42,10 @@
         <button class="layui-btn layui-btn-sm" lay-event="add">增加</button>
     </div>
 <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
-
+  <a class="layui-btn layui-btn-mini" lay-event="edit">修改数量</a>
 </script>-->
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-mini" lay-event="edit">修改数量</a>
+
     <a class="layui-btn layui-btn-primary layui-btn-mini" lay-event="borrowBook">教材分配</a>
     <a class="layui-btn layui-btn-primary layui-btn-mini" lay-event="majorBooklst">分配信息</a>
 </script>
@@ -279,7 +279,11 @@
                         //  layer.msg(data);
                         console.log(data.serialize());
                         var place = body.find("input[name='place']").val();
-
+                        var cclassnum = body.find("input[name='cclassnum']").val();
+                        if(cclassnum == ""){
+                            layer.msg("数量不能为空", {icon: 5});
+                            return;
+                        }
                         if(place == ""){
                             layer.msg("地点不能为空", {icon: 5});
                             return;

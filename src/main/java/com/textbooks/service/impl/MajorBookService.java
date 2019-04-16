@@ -15,6 +15,31 @@ public class MajorBookService implements IMajorBookService {
     public MajorBookMapper majorBookMapper;
 
     @Override
+    public int deleteByPrimaryKey(String id) {
+        return majorBookMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public int insertSelective(MajorBook record) {
+        return majorBookMapper.insertSelective(record);
+    }
+
+    @Override
+    public MajorBook selectByPrimaryKey(String id) {
+        return majorBookMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public int updateByPrimaryKeySelective(MajorBook record) {
+        return majorBookMapper.updateByPrimaryKeySelective(record);
+    }
+
+    @Override
+    public int updateByPrimaryKey(MajorBook record) {
+        return majorBookMapper.updateByPrimaryKey(record);
+    }
+
+    @Override
     public int insert(MajorBook majorBook) {
         return majorBookMapper.insert(majorBook);
     }

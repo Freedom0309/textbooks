@@ -1,7 +1,9 @@
 package com.textbooks.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.textbooks.entity.Book;
 import com.textbooks.entity.MajorBook;
+import com.textbooks.service.IBookService;
 import com.textbooks.service.IMajorBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.json.JsonObject;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.UUID;
@@ -19,6 +20,9 @@ import java.util.UUID;
 public class MajorBookController {
     @Autowired
     private IMajorBookService majorBookService;
+
+    @Autowired
+    private IBookService bookService;
 
     @RequestMapping("/insertMajorBook")
     @ResponseBody
@@ -71,7 +75,76 @@ public class MajorBookController {
         map.put("code", 0);
         return map;
     }
+    //领取书籍
+    @RequestMapping("/rbup")
+    @ResponseBody
+    public HashMap<String, Object> rbup(HttpServletRequest request){
+        String id  = request.getParameter("majorbookid");
+        MajorBook mb = majorBookService.selectByPrimaryKey(id);
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        if("未领取".equals(mb.getReviewbook())){
+            Book b = bookService.selectByPrimaryKey(mb.getBookid());
+            int count  = Integer.parseInt(b.getCount()) - Integer.parseInt(mb.getCclassnum());
+            String status = "";
+            if(count > 0){
+                int nc = Integer.parseInt(b.getNum()) - count;
+                if( nc >100){
+                    status = "充足";
+                }else if( nc>50 &&nc <= 100){
+                    status = "紧张";
+                }else{
+                    status = "补货";
+                }
+            }else{
+                status="缺货"+String.valueOf(count).replace("-","")+"本";
+                mb.setReviewbook("补书中······");
+                b.setCount(count+"");
+                b.setStatus(status);
+                int i =  majorBookService.updateByPrimaryKeySelective(mb);
+                bookService.updateByPrimaryKeySelective(b);
+                map.put("data", i);
+                map.put("code", 2);
+                map.put("msg", status);
+                return map;
+            }
+            mb.setReviewbook("已领取");
+            b.setCount(count+"");
+            b.setStatus(status);
+            int i =  majorBookService.updateByPrimaryKeySelective(mb);
+            bookService.updateByPrimaryKeySelective(b);
+            map.put("data", i);
+            map.put("code", 0);
+            map.put("msg", "success");
+            return map;
+        }
+        if(("补书中······").equals(mb.getReviewbook())){
+            map.put("code", 2);
+            map.put("msg", "请补书···");
+            return map;
+        }
+        map.put("code", 1);
+        map.put("msg", "faile");
+        return map;
+    }
 
+
+
+
+    @RequestMapping("/edit")
+    @ResponseBody
+    public HashMap<String, Object> edit(HttpServletRequest request){
+        // id
+        String id = request.getParameter("id");
+        String value = request.getParameter("value");
+        MajorBook mb = majorBookService.selectByPrimaryKey(id);
+        mb.setCclassnum(value);
+        int i =  majorBookService.updateByPrimaryKeySelective(mb);
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("code", 0);
+        map.put("data",i);
+        map.put("msg", "success");
+        return map;
+    }
 
 
 }

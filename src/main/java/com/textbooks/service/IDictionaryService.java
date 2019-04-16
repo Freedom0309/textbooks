@@ -14,4 +14,8 @@ public interface IDictionaryService {
 
     //树数据
     List<HashMap<String, Object>> selectData();
+
+    int insert(Dictionary dic);
+    //删除
+    int deleteByPrimaryKey(String id);
 }

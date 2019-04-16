@@ -11,6 +11,7 @@ import java.util.List;
 public interface IBookService {
 
     Book selectByPrimaryKey(String id);
+    int updateByPrimaryKeySelective(Book book);
 
     int deleteByids(String[] arr);
 
@@ -24,5 +25,6 @@ public interface IBookService {
 
     List<Book> getBookByPage(Integer page, Integer size);
 
+    int updateCount(String id,String count);
 
 }
