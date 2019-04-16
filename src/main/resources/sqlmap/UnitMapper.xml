@@ -18,6 +18,7 @@
     <result column="delflag" property="delflag" jdbcType="TINYINT" />
     <result column="sysopby" property="sysopby" jdbcType="VARCHAR" />
     <result column="syscreatetime" property="syscreatetime" jdbcType="TIMESTAMP" />
+    <association property=""></association>
   </resultMap>
   <sql id="Base_Column_List" >
     id, parentid, path, name, aliasname, unitcode, note, address, telephone, email, website,
@@ -47,6 +48,7 @@
   </insert>
   <insert id="insertSelective" parameterType="com.textbooks.entity.Unit" >
     insert into t_sys_unit
+    
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
@@ -216,4 +218,13 @@
       delflag = #{delflag,jdbcType=TINYINT}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="fuzzyQuery" parameterType="Unit" resultType="Unit">
+    select * from t_sys_unit
+    where 1=1
+    <if test="name != null">
+      and name like #{name}
+    </if>
+
+  </select>
+  <cache></cache>
 </mapper>
