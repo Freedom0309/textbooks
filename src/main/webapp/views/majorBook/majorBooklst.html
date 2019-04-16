@@ -156,6 +156,32 @@
 
                 });
             }
+            if(obj.event === 'del') {
+                layer.confirm('确定删除', function(index){
+                    console.log(data);
+                    $.ajax({
+                        url: "/majorBook/del",
+                        type: "get",
+                        data:{"id":data.id },
+                        dataType: "json",
+                        success: function(data){
+                            if(data.data){
+                               // obj.del();
+                                layer.close(index);
+                                layer.msg("删除成功", {icon: 6});
+                                window.location.reload();
+
+                            }else{
+                                layer.msg("删除失败", {icon: 5});
+                            }
+                        }
+
+                    });
+                });
+            }
+
+
+
 
         });
 

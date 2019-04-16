@@ -78,7 +78,7 @@ public class NoticeController {
             return  ro;
 
         }
-        String content ="学院："+college+"专业："+major+"班级："+cclass+"在:"+place+"领取图书《"+name+"》"+cclassnum+"本";
+        String content ="学院："+college+"-专业："+major+"-班级："+cclass+"-在:"+place+"领取图书《"+name+"》"+cclassnum+"本";
         Notice notice = new Notice();
         notice.setId(UUID.randomUUID().toString().replace("-", ""));
         notice.setTheme("领书公告");
@@ -94,6 +94,8 @@ public class NoticeController {
         ro.put("code", 0);
         return  ro;
     }
+
+
 
 
 }

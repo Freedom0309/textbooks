@@ -24,4 +24,8 @@ public interface INoticeService {
     List<HashMap<String, Object>> getNoticeByPage(Integer start, Integer size);
 
     Notice selectByMajorBookKey(String majorbookid);
+
+    List<HashMap<String, Object>> getfrontNotice();
+
+
 }
