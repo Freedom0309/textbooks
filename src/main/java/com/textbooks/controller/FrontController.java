@@ -20,9 +20,18 @@ public class FrontController {
 
     @RequestMapping("/index")
     @ResponseBody
-    public ModelAndView majorBooklst(HttpServletRequest request) {
+    public ModelAndView noticelst(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("front/index");
+        return modelAndView;
+
+    }
+
+    @RequestMapping("/index1")
+    @ResponseBody
+    public ModelAndView noticelst1(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("front/index1");
         return modelAndView;
 
     }

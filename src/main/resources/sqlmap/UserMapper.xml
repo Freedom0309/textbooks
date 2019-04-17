@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.textbooks.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.textbooks.entity.User" >
+    <id column="loginname" property="loginname" jdbcType="VARCHAR" />
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="isonline" property="isonline" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    loginname, id, password, isonline
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_user
+    where loginname = #{loginname,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_sys_user
+    where loginname = #{loginname,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.textbooks.entity.User" >
+    insert into t_sys_user (loginname, id, password, 
+      isonline)
+    values (#{loginname,jdbcType=VARCHAR}, #{id,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{isonline,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.textbooks.entity.User" >
+    insert into t_sys_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="loginname != null" >
+        loginname,
+      </if>
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="isonline != null" >
+        isonline,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="loginname != null" >
+        #{loginname,jdbcType=VARCHAR},
+      </if>
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="isonline != null" >
+        #{isonline,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.textbooks.entity.User" >
+    update t_sys_user
+    <set >
+      <if test="id != null" >
+        id = #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="isonline != null" >
+        isonline = #{isonline,jdbcType=TINYINT},
+      </if>
+    </set>
+    where loginname = #{loginname,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.textbooks.entity.User" >
+    update t_sys_user
+    set id = #{id,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      isonline = #{isonline,jdbcType=TINYINT}
+    where loginname = #{loginname,jdbcType=VARCHAR}
+  </update>
+
+</mapper>

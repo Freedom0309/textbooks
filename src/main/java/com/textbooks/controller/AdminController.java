@@ -1,6 +1,8 @@
 package com.textbooks.controller;
 
-import com.textbooks.service.impl.BookService;
+import com.textbooks.entity.User;
+import com.textbooks.service.IBookService;
+import com.textbooks.service.IUserService;
 import com.textbooks.service.impl.TextbooksService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +21,10 @@ public class AdminController {
    private TextbooksService textbooksService;
 
     @Autowired
-    private BookService bookService;
+    private IBookService bookService;
+
+    @Autowired
+    private IUserService userService;
 
     @RequestMapping("/index")
     @ResponseBody
@@ -29,7 +34,7 @@ public class AdminController {
         System.out.println("qqq");
         //page=1&limit=10
         /*     modelAndView.addAttribute("user", user);*/
-        modelAndView.setViewName("admin/index");
+        modelAndView.setViewName("admin/index11");
         return modelAndView;
 
     }
@@ -74,5 +79,33 @@ public class AdminController {
         return modelAndView;
     }
 
+    @RequestMapping("/loginUser")
+    @ResponseBody
+    public HashMap<String, Object> loginUser(HttpServletRequest request){
+        HashMap<String, Object> ro = new HashMap<String, Object>();
+        String loginname = request.getParameter("loginname");
+        String password = request.getParameter("password");
+        User user =  userService.selectByPrimaryKey(loginname);
+        if(user != null){
+            if(user.getPassword().equals(password)){
+                user.setIsonline(Byte.valueOf("1"));
+                userService.updateByPrimaryKeySelective(user);
+                ro.put("data", user);
+                ro.put("msg", "success");
+                ro.put("code", 0);
+            }else{
+                ro.put("data", "");
+                ro.put("msg", "账号密码错误");
+                ro.put("code", 1);
+            }
+
+        }else{
+            ro.put("data", "");
+            ro.put("msg", "用户不存在");
+            ro.put("code", 1);
+        }
+
+        return ro;
+    }
 
 }

@@ -1,21 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>new.html</title>
+    <title>登录教材管理系统</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="../static/layui/css/layui.css">
     <style>
         .layui-form-item {margin:10px}
-        #form1 {
-            height: 50%;
-            width: 50%;
-            position: absolute;
-            background-color: #FFFFFF;
-            top: 30%;
-            right: 20%;
-        }
-
-
     </style>
 </head>
 <body>
@@ -29,9 +19,8 @@
     <div class="layui-form-item">
         <label class="layui-form-label">密码</label>
         <div class="layui-input-inline">
-            <input type="password" name="password" lay-verify="required|pass" placeholder="请输入密码" autocomplete="off" class="layui-input">
+            <input type="password" name="password" lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
         </div>
-        <div class="layui-form-mid layui-word-aux">请填写6到12位密码</div>
     </div>
 
     <div class="layui-form-item">
@@ -57,25 +46,49 @@
             ,$ = layui.$
             ,laydate = layui.laydate;
 
-        //自定义验证
+    /*    //自定义验证
         form.verify({
             title: function(value){
                 if(value.length < 2){
                     return '用户名至少得2个字符';
                 }
             }
-            ,pass: [
-                /^[\S]{6,12}$/
-                ,'密码必须6到12位，且不能出现空格'
-            ]
         });
 
+
         form.on('submit(formDemo)', function(data){
-            layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-            })
             return false;
+        });*/
+
+        $('#submit').click(function(){
+           var loginname = $("#form1 input[name='loginname']").val();
+           var password = $("#form1 input[name='password']").val();
+            $.ajax({
+                url: "/admin/loginUser",
+                type: "POST",
+                //data:{"bookId":data.bookId,"memthodname":"edituv","field":field,"value":value},
+                data:{"loginname":loginname,"password":password},
+                dataType: "json",
+                success: function(data){
+                    console.log(data);
+                    if(data.code===0){
+                        //同步更新表格和缓存对应的值
+                       layer.msg("登陆成功", {icon: 6});
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                       // parent.layer.msg("登陆成功", {icon: 6});
+                       // parent.location.reload();
+                        parent.location.href="/index.html";
+                    }else{
+                        layer.msg(""+data.msg, {icon: 5});
+                    }
+                }
+
+            });
+
         });
+
+
 
 
         //结束

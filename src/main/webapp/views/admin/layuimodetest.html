@@ -17,12 +17,12 @@
     layui.config({
         base: '/static/layui/lay/modulemy/' //假设这是你存放拓展模块的根目录
     }).extend({ //设定模块别名
-        index: 'index' //如果 mymod.js 是在根目录，也可以不用设定别名
+        index: 'index11.html' //如果 mymod.js 是在根目录，也可以不用设定别名
         ,common:'common'
     });
 
-    layui.use(['index', 'layer'], function(){
-        var mymod = layui.index;
+    layui.use(['index11.html', 'layer'], function(){
+        var mymod = layui.index11;
         mymod.hello("asdasd"); //弹出 Hello World!
     });
 

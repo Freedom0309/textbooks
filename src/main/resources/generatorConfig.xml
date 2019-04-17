@@ -76,7 +76,13 @@
             <property name="useActualColumnNames" value="false" />
         </table>-->
 
-        <table tableName="t_app_notice" domainObjectName="Notice"
+      <!--  <table tableName="t_app_notice" domainObjectName="Notice"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <property name="useActualColumnNames" value="false" />
+        </table>-->
+        <table tableName="t_sys_user" domainObjectName="User"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">

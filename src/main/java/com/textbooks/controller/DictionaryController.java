@@ -67,7 +67,7 @@ public class DictionaryController {
     //删除
     //insertDic 新增字典
 
-    @RequestMapping("/delDic")
+    @RequestMapping("/admin")
     @ResponseBody
     public HashMap<String, Object> delDic(HttpServletRequest request){
 
