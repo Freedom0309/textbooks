@@ -23,7 +23,7 @@ public interface IBookService {
 
     int updateByfieds(HashMap<String, Object> map);
 
-    List<Book> getBookByPage(Integer page, Integer size);
+    List<Book> getBookByPage(Integer page, Integer size,String key);
 
     int updateCount(String id,String count);
 

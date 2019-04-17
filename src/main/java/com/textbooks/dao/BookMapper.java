@@ -31,5 +31,11 @@ public interface BookMapper {
     @Update("update t_app_books set count = #{count} where id=#{id}")
     int updateCount(@Param("id") String id,@Param("count") String count);
 
-    List<Book> getBookByPage(@Param("start") Integer start, @Param("size") Integer size);
+    List<Book> getBookByPage(@Param("start") Integer start, @Param("size") Integer size,@Param("key")String key);
+
+/*
+    @Select("select * from t_app_books where name like '%${key}%' limit ${start},${size}")
+    List<Book> getBookByPageKey(@Param("start")Integer start,  @Param("size") Integer size, @Param("key")String key);
+*/
+
 }

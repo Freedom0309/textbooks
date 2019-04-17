@@ -17,7 +17,7 @@
 <hr>
 <!--工具栏 -->
 <div class="demoTable">
-    <label class="layui-form-label">搜索</label>
+    <label class="layui-form-label">教材名称</label>
     <div class="layui-inline">
         <input class="layui-input" name="keyword" id="demoReload" autocomplete="off">
     </div>
@@ -289,13 +289,13 @@
                             return;
                         }
                         $.ajax({
-                            url: "/majorBook/insertMajorBook",
+                            url: "/admin/insuser",
                             type: "POST",
                             data:data.serialize(),
                             dataType: "json",
-                            success: function(data){
-                                if(data.data){
-                                    layer.alert('分配成功!',function(){
+                            success: function(res){
+                                if(res.code===0){
+                                    layer.alert('添加成功!',function(){
                                         layer.closeAll();
                                         table.reload('testReload', {
                                             where: {
@@ -304,7 +304,7 @@
                                         });
                                     });
                                 }else{
-                                    layer.msg("分配失败", {icon: 5});
+                                    layer.msg(""+res.msg, {icon: 5});
                                 }
                             }
                         });

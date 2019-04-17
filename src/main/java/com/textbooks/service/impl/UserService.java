@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 
 @Service("userService")
 public class UserService implements IUserService {
@@ -43,5 +44,23 @@ public class UserService implements IUserService {
     @Override
     public int updateByPrimaryKey(User record) {
         return userMapper.updateByPrimaryKeySelective(record);
+    }
+
+    @Override
+    public int getcount() {
+        return userMapper.getcount();
+    }
+
+    @Override
+    public List<User> getUserByPage(Integer page, Integer size) {
+        if(page == null || page <= 0){
+            page = 1;
+        }
+        if (size == null || size <= 0){
+            size = 10;
+        }
+        Integer start = (page - 1) * size;
+        return  userMapper.getUserByPage(start,size);
+
     }
 }

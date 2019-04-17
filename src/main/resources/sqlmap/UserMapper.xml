@@ -79,5 +79,9 @@
       isonline = #{isonline,jdbcType=TINYINT}
     where loginname = #{loginname,jdbcType=VARCHAR}
   </update>
+  <!-- 分页使用SQL  SQL中传入的第一个参数为开始的行数，第二个参数为数据条数。-->
+  <select id="getUserByPage"  resultType="com.textbooks.entity.User" >
+        select * from t_sys_user limit #{start},#{size}
+  </select>
 
 </mapper>

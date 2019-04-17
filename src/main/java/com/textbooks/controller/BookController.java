@@ -36,12 +36,12 @@ public class BookController {
     @RequestMapping("/findbookAll")
     @ResponseBody
     public HashMap<String, Object> findbookAll(HttpServletRequest request) {
-        //
+
         String page = request.getParameter("page");
         String limit = request.getParameter("limit");
         String key =  request.getParameter("key");
         HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("data", bookService.getBookByPage(Integer.parseInt(page),Integer.parseInt(limit)));
+        map.put("data", bookService.getBookByPage(Integer.parseInt(page),Integer.parseInt(limit),key));
         map.put("count", bookService.getcount());
         map.put("msg", "success");
         map.put("code", 0);

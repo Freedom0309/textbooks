@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<body>
+
+<table class="layui-hide" id="test" lay-filter="test"></table>
+
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="insert">新增/修改</button>
+    </div>
+</script>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+
+<script src="../static/js/jquery.js"></script>
+<script src="../static/layui/layui.js" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+
+        table.render({
+            elem: '#test'
+            ,url:'/admin/getUserlist'
+            ,done: function(res, curr, count) { //表格数据加载完后的事件
+                    $(".layui-table-box").find("[data-field='id']").css("display","none");
+            }
+            ,id:'testReload'
+            ,toolbar: '#toolbarDemo'
+            ,title: '用户数据表'
+            ,cols: [[
+                {type: 'checkbox', fixed: 'left'}
+                ,{field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true,hide:true}
+                ,{field:'loginname', title:'用户名', width:200,}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:400}
+            ]]
+            ,page: true
+        });
+
+        //头工具栏事件
+        table.on('toolbar(test)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch(obj.event){
+                case 'insert':
+                    var body;
+                    layer.open({
+                        type:2,
+                        title: '' +
+                            '<li id="icon" class="layui-icon layui-icon-tabs layui-anim layui-anim-scaleSpring" ' +
+                            'style="font-size: 30px; color: #009688;" data-anim="layui-anim-scaleSpring"></li> 用户名存在则修改-不存在则新增 ',
+                        shadeClose: true,
+                        shade: false,
+                        btn: ['确定','取消'],
+                        maxmin: true, //开启最大化最小化按钮
+                        area: ['470px', '200px'],//area: [window.screen.width / 2 + 'px', window.screen.height / 2 + 'px'], //宽高
+                        content: "/admin/insertUser"
+                        ,success: function(layero, index){
+                            console.log(layero, index);
+                            body = layer.getChildFrame('body',index);
+                          /*  body.find("input#name").val(data.name);
+                            body.find("input#id").val(data.id);*/
+                        }
+                        ,yes: function(layero, index){
+                            var data = body.find("#form1");
+                            var loginname = body.find("input[name='loginname']").val();
+                            var password = body.find("input[name='password']").val();
+                            if(loginname == ""){
+                                layer.msg("用户名不能为空", {icon: 5});
+                                return;
+                            }
+                            if(loginname == ""){
+                                layer.msg("密码不能为空", {icon: 5});
+                                return;
+                            }
+                            $.ajax({
+                                url: "/admin/insuser",
+                                type: "POST",
+                                data:data.serialize(),
+                                dataType: "json",
+                                success: function(data){
+                                    if(data.data){
+                                        layer.alert('新增成功!',function(){
+                                            layer.closeAll();
+                                            table.reload('testReload', {
+                                                where: {
+                                                    key: ""
+                                                }
+                                            });
+                                        });
+                                    }else{
+                                        layer.msg("新增失败", {icon: 5});
+                                    }
+                                }
+                            });
+
+
+
+                        }
+                        ,btn2:function(layero, index){
+
+                        }
+                    });
+                    break;
+            };
+        });
+
+        //监听行工具事件
+        table.on('tool(test)', function(obj){
+            var data = obj.data;
+            //console.log(obj)
+            if(obj.event === 'del'){
+                layer.confirm('真的删除行么', function(index){
+                    console.log(data);
+                    $.ajax({
+                        url: "/admin/deluser",
+                        type: "GET",
+                        data: {"loginname": data.loginname},
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.code === 0) {
+                                layer.close(index);
+                                layer.msg("删除成功", {icon: 6});
+                                window.location.reload();
+                            } else {
+                                layer.msg("删除失败", {icon: 5});
+                            }
+                        }
+                    });
+                });
+            } else if(obj.event === 'edit'){
+                layer.prompt({
+                    formType: 2
+                    ,value: data.email
+                }, function(value, index){
+                    obj.update({
+                        email: value
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

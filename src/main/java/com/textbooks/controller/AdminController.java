@@ -12,64 +12,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
 
     @Autowired
-   private TextbooksService textbooksService;
-
-    @Autowired
-    private IBookService bookService;
-
-    @Autowired
     private IUserService userService;
-
-    @RequestMapping("/index")
-    @ResponseBody
-    public ModelAndView adminIndex(){
-        ModelAndView modelAndView = new ModelAndView();
-        System.out.println("asa");
-        System.out.println("qqq");
-        //page=1&limit=10
-        /*     modelAndView.addAttribute("user", user);*/
-        modelAndView.setViewName("admin/index11");
-        return modelAndView;
-
-    }
-    @RequestMapping("/console1")
-    @ResponseBody
-    public ModelAndView console1Index(){
-        ModelAndView modelAndView = new ModelAndView();
-        System.out.println("console1");
-        System.out.println("console1");
-
-        /*     modelAndView.addAttribute("user", user);*/
-        modelAndView.setViewName("admin/console1");
-        modelAndView.addObject("");
-
-        return modelAndView;
-
-    }
-
-    @ResponseBody
-    @RequestMapping("/unitPage")
-    public ModelAndView homepage(){
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("unit/unitList");
-        return modelAndView;
-    }
-
-
-    @ResponseBody
-    @RequestMapping("/layuitest")
-    public ModelAndView layuimodetest(){
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("admin/layuimodetest");
-        return modelAndView;
-    }
-
 
     @ResponseBody
     @RequestMapping("/login")
@@ -107,5 +57,78 @@ public class AdminController {
 
         return ro;
     }
+
+    @RequestMapping("/userList")
+    @ResponseBody
+    public ModelAndView userList(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("user/userlist");
+        return modelAndView;
+    }
+
+    @RequestMapping("/getUserlist")
+    @ResponseBody
+    public HashMap<String, Object> getUserlist(HttpServletRequest request){
+        String page = request.getParameter("page");
+        String limit = request.getParameter("limit");
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("data", userService.getUserByPage(Integer.parseInt(page),Integer.parseInt(limit)));
+        map.put("count", userService.getcount());
+        map.put("msg", "success");
+        map.put("code", 0);
+        return map;
+    }
+
+    //insertUser
+    @RequestMapping("/insertUser")
+    @ResponseBody
+    public ModelAndView insertUserView(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("user/insert");
+        return modelAndView;
+    }
+
+
+    @RequestMapping("/insuser")
+    @ResponseBody
+    public HashMap<String, Object> insertUser(HttpServletRequest request){
+        String loginname = request.getParameter("loginname");
+        String password = request.getParameter("password");
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        User user = userService.selectByPrimaryKey(loginname);
+        int i = 0;
+        if(user!=null){
+            user.setPassword(password);
+            i = userService.updateByPrimaryKeySelective(user);
+            map.put("code", 0);
+        }else{
+            user = new User();
+            user.setId(UUID.randomUUID().toString().replace("-", ""));
+            user.setLoginname(loginname);
+            user.setPassword(password);
+            user.setIsonline(Byte.valueOf("0"));
+            i =  userService.insert(user);
+            map.put("code", 0);
+        }
+        map.put("data", i);
+        map.put("count", userService.getcount());
+        map.put("msg", "success");
+
+        return map;
+    }
+
+   // delUser
+   @RequestMapping("/deluser")
+   @ResponseBody
+   public HashMap<String, Object> deluser(HttpServletRequest request){
+
+        String loginname = request.getParameter("loginname");
+        HashMap<String, Object> map = new HashMap<String, Object>();
+           map.put("code", 0);
+           map.put("data", userService.deleteByPrimaryKey(loginname));
+           map.put("count", userService.getcount());
+           map.put("msg", "success");
+        return map;
+   }
 
 }

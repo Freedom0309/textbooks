@@ -54,7 +54,7 @@ public class BookService implements IBookService {
     }
 
     @Override
-    public List<Book> getBookByPage(Integer page, Integer size) {
+    public List<Book> getBookByPage(Integer page, Integer size,String key) {
         if(page == null || page <= 0){
             page = 1;
         }
@@ -62,7 +62,7 @@ public class BookService implements IBookService {
             size = 10;
         }
         Integer start = (page - 1) * size;
-        return  bookMapper.getBookByPage(start,size);
+        return  bookMapper.getBookByPage(start,size,key);
 
     }
 
@@ -70,5 +70,6 @@ public class BookService implements IBookService {
     public int updateCount(String id, String count) {
         return bookMapper.updateCount(id,count);
     }
+
 
 }

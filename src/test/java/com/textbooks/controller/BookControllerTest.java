@@ -63,10 +63,11 @@ class BookControllerTest {
         System.out.println(i);*/
 
 
-       // System.out.println(bookMapper.getBookByPage(0,10));
+    /*   // System.out.println(bookMapper.getBookByPage(0,10));
         Book b  = bookMapper.selectByPrimaryKey("bd582fa2241c494b992a409c0a65b084");
         b.setStatus("紧张");
-        System.out.println(bookMapper.updateByPrimaryKeySelective(b));
+        System.out.println(bookMapper.updateByPrimaryKeySelective(b));*/
+
     }
 
 }
