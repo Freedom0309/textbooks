@@ -280,13 +280,6 @@
                 }
 
                 return false;
-
-                console.log($(document).width(), e.clientX, popupmenu.width());
-                console.log($(document).height(), e.clientY, popupmenu.height())
-                l = ($(document).width() - e.clientX) < popupmenu.width() ? (e.clientX - popupmenu.width()) : e.clientX;
-                t = ($(document).height() - e.clientY) < popupmenu.height() ? (e.clientY - popupmenu.height()) : e.clientY;
-                popupmenu.css({ left: l, top: t }).show();
-                //alert("右键菜单")
             });
         }
         //就需要给右键添加功能
