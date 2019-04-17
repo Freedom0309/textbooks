@@ -6,6 +6,7 @@ import com.textbooks.service.INoticeService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -64,5 +65,25 @@ public class NoticeService implements INoticeService {
     @Override
     public Notice selectByMajorBookKey(String majorbookid) {
         return noticeMapper.selectByMajorBookKey(majorbookid);
+    }
+
+    //前台公告展示
+    @Override
+    public List<HashMap<String, Object>> getfrontNotice() {
+        List<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+        List<HashMap<String, Object>> monList = noticeMapper.selectMonth();
+        if(monList.size()>0){
+            for(int i=0;i<monList.size();i++){
+                HashMap<String, Object>  map =  new HashMap<String, Object>();
+                String mon = monList.get(i).get("time").toString();
+                String total = monList.get(i).get("total").toString();
+                List<HashMap<String, Object>> dayList = noticeMapper.selectbyMon(mon);
+                map.put("mon",mon);
+                map.put("total",total);
+                map.put("dayList",dayList);
+                list.add(map);
+            }
+        }
+        return list;
     }
 }

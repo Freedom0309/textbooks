@@ -16,6 +16,10 @@
     <result column="reviewbook" property="reviewbook" jdbcType="VARCHAR" />
     <result column="syscreatime" property="syscreatime" jdbcType="TIMESTAMP" />
   </resultMap>
+  <resultMap id="monthMap" type="java.util.HashMap" >
+    <id column="time" property="time" jdbcType="VARCHAR" />
+    <result column="total" property="total" jdbcType="VARCHAR" />
+  </resultMap>
   <sql id="Base_Column_List" >
     id, theme, majorbookid, content, syscreatime
   </sql>
@@ -102,5 +106,14 @@
   <!-- 分页使用SQL  SQL中传入的第一个参数为开始的行数，第二个参数为数据条数。-->
   <select id="getNoticeByPage"  resultMap="pageMap" >
         select note.id,note.theme,note.majorbookid,note.content,note.syscreatime,mb.reviewbook from t_app_notice note left join t_app_majorbook mb on note.majorbookid = mb.id   limit #{start},#{size}
+  </select>
+
+  <!--查询月份 -->
+  <select id="selectMonth"  resultMap="monthMap" >
+        select  DATE_FORMAT( syscreatime, "%Y-%m" ) as time ,count(*) AS total FROM t_app_notice GROUP BY MONTH(syscreatime) ORDER BY time DESC;
+  </select>
+  <!--查询下的数据 -->
+  <select id="selectbyMon"  resultMap="pageMap" >
+       select note.id,note.theme,note.majorbookid,note.content,note.syscreatime,mb.reviewbook from t_app_notice note left join t_app_majorbook mb on note.majorbookid = mb.id WHERE  note.syscreatime like  '${mon}%' ORDER BY note.syscreatime DESC
   </select>
 </mapper>

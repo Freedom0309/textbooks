@@ -28,4 +28,8 @@ public interface NoticeMapper {
 
     List<HashMap<String, Object>>  getNoticeByPage(@Param("start") Integer start, @Param("size") Integer size);
 
+
+    List<HashMap<String, Object>> selectMonth();
+
+    List<HashMap<String, Object>>  selectbyMon(@Param("mon") String mon);
 }

@@ -66,5 +66,13 @@ public class AdminController {
     }
 
 
+    @ResponseBody
+    @RequestMapping("/login")
+    public ModelAndView adminlogin(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("admin/login");
+        return modelAndView;
+    }
+
 
 }

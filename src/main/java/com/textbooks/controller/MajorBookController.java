@@ -50,8 +50,6 @@ public class MajorBookController {
     @ResponseBody
     public ModelAndView majorBooklst(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView();
-        System.out.println("console1111");
-        modelAndView.addObject("user", "sdsad");
         modelAndView.setViewName("majorBook/majorBooklst");
         return modelAndView;
 
@@ -146,5 +144,17 @@ public class MajorBookController {
         return map;
     }
 
+    @RequestMapping("/del")
+    @ResponseBody
+    public HashMap<String, Object> del(HttpServletRequest request){
+        // id
+        String id = request.getParameter("id");
+        int i =  majorBookService.deleteByPrimaryKey(id);
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("code", 0);
+        map.put("data",i);
+        map.put("msg", "success");
+        return map;
+    }
 
 }
