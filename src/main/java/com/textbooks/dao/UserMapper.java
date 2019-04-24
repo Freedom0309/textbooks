@@ -22,5 +22,5 @@ public interface UserMapper {
     @Select("select count(*) from t_sys_user")
     int getcount();
 
-    List<User> getUserByPage(@Param("start") Integer start, @Param("size") Integer size);
+    List<User> getUserByPage(@Param("start") Integer start, @Param("size") Integer size,@Param("key")String key);
 }

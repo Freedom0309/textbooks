@@ -23,9 +23,26 @@
         </div>
     </div>
 
+    <div class="layui-form-item" >
+        <label class="layui-form-label">角色信息</label>
+        <div class="layui-input-block">
+            <select name="roleuser" lay-verify="required" lay-search lay-filter="filter" id="view">
+            </select>
+        </div>
+    </div>
+
 </form>
 
 </div>
+<script id="demo" type="text/html">
+    <option value=""></option>
+    {{# layui.each(d,function(index,item){ }}
+    <option value="{{=item.dvalue}}">{{item.dtext}}</option>
+    {{#  }); }}
+    {{#  if(d.length === 0){ }}
+    无数据
+    {{#  } }}
+</script>
 
 <script src="../static/js/jquery.js"></script>
 <script src="../static/layui/layui.js" charset="utf-8"></script>
@@ -37,6 +54,29 @@
         var table = layui.table;
         var upload = layui.upload;
         var layer = layui.layer;
+        var laytpl = layui.laytpl;
+        //下拉框刷新
+
+        //下拉列表
+        $.ajax({
+            url: "/dictionary/ajax_get_dic",
+            type: "post",
+            data:{"dkey":"app.roleuser"},
+            dataType: "json",
+            success: function(data) {
+                if (data.code == 0) {
+                    var getTpl = document.getElementById('demo').innerHTML
+                        , view = document.getElementById('view');
+                    laytpl(getTpl).render(data.data, function (html) {
+                        console.log(data.data);
+                        view.innerHTML = html;
+                        //$("#view").append(html);
+                        form.render('select');
+                    });
+                }
+            }
+
+        });
 
     });
 

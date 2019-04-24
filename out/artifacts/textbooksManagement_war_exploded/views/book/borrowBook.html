@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>教材分配界面</title>
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+</head>
+<body>
+<fieldset class="layui-elem-field layui-field-title ">
+    <legend>
+        <li id="icon"
+            class="layui-icon layui-icon-face-smile layui-anim layui-anim-rotate "
+            style="font-size: 30px; color: #1E9FFF;"
+            data-anim="layui-anim-rotate"></li> <span style="font-size: 8px">教材分配</span>
+    </legend>
+    <br>
+    <div class="layui-field-box" style="width: 97%">
+        <form class="layui-form" action="" id="form1">
+            <div class="layui-hide" >
+            <!--<div class="layui-form-item">-->
+                <label class="layui-form-label">教材id：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="id" id="id"  autocomplete="off"  class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">教材名：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" id="name" disabled="disabled"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item" >
+                <label class="layui-form-label">学院：</label>
+                <div class="layui-input-block" >
+                    <select name="collegeid" lay-verify="required" lay-search lay-filter="college" id="college">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item" >
+                <label class="layui-form-label">专业：</label>
+                <div class="layui-input-block">
+                    <select name="majorid" lay-verify="required" lay-search lay-filter="major" id="major">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item" >
+                <label class="layui-form-label">班级：</label>
+                <div class="layui-input-block" >
+                    <select name="classid" lay-verify="required" lay-search lay-filter="class" id="class">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">教材数量：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="cclassnum" required  placeholder="请输入教材数量" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">领取地点：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="place" required  placeholder="请输入地点" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+<!--
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户名/学号:</label>
+                <div class="layui-input-block">
+                    <input type="text" name="username" id="username" lay-verify="title"
+                           autocomplete="off" placeholder="请输入学号或用户名" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux"></div>
+            </div>-->
+            <br>
+            <br>
+        </form>
+    </div>
+</fieldset>
+<!--学院 -->
+<script id="collegeHtml" type="text/html">
+    {{#  if(d.length >0 ){  }}
+    <option value=""></option>
+    {{# layui.each(d,function(index,item){ }}
+    <option value="{{=item.id}}">{{item.dtext}}</option>
+    {{#  }); }}
+    {{#  } }}
+    {{#  if(d.length === 0){ }}
+    <option value=""></option>
+    {{#  } }}
+</script>
+
+<script id="majorHtml" type="text/html">
+    {{#  if(d.length >0 ){  }}
+    <option value=""></option>
+    {{# layui.each(d,function(index,item){ }}
+    <option value="{{=item.id}}">{{item.dtext}}</option>
+    {{#  }); }}
+    {{#  } }}
+    {{#  if(d.length === 0){ }}
+    <option value=""></option>
+    {{#  } }}
+</script>
+<script id="classHtml" type="text/html">
+    {{#  if(d.length >0 ){  }}
+    <option value=""></option>
+    {{# layui.each(d,function(index,item){ }}
+    <option value="{{=item.id}}">{{item.dtext}}</option>
+    {{#  }); }}
+    {{#  } }}
+    {{#  if(d.length == 0){ }}
+    <option value=""></option>
+    {{#  } }}
+</script>
+<script src="../static/js/jquery.js"></script>
+<script src="../static/layui/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['layer', 'table','element','form','laydate','jquery','laytpl'], function(){
+
+        var form = layui.form,
+            layer = layui.layer,
+            layedit = layui.layedit,
+            laydate = layui.laydate,
+            $ = layui.$,
+            laytpl = layui.laytpl;
+
+        //日期控件
+        var dag=window.parent;
+        laydate.render({
+            elem: '#issueDate'
+        });
+        //监听学院select
+        form.on('select(college)', function(data){
+            console.log(data.elem); //得到select原始DOM对象
+            console.log(data.value); //得到被选中的值
+            console.log(data.othis); //得到美化后的DOM对象
+
+            //ajax 获取专业
+            $.ajax({
+                url:"/dictionary/ajax_get_linkage",
+                data:{'pvalue':data.value,"dkey":"app.major"},
+                dataType:'json',
+                async:false,
+                success:function(data){
+                    if (data.code == 0) {
+                        var getTpl = document.getElementById('majorHtml').innerHTML
+                            , view = document.getElementById('major');
+                        laytpl(getTpl).render(data.data, function (html) {
+                            view.innerHTML = html;
+                            form.render('select');
+                        });
+                    }
+                }
+
+            });
+        });
+        //监听专业select
+        form.on('select(major)', function(data){
+            console.log(data.elem); //得到select原始DOM对象
+            console.log(data.value); //得到被选中的值
+            console.log(data.othis); //得到美化后的DOM对象
+
+            //ajax 获取专业
+            $.ajax({
+                url:"/dictionary/ajax_get_linkage",
+                data:{'pvalue':data.value,"dkey":"app.class"},
+                dataType:'json',
+                async:false,
+                success:function(data){
+                    if (data.code == 0) {
+                        var getTpl = document.getElementById('classHtml').innerHTML
+                            , view = document.getElementById('class');
+                        laytpl(getTpl).render(data.data, function (html) {
+                            view.innerHTML = html;
+                            form.render('select');
+                        });
+                    }
+                }
+
+            });
+        });
+
+
+        //下拉列表框
+        $.ajax({
+            url: "/dictionary/ajax_get_dic",
+            type: "post",
+            data:{"dkey":"app.college"},
+            dataType: "json",
+            success: function(data) {
+                if (data.code == 0) {
+                    var getTpl = document.getElementById('collegeHtml').innerHTML
+                        , view = document.getElementById('college');
+                    laytpl(getTpl).render(data.data, function (html) {
+                        console.log(data.data);
+                        view.innerHTML = html;
+                        //$("#view").append(html);
+                        form.render('select');
+                    });
+                }
+            }
+
+        });
+
+        form.render();
+      //  console.log($("#id").val());
+    });
+    //监听身份证信息
+    $(function(){
+        $("#username").blur(function(){
+            var value=$(this).val();
+            $.ajax({
+                async:true,  //异步加载
+                data:{"userName":value,"memthodname":"findStuName"}, //参数
+                type:"get",
+                url:"servlet/BookController",
+                dataType:"text",
+                success:function(data){
+                    var toObj = JSON.parse(data);
+                    if(toObj.data.length <= 0){
+                        layer.msg("没有该学号的学生", {icon: 5});
+                    }
+                    //转化成JSON字符串
+                    $("#stuname").val(toObj.data);
+                }
+            });
+        });
+
+
+    });
+</script>
+</body>
+</html>

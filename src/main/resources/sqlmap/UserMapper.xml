@@ -6,9 +6,10 @@
     <result column="id" property="id" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="isonline" property="isonline" jdbcType="TINYINT" />
+    <result column="roleuser" property="roleuser" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    loginname, id, password, isonline
+    loginname, id, password, isonline, roleuser
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -22,9 +23,9 @@
   </delete>
   <insert id="insert" parameterType="com.textbooks.entity.User" >
     insert into t_sys_user (loginname, id, password, 
-      isonline)
+      isonline, roleuser)
     values (#{loginname,jdbcType=VARCHAR}, #{id,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{isonline,jdbcType=TINYINT})
+      #{isonline,jdbcType=TINYINT}, #{roleuser,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.textbooks.entity.User" >
     insert into t_sys_user
@@ -41,6 +42,9 @@
       <if test="isonline != null" >
         isonline,
       </if>
+      <if test="roleuser != null" >
+        roleuser,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="loginname != null" >
@@ -54,6 +58,9 @@
       </if>
       <if test="isonline != null" >
         #{isonline,jdbcType=TINYINT},
+      </if>
+      <if test="roleuser != null" >
+        #{roleuser,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -69,6 +76,9 @@
       <if test="isonline != null" >
         isonline = #{isonline,jdbcType=TINYINT},
       </if>
+      <if test="roleuser != null" >
+        roleuser = #{roleuser,jdbcType=VARCHAR},
+      </if>
     </set>
     where loginname = #{loginname,jdbcType=VARCHAR}
   </update>
@@ -76,12 +86,12 @@
     update t_sys_user
     set id = #{id,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
-      isonline = #{isonline,jdbcType=TINYINT}
+      isonline = #{isonline,jdbcType=TINYINT},
+      roleuser = #{roleuser,jdbcType=VARCHAR}
     where loginname = #{loginname,jdbcType=VARCHAR}
   </update>
   <!-- 分页使用SQL  SQL中传入的第一个参数为开始的行数，第二个参数为数据条数。-->
   <select id="getUserByPage"  resultType="com.textbooks.entity.User" >
-        select * from t_sys_user limit #{start},#{size}
+        select * from t_sys_user where  loginname like '%${key}%' limit #{start},#{size}
   </select>
-
 </mapper>

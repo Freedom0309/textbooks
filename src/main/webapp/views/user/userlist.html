@@ -10,13 +10,25 @@
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
 </head>
 <body>
+<hr>
+<!--工具栏 -->
+<div class="demoTable">
+    <label class="layui-form-label">用户名称</label>
+    <div class="layui-inline">
+        <input class="layui-input" name="keyword" id="demoReload" autocomplete="off">
+    </div>
+    <button class="layui-btn" data-type="reload">搜索</button>
+</div>
+<hr>
 
 <table class="layui-hide" id="test" lay-filter="test"></table>
 
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="insert">新增/修改</button>
+        <button class="layui-btn layui-btn-sm" lay-event="insert">新增</button>
+        <button class="layui-btn layui-btn-sm" lay-event="update">修改</button>
     </div>
+
 </script>
 
 <script type="text/html" id="barDemo">
@@ -29,8 +41,9 @@
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 
 <script>
-    layui.use('table', function(){
+    layui.use(['table','jquery'], function(){
         var table = layui.table;
+        var $ = layui.$;
 
         table.render({
             elem: '#test'
@@ -44,7 +57,8 @@
             ,cols: [[
                 {type: 'checkbox', fixed: 'left'}
                 ,{field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true,hide:true}
-                ,{field:'loginname', title:'用户名', width:200,}
+                ,{field:'loginname', title:'用户名', width:200}
+                ,{field:'roleuser', title:'角色信息', width:200,sort: true}
                 ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:400}
             ]]
             ,page: true
@@ -53,6 +67,8 @@
         //头工具栏事件
         table.on('toolbar(test)', function(obj){
             var checkStatus = table.checkStatus(obj.config.id);
+            var checkStatus = table.checkStatus('testReload')
+                ,data = checkStatus.data;
             switch(obj.event){
                 case 'insert':
                     var body;
@@ -60,12 +76,12 @@
                         type:2,
                         title: '' +
                             '<li id="icon" class="layui-icon layui-icon-tabs layui-anim layui-anim-scaleSpring" ' +
-                            'style="font-size: 30px; color: #009688;" data-anim="layui-anim-scaleSpring"></li> 用户名存在则修改-不存在则新增 ',
+                            'style="font-size: 30px; color: #009688;" data-anim="layui-anim-scaleSpring"></li> 新增用户信息 ',
                         shadeClose: true,
                         shade: false,
                         btn: ['确定','取消'],
                         maxmin: true, //开启最大化最小化按钮
-                        area: ['470px', '260px'],//area: [window.screen.width / 2 + 'px', window.screen.height / 2 + 'px'], //宽高
+                        area: ['470px', '300px'],//area: [window.screen.width / 2 + 'px', window.screen.height / 2 + 'px'], //宽高
                         content: "/admin/insertUser"
                         ,success: function(layero, index){
                             console.log(layero, index);
@@ -114,8 +130,58 @@
                         }
                     });
                     break;
+                case 'update':
+                    if(data.length > 1){
+                        layer.msg("请选择一行数据");
+                        return;
+                    }
+                    if(data.length ===0){
+                        layer.msg("请选择数据");
+                        return;
+                    }
+                    layer.open({
+                        type:2,
+                        title: '' +
+                            '<li id="icon" class="layui-icon layui-icon-tabs layui-anim layui-anim-scaleSpring" ' +
+                            'style="font-size: 30px; color: #009688;" data-anim="layui-anim-scaleSpring"></li> 修改用户信息 ',
+                        shadeClose: true,
+                        shade: false,
+                        maxmin: true, //开启最大化最小化按钮
+                        area: ['470px', '400px'],//area: [window.screen.width / 2 + 'px', window.screen.height / 2 + 'px'], //宽高
+                        content: "/admin/updateUserView"
+                        ,success: function(layero, index){
+                            console.log(layero, index);
+                            body = layer.getChildFrame('body',index);
+                             body.find("input#loginname").val(data[0].loginname);
+                             body.find("#roleuserold").val(data[0].roleuser);
+                            //("#eventLevel option[value='3']").attr("selected","selected")
+                           // body.find("#roleuser ption[value="+data[0].roleuser+"]").attr("selected","selected");
+
+                        }
+                    });
+                    break;
             };
         });
+
+
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+
+        });
+        //这是layui所又除了表格按钮之外的按钮监听实现出，属性与button的data-type属性相对应
+        var $ = layui.$, active = {
+            //搜索按钮 key的值是搜索框的值
+            reload: function(){
+                var demoReload = $('#demoReload');
+                //传入搜索值
+                table.reload('testReload', {
+                    where: {
+                        key: demoReload.val()
+                    }
+                });
+            }}
 
         //监听行工具事件
         table.on('tool(test)', function(obj){
@@ -152,6 +218,8 @@
                 });
             }
         });
+
+
     });
 </script>
 

@@ -73,6 +73,31 @@ public class MajorBookController {
         map.put("code", 0);
         return map;
     }
+
+    @RequestMapping("/majorBooklstALL")
+    @ResponseBody
+    public ModelAndView majorBooklstALL(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("majorBook/majorBookALL");
+        return modelAndView;
+
+    }
+    @RequestMapping("/listAll")
+    @ResponseBody
+    public HashMap<String, Object> listAll(HttpServletRequest request,String data) {
+        //bookid , limit , page
+        String page = request.getParameter("page");
+        String limit = request.getParameter("limit");
+        String key =  request.getParameter("key");
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("data", majorBookService.getMajorBookALL(Integer.parseInt(page),Integer.parseInt(limit),key));
+        System.out.println( majorBookService.getMajorBookALL(Integer.parseInt(page),Integer.parseInt(limit),key));
+        map.put("count", majorBookService.getCount());
+        map.put("msg", "success");
+        map.put("code", 0);
+        return map;
+    }
+
     //领取书籍
     @RequestMapping("/rbup")
     @ResponseBody

@@ -21,6 +21,9 @@ public interface IMajorBookService {
     int insert(MajorBook record);
 
     int getCountMajorBook(String bookid);
+    int getCount();
 
     List<HashMap<String, Object>> getMajorBookByPage(Integer start, Integer size, String bookid);
+
+    List<HashMap<String, Object>> getMajorBookALL(Integer start, Integer size,String key);
 }

@@ -1,6 +1,7 @@
 package com.textbooks.controller;
 
 import com.textbooks.dao.UserMapper;
+import com.textbooks.entity.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,8 +34,14 @@ class AdminControllerTest {
 
     @Test
     public  void selectp(){
-        System.out.println(userMapper.getUserByPage(0,10));
+       /* System.out.println(userMapper.getUserByPage(0,10));
         System.out.println(userMapper.getcount());
-
+*/
+       User user = new User();
+       user.setId("11");
+       user.setLoginname("zzzzz");
+       user.setPassword("111");
+       user.setRoleuser("guanliyuan");
+       userMapper.insert(user);
     }
 }

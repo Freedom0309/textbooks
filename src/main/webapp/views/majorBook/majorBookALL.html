@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../static/layui/css/layui.css" media="all">
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<body>
+<fieldset class="layui-elem-field layui-field-title ">
+    <legend>
+        <li id="icon"
+            class="layui-icon layui-icon-face-smile layui-anim layui-anim-rotate "
+            style="font-size: 30px; color: #1E9FFF;"
+            data-anim="layui-anim-rotate"></li> <span style="font-size: 8px">教材分配列表</span>
+    </legend>
+    <br>
+    <hr>
+    <!--工具栏 -->
+    <div class="demoTable">
+        <label class="layui-form-label">教材名称</label>
+        <div class="layui-inline">
+            <input class="layui-input" name="keyword" id="demoReload" autocomplete="off">
+        </div>
+        <button class="layui-btn" data-type="reload">搜索</button>
+    </div>
+    <hr>
+</fieldset>
+<table class="layui-hide" id="test" lay-filter="dataTable"></table>
+
+<!--<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+        <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+    </div>
+</script>-->
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-xs" lay-event="addnote">发布公告</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script src="../static/js/jquery.js"></script>
+<script src="../static/layui/layui.js" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+
+<script>
+    layui.use(['table','jquery','layer'], function(){
+        var table = layui.table;
+        var $ = layui.$;
+        var layer = layui.layer;
+
+
+        table.render({
+            elem: '#test'
+            ,url:'/majorBook/listAll'
+            ,toolbar: '#toolbarDemo'
+            ,title: '用户数据表'
+            ,totalRow: true
+            ,done: function(res, curr, count) { //表格数据加载完后的事件
+                $(".layui-table-box").find("[data-field='id']").css("display","none");
+                $(".layui-table-total").find("[data-field='id']").css("display","none");
+            }
+            ,where:{data:JSON.stringify({
+                    bookid : $("input[name='id']").val()
+                })}
+            ,cols: [[
+                {type: 'checkbox', fixed: 'left'}
+                ,{field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true,hide:true}
+                ,{field:'name', title:'教材', width:100,totalRowText: '合计' }
+                ,{field:'college', title:'学院', width:100, sort: true}
+                ,{field:'major', title:'专业', width:100,  sort: true}
+                ,{field:'class', title:'班级', width:100, sort: true }
+                ,{field:'cclassnum', title:'数量',width:100,totalRow: true}
+                ,{field:'reviewbook', title:'领取状态', width:100}
+                ,{field:'place', title:'领取地点', width:100}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:340}
+            ]]
+            ,id: 'testReload'
+            ,page:  {
+                layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'], //自定义分页布局
+                //,curr: 5 //设定初始在第 5 页
+                groups: 1, //只显示 1 个连续页码
+                first: false, //不显示首页
+                last: false, //不显示尾页
+                limit:10,
+                limits:[1,2,3,4,5,6,7,8,9,10]
+            }
+        });
+
+        //搜索
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+
+        });
+        //这是layui所又除了表格按钮之外的按钮监听实现出，属性与button的data-type属性相对应
+        var $ = layui.$, active = {
+            //搜索按钮 key的值是搜索框的值
+            reload: function(){
+                var demoReload = $('#demoReload');
+                //传入搜索值
+                table.reload('testReload', {
+                    where: {
+                        key: demoReload.val()
+                    }
+                });
+            }}
+        /* //表格刷新
+         table.reload('testReload');*/
+        //工具栏事件
+        table.on('toolbar(test)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch(obj.event){
+                case 'getCheckData':
+                    var data = checkStatus.data;
+                    layer.alert(JSON.stringify(data));
+                    break;
+                case 'getCheckLength':
+                    var data = checkStatus.data;
+                    layer.msg('选中了：'+ data.length + ' 个');
+                    break;
+                case 'isAll':
+                    layer.msg(checkStatus.isAll ? '全选': '未全选')
+                    break;
+            };
+        });
+
+        //行操作
+        table.on('tool(dataTable)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'addnote'){
+                $.ajax({
+                    url: "/notice/insertNot",
+                    type: "GET",
+                    //data:{"ids":ids,"memthodname":"DeleteBook" },
+                    data:obj.data,
+                    dataType: "json",
+                    success: function(data){
+                        if(data.data){
+                            layer.msg("发布成功", {icon: 6});
+                            table.reload('testReload', {
+                                where: {
+                                    key: ""
+                                }
+                            });
+                        }else{
+                            layer.msg("发布失败", {icon: 5});
+                        }
+                    }
+                });
+
+            };
+
+            if(obj.event === 'edit') {
+                layer.prompt({
+                    formType:3
+                    , title: '修改['+data.college+']['+data.major+']['+data.class+'][' + data.name + ']的数量'
+                    , value: data.cclassnum
+                }, function (value, index) {
+                    console.log(value);
+                    console.log(index);
+                    EidtUv(data, value, index, obj);
+
+
+                });
+            }
+            if(obj.event === 'del') {
+                layer.confirm('确定删除', function(index){
+                    console.log(data);
+                    $.ajax({
+                        url: "/majorBook/del",
+                        type: "get",
+                        data:{"id":data.id },
+                        dataType: "json",
+                        success: function(data){
+                            if(data.data){
+                                // obj.del();
+                                layer.close(index);
+                                layer.msg("删除成功", {icon: 6});
+                                window.location.reload();
+
+                            }else{
+                                layer.msg("删除失败", {icon: 5});
+                            }
+                        }
+
+                    });
+                });
+            }
+
+
+
+
+        });
+
+        function  EidtUv(data,value,index,obj) {
+            $.ajax({
+                url: "/majorBook/edit",
+                type: "POST",
+                data: {"id": data.id, "value": value},
+                dataType: "json",
+                success: function (res) {
+                    if (res.code == 0) {
+                        //关闭弹框
+                        layer.close(index);
+                        //同步更新表格和缓存对应的值
+                        obj.update({
+                            cclassnum: value
+                        });
+                        layer.msg("修改成功", {icon: 6});
+                       /// window.location.reload();
+                       // $("#testReload").reload();
+                    } else {
+                        layer.msg("修改失败", {icon: 5});
+                    }
+                }
+
+            });
+        }
+
+    });
+</script>
+
+</body>
+</html>

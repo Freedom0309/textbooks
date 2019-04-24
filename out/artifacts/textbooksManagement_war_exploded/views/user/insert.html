@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>new.html</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+    <style>
+        .layui-form-item {margin:10px}
+    </style>
+</head>
+<body>
+<form class="layui-form layui-form-pane" action="" onsubmit="return false" id="form1" >
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户名：</label>
+        <div class="layui-input-block">
+            <input type="text" name="loginname" lay-verify="required" autocomplete="off" placeholder="请输入用户名" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">密码</label>
+        <div class="layui-input-block">
+            <input type="password" name="password" lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+</form>
+
+</div>
+
+<script src="../static/js/jquery.js"></script>
+<script src="../static/layui/layui.js" charset="utf-8"></script>
+<script>
+    //Demo
+    layui.use(["form","jquery","table","upload","layer","laytpl"], function() {
+        var form = layui.form;
+        var $ = layui.$;
+        var table = layui.table;
+        var upload = layui.upload;
+        var layer = layui.layer;
+
+    });
+
+</script>
+</body>
+</html>

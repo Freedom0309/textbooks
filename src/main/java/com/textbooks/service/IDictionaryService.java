@@ -13,7 +13,7 @@ public interface IDictionaryService {
     List<Dictionary> selectByLinkage(String dkey,String pvalue);
 
     //树数据
-    List<HashMap<String, Object>> selectData();
+    List<HashMap<String, Object>> selectData(Integer start,  Integer size);
 
     int insert(Dictionary dic);
     //删除

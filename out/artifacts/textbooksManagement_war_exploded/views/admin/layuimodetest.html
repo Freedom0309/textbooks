@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src=""></script>
+</head>
+<body>
+</body>
+<script src="../static/layui/layui.js"></script>
+<script type="text/javascript" src="../static/js/jquery.js"></script>
+<script>
+    layui.use(['element'],function(){
+        var element = layui.element;
+    });
+
+    layui.config({
+        base: '/static/layui/lay/modulemy/' //假设这是你存放拓展模块的根目录
+    }).extend({ //设定模块别名
+        index: 'index11.html' //如果 mymod.js 是在根目录，也可以不用设定别名
+        ,common:'common'
+    });
+
+    layui.use(['index11.html', 'layer'], function(){
+        var mymod = layui.index11;
+        mymod.hello("asdasd"); //弹出 Hello World!
+    });
+
+    layui.use(['common'], function () {
+        var common = layui.common;
+        common.ajax('/book/findbookAll', 'post', 'json', {
+           /* 'showapi_appid': 28043,
+            'showapi_sign': 'fd5ce066f69441bfa078c0ad16129b15',
+            'q': 'hello'*/
+        }, function (res) {
+            alert(JSON.stringify(res));
+        });
+    });
+
+
+</script>
+</html>

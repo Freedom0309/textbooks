@@ -47,12 +47,12 @@ class DictionaryControllerTest {
     }
     @Test
     public void  selectData(){
-       // List<HashMap<String, Object>> lst = dictionaryMapper.selectData();
-        // System.out.println(lst);
+        List<HashMap<String, Object>> lst = dictionaryMapper.selectData(0,5);
+         System.out.println(lst);
 
        // List<HashMap<String, Object>> lst = dictionaryMapper.selectSecpk("815d598d53f74055bd350fc7a40fbcdc");
-        List<HashMap<String, Object>> lst1 = dictionaryMapper.selectThrpk("815d598d53f74055bd350fc7a40fbcdc");
+      //  List<HashMap<String, Object>> lst1 = dictionaryMapper.selectThrpk("815d598d53f74055bd350fc7a40fbcdc");
         //System.out.println(lst);
-        System.out.println(lst1);
+      //  System.out.println(lst1);
     }
 }

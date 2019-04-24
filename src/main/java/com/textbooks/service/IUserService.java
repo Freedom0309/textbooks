@@ -19,5 +19,5 @@ public interface  IUserService {
     //分页
     int getcount();
 
-    List<User> getUserByPage(Integer start, Integer size);
+    List<User> getUserByPage(Integer start, Integer size,String key);
 }

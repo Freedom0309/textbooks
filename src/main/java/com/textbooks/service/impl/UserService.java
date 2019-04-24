@@ -52,7 +52,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public List<User> getUserByPage(Integer page, Integer size) {
+    public List<User> getUserByPage(Integer page, Integer size,String key) {
         if(page == null || page <= 0){
             page = 1;
         }
@@ -60,7 +60,7 @@ public class UserService implements IUserService {
             size = 10;
         }
         Integer start = (page - 1) * size;
-        return  userMapper.getUserByPage(start,size);
+        return  userMapper.getUserByPage(start,size,key);
 
     }
 }

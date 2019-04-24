@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>new.html</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+    <style>
+        .layui-form-item {margin:10px}
+    </style>
+</head>
+<body>
+<fieldset class="layui-elem-field layui-field-title ">
+    <legend>
+        <li id="icon"
+            class="layui-icon layui-icon-face-smile layui-anim layui-anim-rotate "
+            style="font-size: 30px; color: #1E9FFF;"
+            data-anim="layui-anim-rotate"></li>当前角色： <input id="roleuserold" style="font-size: 16px;border:none;" disabled="disabled"></input>
+    </legend>
+    <br>
+</fieldset>
+<form class="layui-form layui-form-pane" action="" onsubmit="return false" id="form1" >
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户名：</label>
+        <div class="layui-input-block">
+            <input type="text" name="loginname" id="loginname" lay-verify="required" readonly="readonly" autocomplete="off" placeholder="请输入用户名" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">密码</label>
+        <div class="layui-input-block">
+            <input type="password" name="password"  lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item" >
+        <label class="layui-form-label">角色信息</label>
+        <div class="layui-input-block">
+            <select name="roleuser" lay-verify="required" lay-search lay-filter="filter" id="view">
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn"  lay-filter="formDemo" id="submit">更新</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+
+</form>
+
+</div>
+<script id="demo" type="text/html">
+    <option value=""></option>
+    {{# layui.each(d,function(index,item){ }}
+    <option value="{{=item.dvalue}}">{{item.dtext}}</option>
+    {{#  }); }}
+    {{#  if(d.length === 0){ }}
+    无数据
+    {{#  } }}
+</script>
+
+<script src="../static/js/jquery.js"></script>
+<script src="../static/layui/layui.js" charset="utf-8"></script>
+<script>
+    //Demo
+    layui.use(["form","jquery","table","upload","layer","laytpl"], function() {
+        var form = layui.form;
+        var $ = layui.$;
+        var table = layui.table;
+        var upload = layui.upload;
+        var layer = layui.layer;
+        var laytpl = layui.laytpl;
+        //下拉框刷新
+
+        //下拉列表
+        $.ajax({
+            url: "/dictionary/ajax_get_dic",
+            type: "post",
+            data:{"dkey":"app.roleuser"},
+            dataType: "json",
+            success: function(data) {
+                if (data.code == 0) {
+                    var getTpl = document.getElementById('demo').innerHTML
+                        , view = document.getElementById('view');
+                    laytpl(getTpl).render(data.data, function (html) {
+                        console.log(data.data);
+                        view.innerHTML = html;
+                        //$("#view").append(html);
+                        form.render('select');
+                    });
+                }
+            }
+
+        });
+
+
+        $('#submit').click(function(){
+            //  layer.msg(JSON.stringify($('#form1').serialize()));
+            var name = $("#form1").find("input[name='password']").val();
+            if(name == ""){
+                layer.msg("密码不能为空", {icon: 5});
+                return;
+            }
+
+            $.ajax({
+                url: "/admin/insuser",
+                type: "post",
+                data:$('#form1').serialize(),
+                dataType: "json",
+                success: function(data){
+                    if(data.data){
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                        parent.layer.msg("新增成功", {icon: 6});
+                        parent.location.reload();
+                    }else{
+                        layer.msg("新增失败", {icon: 5});
+                    }
+                }
+            });
+            //  return false;
+        });
+
+    });
+
+</script>
+</body>
+</html>

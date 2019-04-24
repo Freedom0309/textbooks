@@ -50,6 +50,11 @@ public class MajorBookService implements IMajorBookService {
     }
 
     @Override
+    public int getCount() {
+        return majorBookMapper.getCount();
+    }
+
+    @Override
     public List<HashMap<String, Object>> getMajorBookByPage(Integer page, Integer size, String bookid) {
         if(page == null || page <= 0){
             page = 1;
@@ -59,6 +64,18 @@ public class MajorBookService implements IMajorBookService {
         }
         Integer start = (page - 1) * size;
         return majorBookMapper.getMajorBookByPage(start,size,bookid);
+    }
+
+    @Override
+    public List<HashMap<String, Object>> getMajorBookALL(Integer page, Integer size,String key) {
+        if(page == null || page <= 0){
+            page = 1;
+        }
+        if (size == null || size <= 0){
+            size = 10;
+        }
+        Integer start = (page - 1) * size;
+        return majorBookMapper.getMajorBookALL(start,size,key);
     }
 
 

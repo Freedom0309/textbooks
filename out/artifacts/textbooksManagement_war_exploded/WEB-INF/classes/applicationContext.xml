@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <!--开启组件包扫描-->
+    <context:component-scan base-package="com.textbooks">
+        <!--因为在Spring已经开启扫描Controller的扫描,所以这里可以忽略Controller注解-->
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!--引入jdbc.properties-->
+    <context:property-placeholder location="classpath:jdbc.properties"></context:property-placeholder>
+
+    <!--注册数据源  使用阿里巴巴的druid连接池-->
+    <bean id="DataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${db.driverClassName}"></property>
+        <property name="url" value="${db.url}"></property>
+        <property name="username" value="${db.username}"></property>
+        <property name="password" value="${db.password}"></property>
+    </bean>
+
+
+    <!--************配置事务*************************-->
+    <!--1.注册事务管理器(需要依赖数据源)-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="DataSource"></property>
+    </bean>
+
+    <!--2.配置事务建议(规则) 事务传播特性-->
+    <tx:advice transaction-manager="transactionManager" id="adviceId">
+        <tx:attributes>
+            <!--propagation="REQUIRED"代表支持当前事务，如果当前没有事务，就新建一个事务。这是最常见的选择-->
+            <!--propagation="SUPPORTS" 支持当前事务，如果当前没有事务，就以非事务方式执行。 -->
+            <!--read-only   事务是否只读？-->
+            <tx:method name="find*" read-only="true"/>
+            <tx:method name="select*" read-only="true"/>
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="save*" read-only="false" propagation="REQUIRED"/>
+            <tx:method name="update*" read-only="false" propagation="REQUIRED"/>
+            <tx:method name="delete*" read-only="false" propagation="REQUIRED"/>
+            <tx:method name="insert*" read-only="false" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!--配置Aop 配置参与事务的类-->
+    <!--<aop:config>
+        &lt;!&ndash;配置切入点: aop:pointcut 切入点: 标签配置参与事务的类&ndash;&gt;
+        <aop:pointcut id="pointCutId" expression="execution(* com.textbooks.service.impl.*(..))"></aop:pointcut>
+        &lt;!&ndash;配置切面 aop:advisor标签就是把上面我们所配置的事务管理两部分属性整合起来作为整个事务管理&ndash;&gt;
+        <aop:advisor advice-ref="adviceId" pointcut-ref="pointCutId"></aop:advisor>
+    </aop:config>-->
+
+    <!--************配置事务结束**********************-->
+
+
+    <!--注册SqlSessionFactory 工厂-->
+    <bean id="SqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--给工厂配置连接池数据源-->
+        <property name="dataSource" ref="DataSource"></property>
+        <!--加载 mybatis 的全局配置文件 -->
+        <!--<property name="configLocation" value="classpath:mybatis-config.xml"></property>-->
+        <property name="mapperLocations" value="classpath*:sqlmap/*Mapper.xml"></property>
+        <property name="typeAliasesPackage" value="com.textbooks.entity"></property>
+    </bean>
+
+    <!--配置 Mapper 扫描器 注册Mapper的包扫描 代替了Mappers标签-->
+    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.textbooks.dao"></property>
+        <property name="sqlSessionFactoryBeanName" value="SqlSessionFactoryBean"></property>
+    </bean>
+
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-8"></property>
+        <property name="maxUploadSize" value="104857600" />
+        <property name="maxInMemorySize" value="4096" />
+    </bean>
+</beans>

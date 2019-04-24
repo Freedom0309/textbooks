@@ -24,8 +24,16 @@ public class DictionaryService implements IDictionaryService {
     }
 
     @Override
-    public List<HashMap<String, Object>> selectData() {
-        return dictionaryMapper.selectData();
+    public List<HashMap<String, Object>> selectData(Integer page, Integer size) {
+        if(page == null || page <= 0){
+            page = 1;
+        }
+        if (size == null || size <= 0){
+            size = 10;
+        }
+        Integer start = (page - 1) * size;
+
+        return dictionaryMapper.selectData(start,size);
     }
 
     @Override

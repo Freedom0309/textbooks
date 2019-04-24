@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.textbooks.dao.MajorBookMapper" >
+  <resultMap id="BaseResultMap" type="com.textbooks.entity.MajorBook" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="bookid" property="bookid" jdbcType="VARCHAR" />
+    <result column="majorid" property="majorid" jdbcType="VARCHAR" />
+    <result column="classid" property="classid" jdbcType="VARCHAR" />
+    <result column="cclassnum" property="cclassnum" jdbcType="VARCHAR" />
+    <result column="collegeid" property="collegeid" jdbcType="VARCHAR" />
+    <result column="place" property="place" jdbcType="VARCHAR" />
+    <result column="reviewbook" property="reviewbook" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="getMajorBookMap" type="java.util.HashMap" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="college" property="college" jdbcType="VARCHAR" />
+    <result column="major" property="major" jdbcType="VARCHAR" />
+    <result column="class" property="class" jdbcType="VARCHAR" />
+    <result column="cclassnum" property="cclassnum" jdbcType="VARCHAR" />
+    <result column="reviewbook" property="reviewbook" jdbcType="VARCHAR" />
+    <result column="place" property="place" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, bookid, majorid, classid, cclassnum, collegeid, place, reviewbook
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_app_majorbook
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_app_majorbook
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.textbooks.entity.MajorBook" >
+    insert into t_app_majorbook (id, bookid, majorid, 
+      classid, cclassnum, collegeid, 
+      place, reviewbook)
+    values (#{id,jdbcType=VARCHAR}, #{bookid,jdbcType=VARCHAR}, #{majorid,jdbcType=VARCHAR}, 
+      #{classid,jdbcType=VARCHAR}, #{cclassnum,jdbcType=VARCHAR}, #{collegeid,jdbcType=VARCHAR}, 
+      #{place,jdbcType=VARCHAR}, #{reviewbook,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.textbooks.entity.MajorBook" >
+    insert into t_app_majorbook
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="bookid != null" >
+        bookid,
+      </if>
+      <if test="majorid != null" >
+        majorid,
+      </if>
+      <if test="classid != null" >
+        classid,
+      </if>
+      <if test="cclassnum != null" >
+        cclassnum,
+      </if>
+      <if test="collegeid != null" >
+        collegeid,
+      </if>
+      <if test="place != null" >
+        place,
+      </if>
+      <if test="reviewbook != null" >
+        reviewbook,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="bookid != null" >
+        #{bookid,jdbcType=VARCHAR},
+      </if>
+      <if test="majorid != null" >
+        #{majorid,jdbcType=VARCHAR},
+      </if>
+      <if test="classid != null" >
+        #{classid,jdbcType=VARCHAR},
+      </if>
+      <if test="cclassnum != null" >
+        #{cclassnum,jdbcType=VARCHAR},
+      </if>
+      <if test="collegeid != null" >
+        #{collegeid,jdbcType=VARCHAR},
+      </if>
+      <if test="place != null" >
+        #{place,jdbcType=VARCHAR},
+      </if>
+      <if test="reviewbook != null" >
+        #{reviewbook,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.textbooks.entity.MajorBook" >
+    update t_app_majorbook
+    <set >
+      <if test="bookid != null" >
+        bookid = #{bookid,jdbcType=VARCHAR},
+      </if>
+      <if test="majorid != null" >
+        majorid = #{majorid,jdbcType=VARCHAR},
+      </if>
+      <if test="classid != null" >
+        classid = #{classid,jdbcType=VARCHAR},
+      </if>
+      <if test="cclassnum != null" >
+        cclassnum = #{cclassnum,jdbcType=VARCHAR},
+      </if>
+      <if test="collegeid != null" >
+        collegeid = #{collegeid,jdbcType=VARCHAR},
+      </if>
+      <if test="place != null" >
+        place = #{place,jdbcType=VARCHAR},
+      </if>
+      <if test="reviewbook != null" >
+        reviewbook = #{reviewbook,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.textbooks.entity.MajorBook" >
+    update t_app_majorbook
+    set bookid = #{bookid,jdbcType=VARCHAR},
+      majorid = #{majorid,jdbcType=VARCHAR},
+      classid = #{classid,jdbcType=VARCHAR},
+      cclassnum = #{cclassnum,jdbcType=VARCHAR},
+      collegeid = #{collegeid,jdbcType=VARCHAR},
+      place = #{place,jdbcType=VARCHAR},
+      reviewbook = #{reviewbook,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+
+  <!-- 分页使用SQL  SQL中传入的第一个参数为开始的行数，第二个参数为数据条数。-->
+  <select id="getMajorBookByPage"  resultMap="getMajorBookMap" >
+    SELECT
+        mb.id,b.`name`,diccol.dvalue as college ,dicmajor.dvalue as major ,dicclass.dvalue as class,mb.cclassnum,mb.reviewbook,mb.place
+    FROM
+        `t_app_majorbook` mb
+        LEFT JOIN t_app_books b ON mb.bookid = b.id
+        left join t_sys_dictionary diccol on mb.collegeid = diccol.id
+        left join t_sys_dictionary dicmajor on mb.majorid = dicmajor.id
+        left join t_sys_dictionary dicclass on mb.classid = dicclass.id
+        where mb.bookid=#{bookid} limit #{start},#{size}
+  </select>
+
+  <select id="getCountMajorBook"  resultType="java.lang.Integer" >
+    SELECT count(*) FROM t_app_majorbook mb where mb.bookid=#{bookid}
+  </select>
+
+
+</mapper>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.textbooks.dao.BookMapper" >
+  <resultMap id="BaseResultMap" type="com.textbooks.entity.Book" >
+    <id column="Id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="ghs" property="ghs" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="VARCHAR" />
+    <result column="discount" property="discount" jdbcType="VARCHAR" />
+    <result column="num" property="num" jdbcType="VARCHAR" />
+    <result column="count" property="count" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="image" property="image" jdbcType="VARCHAR" />
+    <result column="major" property="major" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, name, ghs, price, discount,num,count,status,image,major
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from t_app_books
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.textbooks.entity.Book" >
+    update t_app_books
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="ghs != null" >
+        ghs = #{ghs,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=VARCHAR},
+      </if>
+      <if test="discount != null" >
+      discount = #{discount,jdbcType=VARCHAR},
+     </if>
+      <if test="num != null" >
+      num = #{num,jdbcType=VARCHAR},
+    </if>
+      <if test="count != null" >
+        count = #{count,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null" >
+        image = #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="major != null" >
+        major = #{major,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <delete id="deleteByids" parameterType="List">
+    <!-- delete from emp where empno in(7789,7790) -->
+    <!-- forEach : 用来循环 collection : 用来指定循环的数据的类型 可以填的值有：array,list,map item
+        : 循环中为每个循环的数据指定一个别名 index : 循环中循环的下标 open : 开始 close : 结束 separator : 数组中元素之间的分隔符 -->
+    delete from t_app_books where id in
+    <foreach collection="array" item="arr" index="no" open="("
+             separator="," close=")">
+      #{arr}
+    </foreach>
+  </delete>
+  <insert id="insertSelective" parameterType="com.textbooks.entity.Book" >
+    insert into t_app_books
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="ghs != null" >
+        ghs,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="discount != null" >
+        discount,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="image != null" >
+        image,
+      </if>
+      <if test="major != null" >
+        major,
+      </if>
+      <if test="count != null" >
+        count,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="ghs != null" >
+        #{ghs,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=VARCHAR},
+      </if>
+      <if test="discount != null" >
+        #{discount,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null" >
+        #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="major != null" >
+      #{major,jdbcType=VARCHAR},
+        </if>
+      <if test="count != null" >
+        #{count,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByfieds" parameterType="map" statementType="STATEMENT">
+        <![CDATA[update t_app_books set ${field} = ${value} where id=${id}]]>
+  </update>
+
+  <!-- 分页使用SQL  SQL中传入的第一个参数为开始的行数，第二个参数为数据条数。-->
+  <select id="getBookByPage"  resultType="com.textbooks.entity.Book" >
+        select * from t_app_books where name like '%${key}%' limit ${start},${size}
+  </select>
+</mapper>

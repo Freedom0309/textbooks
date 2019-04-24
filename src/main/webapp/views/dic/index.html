@@ -45,7 +45,11 @@
                     }
                 }
             ]]
-            ,page:false
+            ,page:{
+                layout: ['limit'],
+                limit:50,
+                limits:[50,70,90,100,120]
+            }
         });
 
         treeGrid.on('tool('+tableId+')',function (obj) {

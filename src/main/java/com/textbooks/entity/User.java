@@ -1,10 +1,7 @@
 package com.textbooks.entity;
 
-import lombok.Data;
-
 import java.io.Serializable;
 
-@Data
 public class User implements Serializable {
     private String loginname;
 
@@ -13,6 +10,8 @@ public class User implements Serializable {
     private String password;
 
     private Byte isonline;
+
+    private String roleuser;
 
     private static final long serialVersionUID = 1L;
 
@@ -46,5 +45,13 @@ public class User implements Serializable {
 
     public void setIsonline(Byte isonline) {
         this.isonline = isonline;
+    }
+
+    public String getRoleuser() {
+        return roleuser;
+    }
+
+    public void setRoleuser(String roleuser) {
+        this.roleuser = roleuser == null ? null : roleuser.trim();
     }
 }

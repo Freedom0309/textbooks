@@ -6,8 +6,7 @@ import com.textbooks.service.IUserService;
 import com.textbooks.service.impl.TextbooksService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +25,32 @@ public class AdminController {
     public ModelAndView adminlogin(){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("admin/login");
+        return modelAndView;
+    }
+
+    @ResponseBody
+    @RequestMapping("/loginout")
+    public HashMap<String, Object> loginout(HttpServletRequest request){
+        HashMap<String, Object> ro = new HashMap<String, Object>();
+        String loginname = request.getParameter("loginname");
+        User user = userService.selectByPrimaryKey(loginname);
+        user.setIsonline(Byte.valueOf("0"));
+        int i = userService.updateByPrimaryKeySelective(user);
+        ro.put("data", i);
+        ro.put("msg", "success");
+        ro.put("code", 0);
+        return ro;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/index")
+    //public ModelAndView index(@RequestParam("user")User user){
+    public ModelAndView index(HttpServletRequest request){
+        System.out.println(request.getParameter("loginname"));
+        ModelAndView modelAndView = new ModelAndView();
+        User user = userService.selectByPrimaryKey(request.getParameter("loginname"));
+        modelAndView.addObject("user",user);
+        modelAndView.setViewName("admin/index");
         return modelAndView;
     }
 
@@ -71,8 +96,9 @@ public class AdminController {
     public HashMap<String, Object> getUserlist(HttpServletRequest request){
         String page = request.getParameter("page");
         String limit = request.getParameter("limit");
+        String key =  request.getParameter("key");
         HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("data", userService.getUserByPage(Integer.parseInt(page),Integer.parseInt(limit)));
+        map.put("data", userService.getUserByPage(Integer.parseInt(page),Integer.parseInt(limit),key));
         map.put("count", userService.getcount());
         map.put("msg", "success");
         map.put("code", 0);
@@ -94,11 +120,13 @@ public class AdminController {
     public HashMap<String, Object> insertUser(HttpServletRequest request){
         String loginname = request.getParameter("loginname");
         String password = request.getParameter("password");
+        String roleuser = request.getParameter("roleuser");
         HashMap<String, Object> map = new HashMap<String, Object>();
         User user = userService.selectByPrimaryKey(loginname);
         int i = 0;
         if(user!=null){
             user.setPassword(password);
+            user.setRoleuser(roleuser);
             i = userService.updateByPrimaryKeySelective(user);
             map.put("code", 0);
         }else{
@@ -107,6 +135,7 @@ public class AdminController {
             user.setLoginname(loginname);
             user.setPassword(password);
             user.setIsonline(Byte.valueOf("0"));
+            user.setRoleuser(roleuser);
             i =  userService.insert(user);
             map.put("code", 0);
         }
@@ -130,5 +159,13 @@ public class AdminController {
            map.put("msg", "success");
         return map;
    }
+
+    @RequestMapping("/updateUserView")
+    @ResponseBody
+    public ModelAndView updateUserView(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("user/update");
+        return modelAndView;
+    }
 
 }

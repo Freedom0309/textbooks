@@ -23,7 +23,11 @@ public interface MajorBookMapper {
 
   //  @Select("SELECT count(*) FROM t_app_majorbook mb where mb.bookid=#{bookid}")
     int getCountMajorBook(@Param("bookid") String bookid);
+    @Select("SELECT count(*) FROM t_app_majorbook mb")
+    int getCount();
 
     List<HashMap<java.lang.String,java.lang.Object>> getMajorBookByPage(@Param("start") Integer start, @Param("size") Integer size, @Param("bookid") String bookid);
     // List<java.lang.Object> getMajorBookByPage(@Param("start") Integer start, @Param("size") Integer size, @Param("bookid") String bookid);
+
+    List<HashMap<java.lang.String,java.lang.Object>> getMajorBookALL(@Param("start") Integer start, @Param("size") Integer size,@Param("key")String key);
 }

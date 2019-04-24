@@ -84,9 +84,10 @@ public class DictionaryController {
     //数据展示
     @RequestMapping("/data")
     @ResponseBody
-    public HashMap<String, Object> data(){
-
-        List<HashMap<String, Object>> dict = dictionaryServie.selectData();
+    public HashMap<String, Object> data(HttpServletRequest request){
+        String page = request.getParameter("page");
+        String limit = request.getParameter("limit");
+        List<HashMap<String, Object>> dict = dictionaryServie.selectData(Integer.parseInt(page),Integer.parseInt(limit));
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("data", dict);
         map.put("count", dict.size());

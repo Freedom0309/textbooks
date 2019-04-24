@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.textbooks.dao.NoticeMapper" >
+  <resultMap id="BaseResultMap" type="com.textbooks.entity.Notice" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="theme" property="theme" jdbcType="VARCHAR" />
+    <result column="majorbookid" property="majorbookid" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="syscreatime" property="syscreatime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="pageMap" type="java.util.HashMap" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="theme" property="theme" jdbcType="VARCHAR" />
+    <result column="majorbookid" property="majorbookid" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="reviewbook" property="reviewbook" jdbcType="VARCHAR" />
+    <result column="syscreatime" property="syscreatime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="monthMap" type="java.util.HashMap" >
+    <id column="time" property="time" jdbcType="VARCHAR" />
+    <result column="total" property="total" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, theme, majorbookid, content, syscreatime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_app_notice
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_app_notice
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.textbooks.entity.Notice" >
+    insert into t_app_notice (id, theme, majorbookid,
+      content, syscreatime)
+    values (#{id,jdbcType=VARCHAR}, #{theme,jdbcType=VARCHAR}, #{majorbookid,jdbcType=VARCHAR},
+      #{content,jdbcType=VARCHAR}, #{syscreatime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.textbooks.entity.Notice" >
+    insert into t_app_notice
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="theme != null" >
+        theme,
+      </if>
+      <if test="majorbookid != null" >
+        majorbookid,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="syscreatime != null" >
+        syscreatime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="theme != null" >
+        #{theme,jdbcType=VARCHAR},
+      </if>
+      <if test="majorbookid != null" >
+        #{majorbookid,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="syscreatime != null" >
+        #{syscreatime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.textbooks.entity.Notice" >
+    update t_app_notice
+    <set >
+      <if test="theme != null" >
+        theme = #{theme,jdbcType=VARCHAR},
+      </if>
+      <if test="majorbookid != null" >
+        majorbookid = #{majorbookid,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="syscreatime != null" >
+        syscreatime = #{syscreatime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.textbooks.entity.Notice" >
+    update t_app_notice
+    set theme = #{theme,jdbcType=VARCHAR},
+      majorbookid = #{majorbookid,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      syscreatime = #{syscreatime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <!-- 分页使用SQL  SQL中传入的第一个参数为开始的行数，第二个参数为数据条数。-->
+  <select id="getNoticeByPage"  resultMap="pageMap" >
+        select note.id,note.theme,note.majorbookid,note.content,note.syscreatime,mb.reviewbook from t_app_notice note left join t_app_majorbook mb on note.majorbookid = mb.id   limit #{start},#{size}
+  </select>
+
+  <!--查询月份 -->
+  <select id="selectMonth"  resultMap="monthMap" >
+        select  DATE_FORMAT( syscreatime, "%Y-%m" ) as time ,count(*) AS total FROM t_app_notice GROUP BY MONTH(syscreatime) ORDER BY time DESC;
+  </select>
+  <!--查询下的数据 -->
+  <select id="selectbyMon"  resultMap="pageMap" >
+       select note.id,note.theme,note.majorbookid,note.content,note.syscreatime,mb.reviewbook from t_app_notice note left join t_app_majorbook mb on note.majorbookid = mb.id WHERE  note.syscreatime like  '${mon}%' ORDER BY note.syscreatime DESC
+  </select>
+</mapper>

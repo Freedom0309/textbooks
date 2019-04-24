@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+
+    <style type="text/css">
+        .layui-table-cell{
+            height:100px;
+            line-height: 100px;
+        }
+    </style>
+</head>
+<body>
+
+<hr>
+<!--工具栏 -->
+<div class="demoTable">
+    <label class="layui-form-label">教材名称</label>
+    <div class="layui-inline">
+        <input class="layui-input" name="keyword" id="demoReload" autocomplete="off">
+    </div>
+    <button class="layui-btn" data-type="reload">搜索</button>
+    <button class="layui-btn layui-btn-normal" data-type="insertbook"><i class="layui-icon">&#xe608;</i>新增</button>
+    <button class="layui-btn layui-btn-danger" data-type="delSelect"><i class="layui-icon">&#xe640;</i>删除</button>
+<!--    <button class="layui-btn layui-btn-warm" data-type="download" >导出</button>
+    <button class="layui-btn layui-btn-normal" data-type="upload">导入</button>
+    <input type="file" name="file" id="file">-->
+</div>
+<hr>
+
+<!--新增 -->
+<table class="layui-hide" id="LAY_table_user" lay-filter="dataTable"></table>
+<div id="pagePicker"></div>
+
+<!--<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+        <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+        <button class="layui-btn layui-btn-sm" lay-event="add">增加</button>
+    </div>
+<a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
+  <a class="layui-btn layui-btn-mini" lay-event="edit">修改数量</a>
+</script>-->
+<script type="text/html" id="barDemo">
+
+    <a class="layui-btn layui-btn-primary layui-btn-mini" lay-event="borrowBook">教材分配</a>
+    <a class="layui-btn layui-btn-primary layui-btn-mini" lay-event="majorBooklst">分配信息</a>
+</script>
+
+<script src="../static/js/jquery.js"></script>
+<script src="../static/layui/layui.js" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+
+<script>
+    layui.use(["form","laypage","layer","table","element","upload",'jquery'], function(){
+        var table = layui.table;
+        var form=layui.form;
+        var laypage=layui.laypage;
+        var layer=layui.layer;
+        var element = layui.element;
+        var upload = layui.upload;
+        var $ = layui.$;
+        //方法级渲染
+        table.render({
+            elem: '#LAY_table_user',
+            url: '/book/findbookAll',
+            done: function(res, curr, count) { //表格数据加载完后的事件
+                $(".layui-table-box").find("[data-field='id']").css("display","none");
+                //调用示例
+                layer.photos({//点击图片弹出
+                    photos: '.layer-photos-demo',
+                    anim: 1 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+                });
+            },
+            cols: [[
+                {type: 'checkbox', fixed: true}
+                ,{field:'id', title:'ID', width:100, sort: true, fixed: true,hide:true}
+                ,{field:'name', title:'教材名称 ', width:100, sort: true,edit:true}
+                /* ,{field:'email', title:'邮箱', width:150, edit: 'text', templet: function(res){
+                         return '<em>'+ res.email +'</em>'
+                     }}*/
+                ,{field:'ghs', title:'出版社', width:150, sort: true,edit:true }
+                ,{field:'price', title:'价格', width:100,edit:true}
+                /*,{field:'discount', title:'折扣',width:100}*/
+                ,{field:'num', title:'数量', width:100, sort: true}
+                ,{field:'count', title:'剩余数量', width:100, sort: true}
+                ,{field:'status', title:'状态', width:100}
+                /*,{field:'major', title:'专业', width:100}*/
+                ,{field:'image', title: '图片', width:100,templet:function (d) {
+                        var bookpath = d.image;
+                        return '<div class="layer-photos-demo" style="cursor:pointer;">' +
+                            '<img  src="' + bookpath + '" width="80px" height="100px"></div>';
+                    }
+                },
+                {field:'right', title: '操作', width:340,toolbar:"#barDemo"}
+            ]],
+            id: 'testReload',
+            page: {
+                layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'], //自定义分页布局
+                //,curr: 5 //设定初始在第 5 页
+                groups: 1, //只显示 1 个连续页码
+                first: false, //不显示首页
+                last: false, //不显示尾页
+                limit:10,
+                limits:[1,2,3,4,5,6,7,8,9,10]
+            }
+        })
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+
+        });
+        //这是layui所又除了表格按钮之外的按钮监听实现出，属性与button的data-type属性相对应
+        var $ = layui.$, active = {
+            //搜索按钮 key的值是搜索框的值
+            reload: function(){
+                var demoReload = $('#demoReload');
+                //传入搜索值
+                table.reload('testReload', {
+                    where: {
+                        key: demoReload.val()
+                    }
+                });
+            },
+            //多行删除
+            delSelect: function(){
+                //获取选中数据
+                var checkStatus = table.checkStatus('testReload')
+                var data = checkStatus.data;
+                if(checkStatus.data.length==0){
+                    layer.msg('请选择要删除的数据', {icon: 5});
+                    return;
+                }
+                //询问框
+                layer.confirm('是否删除选中的数据？', {
+                    btn: ['删除','取消'] //按钮
+                }, function(){
+                    var ids = "";
+                    //这里先遍历，然后到后台处理
+                    for(var i = 0; i < data.length ;i++){
+                        ids += data[i].id + ",";
+                    }
+                    $.ajax({
+                        url: "/book/delete",
+                        type: "GET",
+                        //data:{"ids":ids,"memthodname":"DeleteBook" },
+                        data:{"ids":ids },
+                        dataType: "json",
+                        success: function(data){
+                            if(data.data){
+                                layer.msg("删除成功", {icon: 6});
+                                table.reload('testReload', {
+                                    where: {
+                                        key: ""
+                                    }
+                                });
+                            }else{
+                                layer.msg("删除失败", {icon: 5});
+                            }
+                        }
+                    });
+                }, function(){
+                    layer.closeAll();
+                });
+            },
+            /*//把表格转化成Excel文件(文件上传下载这部分慎用，没有深入研究)
+            download:function(){
+                $.ajax({
+                    url: "servlet/BookController",
+                    data:{"memthodname":"BookExport"},
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data){
+                        if(data.data){
+                            layer.msg("导出成功", {icon: 6});
+                        }else{
+                            layer.msg("导出失败", {icon: 5});
+                        }
+                    }
+                });
+            },
+            upload:function(){
+                var filePath = $('#file').val();
+                if(filePath == ""){
+                    layer.msg("请选择文件之后在导入", {icon: 5});
+                    return;
+                }
+                //alert(filePath);
+                $.ajax({
+                   // url: "servlet/BookController",
+                    data:{"memthodname":"BookImport","filePath":filePath},
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data){
+                        if(data.data){
+                            layer.msg("导入成功", {icon: 6});
+                            table.reload('testReload', {
+                                where: {
+                                    key: ""
+                                }
+                            });
+                        }else{
+                            layer.msg("导入失败", {icon: 5});
+                        }
+                    }
+                });
+            },*/
+            insertbook:function () {
+                var body;
+                layer.open({
+                    type:2,
+                    title: '' +
+                        '<li id="icon" class="layui-icon layui-icon-tabs layui-anim layui-anim-scaleSpring" ' +
+                        'style="font-size: 30px; color: #009688;" data-anim="layui-anim-scaleSpring"></li> 教材新增 ',
+                    shadeClose: true,
+                    shade: false,
+                    maxmin: true, //开启最大化最小化按钮
+                    area: ['470px', '500px'],//area: [window.screen.width / 2 + 'px', window.screen.height / 2 + 'px'], //宽高
+                    content: "/book/insert"
+                });
+            }
+
+        };
+
+        //监听单元格编辑 dataTable 对应 <table> 中的 lay-filter="dataTable"
+        table.on('edit(dataTable)', function(obj){
+            var value = obj.value, //得到修改后的值
+                data = obj.data, //得到所在行所有键值
+                field = obj.field; //得到字段
+            //layer.msg('[ID: '+ data.userId +'] ' + field + ' 字段更改为：'+ value);
+            $.ajax({
+                url: "/book/edit",
+                type: "POST",
+                //data:{"bookId":data.bookId,"memthodname":"edituv","field":field,"value":value},
+                data:{"id":data.id,"field":field,"value":value},
+                dataType: "json",
+                success: function(data){
+                    console.log(data);
+                    if(data.data){
+                        //同步更新表格和缓存对应的值
+                        layer.msg("修改成功", {icon: 6});
+                    }else{
+                        layer.msg("修改失败", {icon: 5});
+                    }
+                }
+
+            });
+
+        });
+        //content: "<%=basePath %>"   +"/book/dialog",
+
+        table.on('tool(dataTable)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'borrowBook'){
+                var body;
+                layer.open({
+                    type: 2,
+                    title: '' +
+                        '<li id="icon" class="layui-icon layui-icon-release layui-anim layui-anim-scaleSpring" ' +
+                        'style="font-size: 30px; color: #009688;" data-anim="layui-anim-scaleSpring"></li> 编辑 ',
+                    shadeClose: true,
+                    shade: false,
+                    btn: ['分配'],
+                    btnAlign: 'c',
+                    maxmin: true, //开启最大化最小化按钮
+                    area: ['470px', '500px'],//area: [window.screen.width / 2 + 'px', window.screen.height / 2 + 'px'], //宽高
+                    content: "/book/borrowBook",
+                    success: function(layero, index){
+                        console.log(layero, index);
+                        body = layer.getChildFrame('body',index);
+                        body.find("input#name").val(data.name);
+                        body.find("input#id").val(data.id);
+                    },
+                    yes: function(layero, index){
+                        var data = body.find("#form1");
+                        //  layer.msg(data);
+                        console.log(data.serialize());
+                        var place = body.find("input[name='place']").val();
+                        var cclassnum = body.find("input[name='cclassnum']").val();
+                        if(cclassnum == ""){
+                            layer.msg("数量不能为空", {icon: 5});
+                            return;
+                        }
+                        if(place == ""){
+                            layer.msg("地点不能为空", {icon: 5});
+                            return;
+                        }
+                        $.ajax({
+                            url: "/majorBook/insertMajorBook",
+                            type: "POST",
+                            data:data.serialize(),
+                            dataType: "json",
+                            success: function(res){
+                                if(res.code===0){
+                                    layer.alert('添加成功!',function(){
+                                        layer.closeAll();
+                                        table.reload('testReload', {
+                                            where: {
+                                                key: ""
+                                            }
+                                        });
+                                    });
+                                }else{
+                                    layer.msg(""+res.msg, {icon: 5});
+                                }
+                            }
+                        });
+                    }
+                });
+            } else if(obj.event === 'majorBooklst'){
+                var body;
+                layer.open({
+                    type: 2,
+                    title: '' +
+                        '<li id="icon" class="layui-icon layui-icon-release layui-anim layui-anim-scaleSpring" ' +
+                        'style="font-size: 30px; color: #009688;" data-anim="layui-anim-scaleSpring"></li> 分配列表 ',
+
+                    shadeClose: true,
+                    shade: false,
+                    btn: ['关闭'],
+                    btnAlign: 'c',
+                    maxmin: true, //开启最大化最小化按钮
+                    area: [window.screen.width / 2 + 'px', window.screen.height / 2 + 'px'], //宽高
+                    content: "/majorBook/majorBooklst",
+                    success: function(layero, index){
+                        console.log(layero, index);
+                        body = layer.getChildFrame('body',index);
+                        body.find("input#name").val(data.name);
+                        body.find("input#id").val(data.id);
+                    },
+                    yes: function(layero, index){
+                        layer.closeAll();
+                    }
+
+                });
+
+            }else if(obj.event === 'del'){
+                layer.confirm('真的删除行么', function(index){
+                    console.log(data);
+                    $.ajax({
+                        url: "servlet/BookController",
+                        type: "GET",
+                        data:{"bookId":data.bookId,"memthodname":"deleteuv" },
+                        dataType: "json",
+                        success: function(data){
+                            if(data.data){
+                                obj.del();
+                                layer.close(index);
+                                layer.msg("删除成功", {icon: 6});
+                            }else{
+                                layer.msg("删除失败", {icon: 5});
+                            }
+                        }
+
+                    });
+                });
+            } else if(obj.event === 'edit'){
+                layer.prompt({
+                    formType: 2
+                    ,title: '修改 ['+ data.name +'] 的数量'
+                    ,value: data.num
+                }, function(value, index){
+                    console.log(value);
+                    console.log(index);
+                    EidtUv(data,value,index,obj);
+                });
+            }
+
+        });
+        function  EidtUv(data,value,index,obj) {
+            $.ajax({
+                url: "/book/edit",
+                type: "POST",
+                data: {"id": data.id, "field": "num", "value": value},
+                dataType: "json",
+                success: function (data) {
+
+                    if (data.code == 0) {
+                        //关闭弹框
+                        layer.close(index);
+                        //同步更新表格和缓存对应的值
+                        obj.update({
+                            num: value
+                        });
+                        layer.msg("修改成功", {icon: 6});
+                    } else {
+                        layer.msg("修改失败", {icon: 5});
+                    }
+                }
+
+            });
+        }
+
+
+    });
+</script>
+
+</body>
+</html>
